@@ -1,0 +1,31 @@
+server:
+  port: 9988
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/arkitik_flotale
+    username: ${database_user:arkitik_flotale}
+    password: ${database_password:arkitik_flotale}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  main:
+    allow-bean-definition-overriding: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL57Dialect
+        storage_engine: innodb
+        enable_lazy_load_no_trans: true
+  profiles:
+    active: mysql
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+logging:
+  level:
+    io:
+      arkitik: debug

@@ -1,0 +1,29 @@
+server:
+  port: 9988
+spring:
+  datasource:
+    url: jdbc:h2:mem:arkitik_flotale
+    username:
+    password:
+    driver-class-name: org.h2.Driver
+  main:
+    allow-bean-definition-overriding: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        storage_engine: innodb
+        enable_lazy_load_no_trans: true
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+logging:
+  level:
+    io:
+      arkitik: debug

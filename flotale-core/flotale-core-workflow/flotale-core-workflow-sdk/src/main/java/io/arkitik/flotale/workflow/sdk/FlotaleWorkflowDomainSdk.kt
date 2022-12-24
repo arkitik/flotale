@@ -1,0 +1,16 @@
+package io.arkitik.flotale.workflow.sdk
+
+import io.arkitik.flotale.workflow.domain.WorkflowDomain
+import io.arkitik.flotale.workflow.sdk.dto.CreateWorkflowDto
+import io.arkitik.radix.develop.operation.Operation
+
+/**
+ * Created By [*Ibrahim Al-Tamimi *](https://www.linkedin.com/in/iloom/)
+ * Created At 12:10 PM, 17 , **Sat, December 2022**
+ * Project *flotale* [arkitik.io](https://arkitik.io)
+ */
+interface FlotaleWorkflowDomainSdk {
+    val createWorkflow: Operation<CreateWorkflowDto, Unit>
+    val findWorkflow: Operation<String, WorkflowDomain>
+    val deleteWorkflow: Operation<WorkflowDomain, Unit>
+}

@@ -1,0 +1,18 @@
+package io.arkitik.flotale.task.initial.port.jpa
+
+import io.arkitik.flotale.task.initial.adapter.TaskInitialStoreImpl
+import io.arkitik.flotale.task.initial.adapter.repository.TaskInitialRepository
+import io.arkitik.flotale.task.initial.store.TaskInitialStore
+import org.springframework.`data`.jpa.repository.config.EnableJpaRepositories
+import org.springframework.boot.autoconfigure.domain.EntityScan
+import org.springframework.context.`annotation`.Bean
+import org.springframework.context.`annotation`.Configuration
+
+@Configuration
+@EnableJpaRepositories("io.arkitik.flotale.task.initial.adapter.repository")
+@EntityScan("io.arkitik.flotale.task.initial.entity")
+class TaskInitialJpaPortContext {
+    @Bean
+    fun taskInitialStore(taskInitialRepository: TaskInitialRepository): TaskInitialStore =
+        TaskInitialStoreImpl(taskInitialRepository)
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>io.arkitik.flotale</groupId>
+        <artifactId>flotale-core</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>flotale-core-stage</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>flotale-core-stage-adapter</module>
+        <module>flotale-core-stage-entity</module>
+        <module>flotale-core-stage-domain</module>
+        <module>flotale-core-stage-port-jpa</module>
+        <module>flotale-core-stage-store</module>
+        <module>flotale-core-stage-sdk</module>
+        <module>flotale-core-stage-operation</module>
+        <module>flotale-core-stage-port</module>
+    </modules>
+</project>

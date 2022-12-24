@@ -1,0 +1,12 @@
+version: "3"
+services:
+  mysql:
+    image: mysql:latest
+    container_name: arkitik_flotale_mysql_db
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_USER=arkitik_flotale
+      - MYSQL_PASSWORD=arkitik_flotale
+      - MYSQL_DATABASE=arkitik_flotale
+      - MYSQL_ROOT_PASSWORD=arkitik_flotale

@@ -1,0 +1,18 @@
+package io.arkitik.flotale.stage.port.jpa
+
+import io.arkitik.flotale.stage.adapter.StageStoreImpl
+import io.arkitik.flotale.stage.adapter.repository.StageRepository
+import io.arkitik.flotale.stage.store.StageStore
+import org.springframework.`data`.jpa.repository.config.EnableJpaRepositories
+import org.springframework.boot.autoconfigure.domain.EntityScan
+import org.springframework.context.`annotation`.Bean
+import org.springframework.context.`annotation`.Configuration
+
+@Configuration
+@EnableJpaRepositories("io.arkitik.flotale.stage.adapter.repository")
+@EntityScan("io.arkitik.flotale.stage.entity")
+class StageJpaPortContext {
+    @Bean
+    fun stageStore(stageRepository: StageRepository): StageStore =
+        StageStoreImpl(stageRepository)
+}

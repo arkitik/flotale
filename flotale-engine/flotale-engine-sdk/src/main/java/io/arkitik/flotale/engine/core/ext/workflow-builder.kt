@@ -12,6 +12,19 @@ import io.arkitik.flotale.engine.core.dto.WorkflowData
  * Project *flotale* [arkitik.io](https://arkitik.io)
  */
 
+@DslMarker
+annotation class Workflow
+
+@DslMarker
+annotation class Stage
+
+@DslMarker
+annotation class Task
+
+@DslMarker
+annotation class Action
+
+@Workflow
 fun FlotaleDomainEngine.persistWorkflow(
     builder: FlotaleWorkflowsBuilder.() -> Unit,
 ) {
@@ -111,11 +124,13 @@ fun FlotaleDomainEngine.persistWorkflow(
     commands.forEach { it.invoke() }
 }
 
+@Workflow
 fun workflow(
     builder: WorkflowDataBuilder.() -> Unit,
 ) = WorkflowDataBuilder()
     .apply(builder)
 
+@Stage
 fun stage(
     builder: StageDataBuilder.() -> Unit,
 ) =
@@ -123,6 +138,7 @@ fun stage(
         .apply(builder)
         .build()
 
+@Task
 fun task(
     builder: TaskDataBuilder.() -> Unit,
 ) =
@@ -130,6 +146,7 @@ fun task(
         .apply(builder)
         .build()
 
+@Action
 fun action(
     builder: ActionDataBuilder.() -> Unit,
 ) =
@@ -144,22 +161,25 @@ class WorkflowDataBuilder {
     private var initialStage: StageData? = null
     private val stages = mutableListOf<StageData>()
 
-
+    @Workflow
     infix fun name(name: String): WorkflowDataBuilder {
         this.name = name
         return this
     }
 
+    @Workflow
     infix fun key(key: String): WorkflowDataBuilder {
         this.key = key
         return this
     }
 
+    @Stage
     infix fun initialStage(builder: StageDataBuilder.() -> Unit): WorkflowDataBuilder {
         this.initialStage = StageDataBuilder().apply(builder).build()
         return this
     }
 
+    @Stage
     infix fun stage(builder: StageDataBuilder.() -> Unit): WorkflowDataBuilder {
         this.stages.add(StageDataBuilder().apply(builder).build())
         return this
@@ -181,21 +201,25 @@ class StageDataBuilder {
     private var initialTask: TaskData? = null
     private var tasks: MutableList<TaskData> = ArrayList()
 
+    @Stage
     infix fun stageKey(stageKey: String): StageDataBuilder {
         key = stageKey
         return this
     }
 
+    @Stage
     infix fun stageName(stageName: String): StageDataBuilder {
         name = stageName
         return this
     }
 
+    @Task
     infix fun stageInitialTask(builder: TaskDataBuilder.() -> Unit): StageDataBuilder {
         initialTask = TaskDataBuilder().apply(builder).build()
         return this
     }
 
+    @Task
     infix fun stageTask(builder: TaskDataBuilder.() -> Unit): StageDataBuilder {
         tasks.add(TaskDataBuilder().apply(builder).build())
         return this
@@ -215,16 +239,19 @@ class TaskDataBuilder {
     private lateinit var name: String
     private val actions = mutableListOf<ActionData>()
 
+    @Task
     fun taskKey(key: String): TaskDataBuilder {
         this.key = key
         return this
     }
 
+    @Task
     fun taskName(name: String): TaskDataBuilder {
         this.name = name
         return this
     }
 
+    @Action
     fun taskAction(builder: ActionDataBuilder.() -> Unit): TaskDataBuilder {
         this.actions.add(ActionDataBuilder().apply(builder).build())
         return this
@@ -243,16 +270,19 @@ class ActionDataBuilder {
     private lateinit var name: String
     private lateinit var destinationTask: String
 
+    @Action
     fun actionKey(key: String): ActionDataBuilder {
         this.key = key
         return this
     }
 
+    @Action
     fun actionName(name: String): ActionDataBuilder {
         this.name = name
         return this
     }
 
+    @Action
     fun actionDestinationTask(destinationTask: String): ActionDataBuilder {
         this.destinationTask = destinationTask
         return this

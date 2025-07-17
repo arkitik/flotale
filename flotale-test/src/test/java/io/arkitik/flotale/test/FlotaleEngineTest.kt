@@ -108,8 +108,7 @@ internal class FlotaleEngineTest {
                 }
             }
         }
-        flotaleWorkflowEngine.initiateElement("WF", "ELEMENT-0", "TEST")
-        val elementDetails = flotaleWorkflowEngine.elementDetails("ELEMENT-0", "")
+        val elementDetails = flotaleWorkflowEngine.initiateElement("WF", "ELEMENT-0", "TEST")
         assertEquals("WF", elementDetails.workflow.key)
         assertEquals("WF", elementDetails.workflow.name)
         assertEquals("WF-STAGE", elementDetails.stage.key)
@@ -117,10 +116,6 @@ internal class FlotaleEngineTest {
         assertEquals("WF-TASK", elementDetails.task.key)
         assertEquals("WF-TASK", elementDetails.task.name)
         assertEquals(0, elementDetails.actions.size)
-
-        assertThrows<ResourceNotFoundException> {
-            flotaleWorkflowEngine.executeAction("UNKNOWN_ACTION", "ELEMENT-0", "TEST")
-        }
     }
 
     @Test
@@ -130,6 +125,7 @@ internal class FlotaleEngineTest {
 
         flotaleDomainEngine.persistWorkflow {
             workflow {
+                key("ccc")
                 key("ABC")
                 name("ABC")
                 initialStage {

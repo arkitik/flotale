@@ -1,8 +1,8 @@
 package io.arkitik.flotale.engine.port.func
 
 import io.arkitik.flotale.engine.function.EngineBeanStore
-import io.arkitik.flotale.engine.function.action.ActionExecutor
 import io.arkitik.flotale.engine.function.action.ActionExecutionValidator
+import io.arkitik.flotale.engine.function.action.ActionExecutor
 import io.arkitik.flotale.engine.function.action.ActionKey
 import io.arkitik.flotale.engine.function.task.ElementTaskBroadcaster
 import io.arkitik.flotale.engine.function.task.TaskKey
@@ -20,60 +20,50 @@ internal class SpringEngineBeanStore(
     override fun actionExecutionBroadcasterUnits(actionKey: String) =
         listableBeanFactory.getBeansOfType<ActionExecutor.ExecutionBroadcasterUnit>()
             .values
-            .filter {
-                val actionKeys = it.javaClass.annotations
-                    .filterIsInstance<ActionKey>()
+            .filter { broadcasterUnit ->
+                val actionKeys = broadcasterUnit.filterByAnnotation<ActionKey>()
                 if (actionKeys.isNotEmpty()) {
-                    actionKeys
-                        .any { actionableBean ->
-                            actionableBean.actionKey == actionKey
-                        }
+                    actionKeys.any { actionableBean ->
+                        actionableBean.actionKey == actionKey
+                    }
                 } else true
             }
-            .toList()
 
     override fun actionExecutionValidatorUnits(actionKey: String) =
         listableBeanFactory.getBeansOfType<ActionExecutionValidator.ExecutorValidatorUnit>()
             .values
-            .filter {
-                val actionKeys = it.javaClass.annotations
-                    .filterIsInstance<ActionKey>()
-                if (actionKeys.isNotEmpty()) {
-                    actionKeys
-                        .any { actionableBean ->
-                            actionableBean.actionKey == actionKey
-                        }
+            .filter { validatorUnit ->
+                val actionKeyBeans = validatorUnit.filterByAnnotation<ActionKey>()
+                if (actionKeyBeans.isNotEmpty()) {
+                    actionKeyBeans.any { bean ->
+                        bean.actionKey == actionKey
+                    }
                 } else true
             }
-            .toList()
 
     override fun elementTaskEnteringBroadcasterUnits(taskKey: String) =
         listableBeanFactory.getBeansOfType<ElementTaskBroadcaster.EnteringBroadcasterUnit>()
             .values
-            .filter {
-                val flotaleActionKeys = it.javaClass.annotations
-                    .filterIsInstance<TaskKey>()
-                if (flotaleActionKeys.isNotEmpty()) {
-                    flotaleActionKeys
-                        .any { actionableBean ->
-                            actionableBean.taskKey == taskKey
-                        }
+            .filter { enteringBroadcasterUnit ->
+                val actionKeyBeans = enteringBroadcasterUnit.filterByAnnotation<TaskKey>()
+                if (actionKeyBeans.isNotEmpty()) {
+                    actionKeyBeans.any { actionableBean ->
+                        actionableBean.taskKey == taskKey
+                    }
                 } else true
             }
-            .toList()
 
     override fun elementTaskExitingBroadcasterUnits(taskKey: String) =
         listableBeanFactory.getBeansOfType<ElementTaskBroadcaster.ExitingBroadcasterUnit>()
             .values
-            .filter {
-                val flotaleActionKeys = it.javaClass.annotations
-                    .filterIsInstance<TaskKey>()
-                if (flotaleActionKeys.isNotEmpty()) {
-                    flotaleActionKeys
-                        .any { actionableBean ->
-                            actionableBean.taskKey == taskKey
-                        }
+            .filter { exitingBroadcasterUnit ->
+                val actionKeyBeans = exitingBroadcasterUnit.filterByAnnotation<TaskKey>()
+                if (actionKeyBeans.isNotEmpty()) {
+                    actionKeyBeans.any { actionableBean ->
+                        actionableBean.taskKey == taskKey
+                    }
                 } else true
             }
-            .toList()
+
+    private inline fun <reified A : Annotation> Any.filterByAnnotation() = javaClass.annotations.filterIsInstance<A>()
 }

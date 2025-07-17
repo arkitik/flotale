@@ -10,6 +10,7 @@ import io.arkitik.flotale.engine.core.dto.WorkflowData
 class FlotaleWorkflowsBuilder {
     private val workflows = mutableListOf<WorkflowData>()
 
+    @Workflow
     fun workflow(
         workflowDataBuilder: WorkflowDataBuilder.() -> Unit,
     ): FlotaleWorkflowsBuilder {

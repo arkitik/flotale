@@ -40,7 +40,7 @@ class FlotaleWorkflowEngineImpl(
         private val logger = LoggerFactory.getLogger(FlotaleWorkflowEngineImpl::class.java)
     }
 
-    override fun initiateElement(workflowKey: String, elementKey: String, addedBy: String) {
+    override fun initiateElement(workflowKey: String, elementKey: String, addedBy: String): ElementDetails {
         logger.debug("initiating [element: {}] under [workflow: {}] by {}", elementKey, workflowKey, addedBy)
         val workflow = flotaleWorkflowDomainSdk.findWorkflow.runOperation(workflowKey)
         val initialStage = flotaleStageDomainSdk.initialWorkflowStage.runOperation(workflow)
@@ -55,12 +55,20 @@ class FlotaleWorkflowEngineImpl(
                 )
             )
 
-        elementTaskBroadcaster.elementEnter(initialTask.taskKey, elementKey, addedBy)
+        elementTaskBroadcaster.elementEnter(
+            elementKey = elementKey,
+            taskKey = initialTask.taskKey,
+            executedBy = addedBy
+        )
         logger.debug(
             "initiating [element: {}] under [workflow: {}] by {} has been successfully done",
             elementKey,
             workflowKey,
             addedBy
+        )
+        return elementDetails(
+            elementKey = elementKey,
+            requestedBy = addedBy
         )
     }
 
@@ -77,7 +85,7 @@ class FlotaleWorkflowEngineImpl(
                 )
             )
 
-        actionCanBeExecuted(action, elementKey, requestedBy)
+        actionCanBeExecuted(action = action, elementKey = elementKey, executedBy = requestedBy)
             .takeUnless { it }?.let {
                 throw EngineErrors.ACTION_CANT_BE_EXECUTED.unprocessableEntity()
             }
@@ -104,7 +112,7 @@ class FlotaleWorkflowEngineImpl(
                     )
                 )
 
-            actionCanBeExecuted(action, elementKey, executedBy)
+            actionCanBeExecuted(action = action, elementKey = elementKey, executedBy = executedBy)
                 .takeUnless { it }?.let {
                     logger.error(
                         "Executing [action: {}] for [element: {}] by {} is prevented",
@@ -115,7 +123,7 @@ class FlotaleWorkflowEngineImpl(
                     throw EngineErrors.ACTION_CANT_BE_EXECUTED.unprocessableEntity()
                 }
 
-            actionExecutor.executeAction(actionKey, elementKey, executedBy)
+            actionExecutor.executeAction(actionKey = actionKey, elementKey = elementKey, executedBy = executedBy)
 
             flotaleElementDomainSdk.elementExecuteAction
                 .runOperation(
@@ -127,8 +135,8 @@ class FlotaleWorkflowEngineImpl(
                 )
 
             elementTaskBroadcaster.runCatching {
-                elementExit(action.sourceTask.taskKey, elementKey, executedBy)
-                elementEnter(action.destinationTask.taskKey, elementKey, executedBy)
+                elementExit(elementKey = elementKey, taskKey = action.sourceTask.taskKey, executedBy = executedBy)
+                elementEnter(elementKey = elementKey, taskKey = action.destinationTask.taskKey, executedBy = executedBy)
             }.onFailure {
                 logger.warn(
                     "An issue acquired while executing `TaskBroadcaster` for [element: {}] and [action: {}], [reason: {}] (Issue will be ignored)",
@@ -166,19 +174,19 @@ class FlotaleWorkflowEngineImpl(
         return ElementDetails(
             elementKey = elementKey,
             workflow = ReferenceData(
-                element.task.stage.workflow.workflowKey,
-                element.task.stage.workflow.workflowName
+                key = element.task.stage.workflow.workflowKey,
+                name = element.task.stage.workflow.workflowName
             ),
             stage = ReferenceData(
-                element.task.stage.stageKey,
-                element.task.stage.stageName
+                key = element.task.stage.stageKey,
+                name = element.task.stage.stageName
             ),
             task = ReferenceData(
-                element.task.taskKey,
-                element.task.taskName
+                key = element.task.taskKey,
+                name = element.task.taskName
             ),
             actions = actionDomains.filter {
-                actionCanBeExecuted(it, elementKey, requestedBy)
+                actionCanBeExecuted(action = it, elementKey = elementKey, executedBy = requestedBy)
             }.map {
                 ReferenceData(
                     it.actionKey,
@@ -189,5 +197,9 @@ class FlotaleWorkflowEngineImpl(
     }
 
     private fun actionCanBeExecuted(action: ActionDomain, elementKey: String, executedBy: String) =
-        actionExecutionValidator.validateExecution(action.actionKey, elementKey, executedBy)
+        actionExecutionValidator.validateExecution(
+            actionKey = action.actionKey,
+            elementKey = elementKey,
+            requestedBy = executedBy
+        )
 }

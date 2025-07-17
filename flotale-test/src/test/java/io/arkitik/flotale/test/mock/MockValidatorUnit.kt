@@ -42,12 +42,12 @@ object MockValidatorUnits {
         override fun canExecute(actionKey: String, elementKey: String, requestedBy: String) = false
     }
 
-    internal class SupportedAndCantExecuteForAction(private val actionKey: String) :
+    internal class SupportedAndCanExecuteForAction(private val actionKey: String) :
         ActionExecutionValidator.ExecutorValidatorUnit {
         override fun isSupported(actionKey: String, elementKey: String, requestedBy: String) = true
 
         override fun canExecute(actionKey: String, elementKey: String, requestedBy: String) =
-            actionKey == this@SupportedAndCantExecuteForAction.actionKey
+            actionKey == this@SupportedAndCanExecuteForAction.actionKey
     }
 
     internal class ConditionalUnit(

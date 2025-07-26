@@ -8,7 +8,7 @@ package io.arkitik.flotale.engine.function.action
 interface ActionExecutor {
     fun executeAction(actionKey: String, elementKey: String, executedBy: String)
 
-    interface ExecutionBroadcasterUnit {
+    interface ExecutorUnit {
         fun isSupported(actionKey: String, elementKey: String, executedBy: String): Boolean
 
         fun executeAction(actionKey: String, elementKey: String, executedBy: String)

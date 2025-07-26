@@ -12,7 +12,7 @@ import io.arkitik.radix.develop.operation.Operation
  * Project *flotale* [arkitik.io](https://arkitik.io)
  */
 interface FlotaleActionDomainSdk {
-    val createAction: Operation<CreateActionDto, Unit>
+    val createAction: Operation<CreateActionDto, ActionDomain>
     val findAction: Operation<String, ActionDomain>
     val deleteAction: Operation<ActionDomain, Unit>
 

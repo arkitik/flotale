@@ -6,6 +6,8 @@ import io.arkitik.flotale.element.flow.store.ElementFlowStore
 import io.arkitik.flotale.element.store.ElementStore
 import io.arkitik.flotale.engine.core.FlotaleDomainEngine
 import io.arkitik.flotale.engine.core.FlotaleWorkflowEngine
+import io.arkitik.flotale.engine.core.dto.ElementDetails
+import io.arkitik.flotale.engine.core.dto.ReferenceData
 import io.arkitik.flotale.engine.core.ext.persistWorkflow
 import io.arkitik.flotale.stage.initial.store.StageInitialStore
 import io.arkitik.flotale.stage.store.StageStore
@@ -14,6 +16,7 @@ import io.arkitik.flotale.task.store.TaskStore
 import io.arkitik.flotale.test.mock.MockValidatorUnit
 import io.arkitik.flotale.test.mock.MockValidatorUnits
 import io.arkitik.flotale.workflow.store.WorkflowStore
+import io.arkitik.radix.develop.shared.exception.NotAcceptableException
 import io.arkitik.radix.develop.shared.exception.ResourceNotFoundException
 import io.arkitik.radix.develop.store.delete
 import org.junit.jupiter.api.BeforeEach
@@ -23,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.TestPropertySource
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 /**
  * Created By [*Ibrahim Al-Tamimi *](https://www.linkedin.com/in/iloom/)
@@ -72,6 +76,149 @@ internal class FlotaleEngineTest {
     @Autowired
     private lateinit var workflowStore: WorkflowStore
 
+
+    private fun assertDetails(
+        details: ElementDetails,
+        expectedElementKey: String,
+        expectedWorkflowKey: String,
+        expectedStageKey: String,
+        expectedTaskKey: String,
+        expectedActions: List<String>,
+    ) {
+        assertEquals(expectedElementKey, details.elementKey)
+        assertEquals(expectedWorkflowKey, details.workflow.key)
+        assertEquals(expectedStageKey, details.stage.key)
+        assertEquals(expectedTaskKey, details.task.key)
+        assertTrue {
+            (details.actions.isEmpty() && expectedActions.isEmpty()) ||
+                    details.actions.map(ReferenceData::key).containsAll(
+                        expectedActions
+                    )
+        }
+    }
+
+    private fun createJobWorkflow() {
+        flotaleDomainEngine.persistWorkflow {
+            workflow {
+                key("job-workflow")
+                name("Job Execution workflow")
+                initialStage {
+                    stageKey("pending-job-execution")
+                    stageName("Pending Stage")
+                    stageInitialTask {
+                        taskKey("pending-job-execution-task")
+                        taskName("Waiting")
+                        taskAction {
+                            actionKey("trigger-job")
+                            actionName("Run Job")
+                            actionDestinationTask("running-job-execution-task")
+                        }
+                        taskAction {
+                            actionKey("cancel-waiting-job")
+                            actionName("Cancel pending job")
+                            actionDestinationTask("cancelled-job-execution-task")
+                        }
+                    }
+                }
+                stage {
+                    stageName("Running Stage")
+                    stageKey("running-job-execution")
+                    stageTask {
+                        taskKey("running-job-execution-task")
+                        taskName("In Processing")
+                        taskAction {
+                            actionKey("mark-job-as-done")
+                            actionName("Mark As Done")
+                            actionDestinationTask("processed-job-execution-task")
+                        }
+                        taskAction {
+                            actionKey("mark-job-as-failed")
+                            actionName("Mark As Failed")
+                            actionDestinationTask("failed-job-execution-task")
+                        }
+                        taskAction {
+                            actionKey("internal-failure")
+                            actionName("Internal Failure")
+                            actionDestinationTask("internal-failure-job-execution-task")
+                        }
+                    }
+                }
+                stage {
+                    stageKey("processed-job-execution")
+                    stageName("Processed Stage")
+                    stageTask {
+                        taskKey("processed-job-execution-task")
+                        taskName("Done")
+                        terminal(true)
+                    }
+                }
+                stage {
+                    stageKey("failed-job-execution")
+                    stageName("Failed Stage")
+                    stageTask {
+                        taskKey("failed-job-execution-task")
+                        taskName("Execution-Failed")
+                        taskAction {
+                            actionKey("re-trigger")
+                            actionName("Re-Trigger")
+                            actionDestinationTask("pending-job-execution-task")
+                        }
+                        taskAction {
+                            actionKey("cancel-failed-job")
+                            actionName("Cancel failed job")
+                            actionDestinationTask("cancelled-job-execution-task")
+                        }
+                    }
+                }
+                stage {
+                    stageKey("cancelled-job-execution")
+                    stageName("Cancelled Stage")
+                    stageTask {
+                        taskKey("cancelled-job-execution-task")
+                        taskName("Cancelled")
+                        terminal(true)
+                    }
+                }
+                stage {
+                    stageKey("internal-failed-job-execution")
+                    stageName("Internal-Failure")
+                    stageTask {
+                        taskKey("internal-failure-job-execution-task")
+                        taskName("Internal-Failure")
+                        taskAction {
+                            actionKey("internal-failed-job-execution-start-recovering")
+                            actionName("internal-failed-job-execution-start-recovering")
+                            actionDestinationTask("internal-failed-job-execution-recovering-task")
+                        }
+                    }
+                }
+                stage {
+                    stageKey("internal-failed-job-execution-recovering")
+                    stageName("Internal Failed Recovering")
+                    stageTask {
+                        taskKey("internal-failed-job-execution-recovering-task")
+                        taskName("Recovering")
+                        taskAction {
+                            actionKey("internal-failed-job-execution-recovered")
+                            actionName("Recovered")
+                            actionDestinationTask("pending-job-execution-task")
+                        }
+                        taskAction {
+                            actionKey("internal-failed-job-execution-failed")
+                            actionName("Failed internal-failed recovering job")
+                            actionDestinationTask("failed-job-execution-task")
+                        }
+                        taskAction {
+                            actionKey("internal-failed-job-execution-cancel")
+                            actionName("Cancel internal-failed recovering job")
+                            actionDestinationTask("cancelled-job-execution-task")
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     @BeforeEach
     fun setUp() {
         mockValidatorUnit.clearAll()
@@ -104,6 +251,7 @@ internal class FlotaleEngineTest {
                     stageInitialTask {
                         taskKey("WF-TASK")
                         taskName("WF-TASK")
+                        terminal(true)
                     }
                 }
             }
@@ -119,13 +267,38 @@ internal class FlotaleEngineTest {
     }
 
     @Test
+    fun verifyWorkflowWithTerminalTaskCreation() {
+        assertThrows<NotAcceptableException> {
+            flotaleDomainEngine.persistWorkflow {
+                workflow {
+                    key("WF")
+                    name("WF")
+                    initialStage {
+                        stageKey("WF-STAGE")
+                        stageName("WF-STAGE")
+                        stageInitialTask {
+                            taskKey("WF-TASK")
+                            taskName("WF-TASK")
+                            terminal(true)
+                            taskAction {
+                                actionKey("WF-ACTION")
+                                actionName("WF-ACTION")
+                                actionDestinationTask("WF-TASK")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @Test
     fun verifyWorkflowWithElementCreationAndActionExecutionWhenValidatorRespondActionCantBeExecuted() {
 
         mockValidatorUnit.registerVerifier(MockValidatorUnits.SupportedAndCantExecute)
 
         flotaleDomainEngine.persistWorkflow {
             workflow {
-                key("ccc")
                 key("ABC")
                 name("ABC")
                 initialStage {
@@ -143,6 +316,7 @@ internal class FlotaleEngineTest {
                     stageTask {
                         taskKey("2ND-TASK")
                         taskName("2ND-TASK")
+                        terminal(true)
                     }
                 }
             }
@@ -165,126 +339,163 @@ internal class FlotaleEngineTest {
     }
 
     @Test
-    fun `job-execution workflow`() {
+    fun `job-execution processed job workflow`() {
 
-        flotaleDomainEngine.persistWorkflow {
-            workflow {
-                key("job-workflow")
-                name("Job Execution workflow")
-                initialStage {
-                    stageKey("pending-job-execution")
-                    stageName("Pending Stage")
-                    stageInitialTask {
-                        taskKey("pending-task-execution-task")
-                        taskName("Waiting")
-                        taskAction {
-                            actionKey("trigger-job")
-                            actionName("Run Job")
-                            actionDestinationTask("running-task-execution-task")
-                        }
-                        taskAction {
-                            actionKey("cancel-waiting-job")
-                            actionName("Cancel pending job")
-                            actionDestinationTask("cancelled-task-execution-task")
-                        }
-                    }
-                }
-                stage {
-                    stageName("Running Stage")
-                    stageKey("running-job-execution")
-                    stageTask {
-                        taskKey("running-task-execution-task")
-                        taskName("In Processing")
-                        taskAction {
-                            actionKey("mark-job-as-done")
-                            actionName("Mark As Done")
-                            actionDestinationTask("processed-task-execution-task")
-                        }
-                        taskAction {
-                            actionKey("mark-job-as-failed")
-                            actionName("Mark As Failed")
-                            actionDestinationTask("failed-task-execution-task")
-                        }
-                        taskAction {
-                            actionKey("internal-failure")
-                            actionName("Internal Failure")
-                            actionDestinationTask("internal-failure-task-execution-task")
-                        }
-                    }
-                }
-                stage {
-                    stageKey("processed-job-execution")
-                    stageName("Processed Stage")
-                    stageTask {
-                        taskKey("processed-task-execution-task")
-                        taskName("Done")
-                    }
-                }
-                stage {
-                    stageKey("failed-job-execution")
-                    stageName("Failed Stage")
-                    stageTask {
-                        taskKey("failed-task-execution-task")
-                        taskName("Execution-Failed")
-                        taskAction {
-                            actionKey("re-trigger")
-                            actionName("Re-Trigger")
-                            actionDestinationTask("pending-task-execution-task")
-                        }
-                        taskAction {
-                            actionKey("cancel-failed-job")
-                            actionName("Cancel failed job")
-                            actionDestinationTask("cancelled-task-execution-task")
-                        }
-                    }
-                }
-                stage {
-                    stageKey("cancelled-job-execution")
-                    stageName("Cancelled Stage")
-                    stageTask {
-                        taskKey("cancelled-task-execution-task")
-                        taskName("Cancelled")
-                    }
-                }
-                stage {
-                    stageKey("internal-failed-job-execution")
-                    stageName("Internal-Failure")
-                    stageTask {
-                        taskKey("internal-failure-task-execution-task")
-                        taskName("Internal-Failure")
-                        taskAction {
-                            actionKey("internal-failed-job-execution-start-recovering")
-                            actionName("internal-failed-job-execution-start-recovering")
-                            actionDestinationTask("internal-failed-job-execution-recovering-task")
-                        }
-                    }
-                }
-                stage {
-                    stageKey("internal-failed-job-execution-recovering")
-                    stageName("Internal Failed")
-                    stageTask {
-                        taskKey("internal-failed-job-execution-recovering-task")
-                        taskName("Recovering")
-                        taskAction {
-                            actionKey("internal-failed-job-execution-recovered")
-                            actionName("Recovered")
-                            actionDestinationTask("pending-task-execution-task")
-                        }
-                        taskAction {
-                            actionKey("internal-failed-job-execution-failed")
-                            actionName("Failed internal-failed recovering job")
-                            actionDestinationTask("failed-task-execution-task")
-                        }
-                        taskAction {
-                            actionKey("internal-failed-job-execution-cancel")
-                            actionName("Cancel internal-failed recovering job")
-                            actionDestinationTask("cancelled-task-execution-task")
-                        }
-                    }
-                }
-            }
-        }
-        flotaleWorkflowEngine.initiateElement("job-workflow", "job-0", "TEST")
-        flotaleWorkflowEngine.elementDetails("job-0", "TEST")
+        createJobWorkflow()
+
+        val job = flotaleWorkflowEngine.initiateElement(
+            "job-workflow",
+            "job-0",
+            "TEST"
+        )
+
+        assertDetails(
+            details = job,
+            expectedElementKey = "job-0",
+            expectedWorkflowKey = "job-workflow",
+            expectedStageKey = "pending-job-execution",
+            expectedTaskKey = "pending-job-execution-task",
+            expectedActions = listOf(
+                "trigger-job",
+                "cancel-waiting-job",
+            )
+        )
+
+        flotaleWorkflowEngine.executeAction("trigger-job", job.elementKey, "TEST")
+
+        assertDetails(
+            details = flotaleWorkflowEngine.elementDetails(job.elementKey, "TEST"),
+            expectedElementKey = "job-0",
+            expectedWorkflowKey = "job-workflow",
+            expectedStageKey = "running-job-execution",
+            expectedTaskKey = "running-job-execution-task",
+            expectedActions = listOf(
+                "mark-job-as-done",
+                "mark-job-as-failed",
+                "internal-failure",
+            )
+        )
+
+        flotaleWorkflowEngine.executeAction("mark-job-as-done", job.elementKey, "TEST")
+
+        assertDetails(
+            details = flotaleWorkflowEngine.elementDetails(job.elementKey, "TEST"),
+            expectedElementKey = "job-0",
+            expectedWorkflowKey = "job-workflow",
+            expectedStageKey = "processed-job-execution",
+            expectedTaskKey = "processed-job-execution-task",
+            expectedActions = listOf()
+        )
     }
+
+    @Test
+    fun `job-execution cancel job workflow`() {
+
+        createJobWorkflow()
+
+        val job = flotaleWorkflowEngine.initiateElement(
+            "job-workflow",
+            "job-0",
+            "TEST"
+        )
+        assertDetails(
+            details = job,
+            expectedElementKey = "job-0",
+            expectedWorkflowKey = "job-workflow",
+            expectedStageKey = "pending-job-execution",
+            expectedTaskKey = "pending-job-execution-task",
+            expectedActions = listOf(
+                "trigger-job",
+                "cancel-waiting-job",
+            )
+        )
+
+        flotaleWorkflowEngine.executeAction("cancel-waiting-job", job.elementKey, "TEST")
+
+
+        assertDetails(
+            details = flotaleWorkflowEngine.elementDetails(job.elementKey, "TEST"),
+            expectedElementKey = "job-0",
+            expectedWorkflowKey = "job-workflow",
+            expectedStageKey = "cancelled-job-execution",
+            expectedTaskKey = "cancelled-job-execution-task",
+            expectedActions = listOf()
+        )
+    }
+
+    @Test
+    fun `job-execution internal-failed job workflow, recovering, execution-cancel`() {
+
+        createJobWorkflow()
+
+        val job = flotaleWorkflowEngine.initiateElement(
+            "job-workflow",
+            "job-0",
+            "TEST"
+        )
+        assertDetails(
+            details = job,
+            expectedElementKey = "job-0",
+            expectedWorkflowKey = "job-workflow",
+            expectedStageKey = "pending-job-execution",
+            expectedTaskKey = "pending-job-execution-task",
+            expectedActions = listOf(
+                "trigger-job",
+                "cancel-waiting-job",
+            )
+        )
+
+        flotaleWorkflowEngine.executeAction("trigger-job", job.elementKey, "TEST")
+
+
+        assertDetails(
+            details = flotaleWorkflowEngine.elementDetails(job.elementKey, "TEST"),
+            expectedElementKey = "job-0",
+            expectedWorkflowKey = "job-workflow",
+            expectedStageKey = "running-job-execution",
+            expectedTaskKey = "running-job-execution-task",
+            expectedActions = listOf(
+                "mark-job-as-done",
+                "mark-job-as-failed",
+                "internal-failure",
+            )
+        )
+
+        flotaleWorkflowEngine.executeAction("internal-failure", job.elementKey, "TEST")
+        assertDetails(
+            details = flotaleWorkflowEngine.elementDetails(job.elementKey, "TEST"),
+            expectedElementKey = "job-0",
+            expectedWorkflowKey = "job-workflow",
+            expectedStageKey = "internal-failed-job-execution",
+            expectedTaskKey = "internal-failure-job-execution-task",
+            expectedActions = listOf(
+                "internal-failed-job-execution-start-recovering",
+            )
+        )
+
+        flotaleWorkflowEngine.executeAction("internal-failed-job-execution-start-recovering", job.elementKey, "TEST")
+        assertDetails(
+            details = flotaleWorkflowEngine.elementDetails(job.elementKey, "TEST"),
+            expectedElementKey = "job-0",
+            expectedWorkflowKey = "job-workflow",
+            expectedStageKey = "internal-failed-job-execution-recovering",
+            expectedTaskKey = "internal-failed-job-execution-recovering-task",
+            expectedActions = listOf(
+                "internal-failed-job-execution-recovered",
+                "internal-failed-job-execution-failed",
+                "internal-failed-job-execution-cancel",
+            )
+        )
+
+        flotaleWorkflowEngine.executeAction("internal-failed-job-execution-cancel", job.elementKey, "TEST")
+        assertDetails(
+            details = flotaleWorkflowEngine.elementDetails(job.elementKey, "TEST"),
+            expectedElementKey = "job-0",
+            expectedWorkflowKey = "job-workflow",
+            expectedStageKey = "cancelled-job-execution",
+            expectedTaskKey = "cancelled-job-execution-task",
+            expectedActions = listOf()
+        )
+    }
+
 }

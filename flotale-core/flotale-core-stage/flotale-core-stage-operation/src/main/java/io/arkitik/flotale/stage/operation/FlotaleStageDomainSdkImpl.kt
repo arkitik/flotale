@@ -35,7 +35,7 @@ class FlotaleStageDomainSdkImpl(
         }
     private val stageDuplicationRole = StageDuplicationRole(stageStore.storeQuery)
 
-    override val createStage: Operation<CreateStageDto, Unit> =
+    override val createStage: Operation<CreateStageDto, StageDomain> =
         operationBuilder {
             install {
                 stageDuplicationRole

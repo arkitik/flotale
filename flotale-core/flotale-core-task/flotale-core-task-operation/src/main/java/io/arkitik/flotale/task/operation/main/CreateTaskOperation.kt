@@ -1,11 +1,12 @@
 package io.arkitik.flotale.task.operation.main
 
+import io.arkitik.flotale.task.domain.TaskDomain
 import io.arkitik.flotale.task.domain.embedded.TaskStatus
 import io.arkitik.flotale.task.initial.store.TaskInitialStore
 import io.arkitik.flotale.task.sdk.dto.CreateTaskDto
 import io.arkitik.flotale.task.store.TaskStore
 import io.arkitik.radix.develop.operation.Operation
-import io.arkitik.radix.develop.store.creatorWithSave
+import io.arkitik.radix.develop.store.creatorWithInsert
 
 /**
  * Created By [*Ibrahim Al-Tamimi *](https://www.linkedin.com/in/iloom/)
@@ -15,22 +16,24 @@ import io.arkitik.radix.develop.store.creatorWithSave
 internal class CreateTaskOperation(
     private val taskStore: TaskStore,
     private val taskInitialStore: TaskInitialStore,
-) : Operation<CreateTaskDto, Unit> {
-    override fun CreateTaskDto.operate() {
+) : Operation<CreateTaskDto, TaskDomain> {
+    override fun CreateTaskDto.operate() =
         with(taskStore) {
-            creatorWithSave(identityCreator()) {
+            creatorWithInsert(identityCreator()) {
                 taskKey.taskKey()
                 taskName.taskName()
+                terminal.terminalTask()
                 stage.stage()
                 TaskStatus.ACTIVE.status()
             }
-        }.takeIf { initialTask }?.also {
-            with(taskInitialStore) {
-                creatorWithSave(identityCreator()) {
-                    it.task()
-                    it.stage.stage()
+        }.also { taskDomain ->
+            taskDomain.takeIf { initialTask }?.also { taskDomain ->
+                with(taskInitialStore) {
+                    creatorWithInsert(identityCreator()) {
+                        taskDomain.task()
+                        taskDomain.stage.stage()
+                    }
                 }
             }
         }
-    }
 }

@@ -18,5 +18,9 @@ internal enum class FlotaleActionErrors(
     ACTION_DOES_NOT_EXIST(
         "FLOTALE-ACTION-4100",
         "Action does not exists"
+    ),
+    CANT_ADD_ACTION_TO_TERMINAL_TASK(
+        "FLOTALE-ACTION-4200",
+        "Can't add action to a terminal task"
     );
 }

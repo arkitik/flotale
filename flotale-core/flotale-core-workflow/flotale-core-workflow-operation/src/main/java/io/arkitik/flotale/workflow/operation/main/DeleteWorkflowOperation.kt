@@ -4,7 +4,7 @@ import io.arkitik.flotale.workflow.domain.WorkflowDomain
 import io.arkitik.flotale.workflow.domain.embedded.WorkflowStatus
 import io.arkitik.flotale.workflow.store.WorkflowStore
 import io.arkitik.radix.develop.operation.Operation
-import io.arkitik.radix.develop.store.storeUpdaterWithSave
+import io.arkitik.radix.develop.store.storeUpdaterWithUpdate
 
 /**
  * Created By [*Ibrahim Al-Tamimi *](https://www.linkedin.com/in/iloom/)
@@ -16,7 +16,7 @@ internal class DeleteWorkflowOperation(
 ) : Operation<WorkflowDomain, Unit> {
     override fun WorkflowDomain.operate() {
         with(workflowStore) {
-            storeUpdaterWithSave(identityUpdater()) {
+            storeUpdaterWithUpdate(identityUpdater()) {
                 WorkflowStatus.DELETED.status()
                 update()
             }

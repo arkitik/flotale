@@ -5,8 +5,8 @@ import io.arkitik.flotale.workflow.domain.embedded.WorkflowStatus
 import io.arkitik.radix.develop.store.query.StoreQuery
 
 interface WorkflowStoreQuery : StoreQuery<String, WorkflowDomain> {
-    fun existByKeyAndStatusIn(
-        key: String,
+    fun existByKeyInAndStatusIn(
+        keys: List<String>,
         statuses: List<WorkflowStatus>,
     ): Boolean
 

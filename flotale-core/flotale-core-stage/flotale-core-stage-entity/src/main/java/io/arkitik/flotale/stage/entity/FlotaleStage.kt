@@ -4,13 +4,13 @@ import io.arkitik.flotale.stage.domain.StageDomain
 import io.arkitik.flotale.stage.domain.embedded.StageStatus
 import io.arkitik.flotale.workflow.entity.FlotaleWorkflow
 import java.time.LocalDateTime
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.EnumType
-import javax.persistence.Enumerated
-import javax.persistence.FetchType
-import javax.persistence.Id
-import javax.persistence.ManyToOne
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
+import jakarta.persistence.FetchType
+import jakarta.persistence.Id
+import jakarta.persistence.ManyToOne
 
 @Entity
 class FlotaleStage(

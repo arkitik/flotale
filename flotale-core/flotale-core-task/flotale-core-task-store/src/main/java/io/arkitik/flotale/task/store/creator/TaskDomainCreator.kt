@@ -12,5 +12,7 @@ interface TaskDomainCreator : StoreIdentityCreator<String, TaskDomain> {
 
     fun String.taskName(): TaskDomainCreator
 
+    fun Boolean.terminalTask(): TaskDomainCreator
+
     fun TaskStatus.status(): TaskDomainCreator
 }

@@ -10,7 +10,8 @@ import io.arkitik.radix.develop.operation.Operation
  * Project *flotale* [arkitik.io](https://arkitik.io)
  */
 interface FlotaleWorkflowDomainSdk {
-    val createWorkflow: Operation<CreateWorkflowDto, Unit>
+    val createWorkflows: Operation<List<CreateWorkflowDto>, List<WorkflowDomain>>
+    val createWorkflow: Operation<CreateWorkflowDto, WorkflowDomain>
     val findWorkflow: Operation<String, WorkflowDomain>
     val deleteWorkflow: Operation<WorkflowDomain, Unit>
 }

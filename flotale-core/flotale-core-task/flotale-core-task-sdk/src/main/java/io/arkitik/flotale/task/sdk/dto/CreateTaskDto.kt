@@ -6,5 +6,6 @@ data class CreateTaskDto(
     val stage: StageDomain,
     val taskKey: String,
     val taskName: String,
+    val terminal: Boolean,
     val initialTask: Boolean,
 )

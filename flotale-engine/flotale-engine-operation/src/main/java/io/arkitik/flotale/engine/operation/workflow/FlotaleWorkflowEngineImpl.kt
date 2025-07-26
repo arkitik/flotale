@@ -41,7 +41,7 @@ class FlotaleWorkflowEngineImpl(
     }
 
     override fun initiateElement(workflowKey: String, elementKey: String, addedBy: String): ElementDetails {
-        logger.debug("initiating [element: {}] under [workflow: {}] by {}", elementKey, workflowKey, addedBy)
+        logger.debug("Initiating [element: {}] under [workflow: {}] by {}", elementKey, workflowKey, addedBy)
         val workflow = flotaleWorkflowDomainSdk.findWorkflow.runOperation(workflowKey)
         val initialStage = flotaleStageDomainSdk.initialWorkflowStage.runOperation(workflow)
         val initialTask = flotaleTaskDomainSdk.initialStageTask.runOperation(initialStage)
@@ -61,7 +61,7 @@ class FlotaleWorkflowEngineImpl(
             executedBy = addedBy
         )
         logger.debug(
-            "initiating [element: {}] under [workflow: {}] by {} has been successfully done",
+            "[Element: {}] under [workflow: {}] has been initiated successfully by {}",
             elementKey,
             workflowKey,
             addedBy
@@ -123,7 +123,11 @@ class FlotaleWorkflowEngineImpl(
                     throw EngineErrors.ACTION_CANT_BE_EXECUTED.unprocessableEntity()
                 }
 
-            actionExecutor.executeAction(actionKey = actionKey, elementKey = elementKey, executedBy = executedBy)
+            actionExecutor.executeAction(
+                actionKey = actionKey,
+                elementKey = elementKey,
+                executedBy = executedBy
+            )
 
             flotaleElementDomainSdk.elementExecuteAction
                 .runOperation(
@@ -157,7 +161,7 @@ class FlotaleWorkflowEngineImpl(
             throw it
         }.onSuccess {
             logger.debug(
-                "[Action: {}] for [element: {}] by {} has been successfully executed",
+                "[Action: {}] for [element: {}] by {} has been executed successfully",
                 actionKey,
                 elementKey,
                 executedBy
@@ -187,10 +191,10 @@ class FlotaleWorkflowEngineImpl(
             ),
             actions = actionDomains.filter {
                 actionCanBeExecuted(action = it, elementKey = elementKey, executedBy = requestedBy)
-            }.map {
+            }.map { actionDomain ->
                 ReferenceData(
-                    it.actionKey,
-                    it.actionName
+                    actionDomain.actionKey,
+                    actionDomain.actionName
                 )
             }
         )

@@ -1,6 +1,5 @@
 package io.arkitik.flotale.engine.core.ext
 
-import io.arkitik.flotale.engine.core.FlotaleDomainEngine
 import io.arkitik.flotale.engine.core.dto.ActionData
 import io.arkitik.flotale.engine.core.dto.StageData
 import io.arkitik.flotale.engine.core.dto.TaskData
@@ -11,6 +10,7 @@ import io.arkitik.flotale.engine.core.dto.WorkflowData
  * Created At 7:48 PM, 20 , **Tue, December 2022**
  * Project *flotale* [arkitik.io](https://arkitik.io)
  */
+internal typealias Command = () -> Unit
 
 @DslMarker
 annotation class Workflow
@@ -23,136 +23,6 @@ annotation class Task
 
 @DslMarker
 annotation class Action
-
-@Workflow
-fun FlotaleDomainEngine.persistWorkflow(
-    builder: FlotaleWorkflowsBuilder.() -> Unit,
-) {
-    val commands = buildList<() -> Unit> {
-        val workflows = FlotaleWorkflowsBuilder().apply(builder).build()
-        workflows.forEach { workflow ->
-            add {
-                registerWorkflow(
-                    WorkflowData(
-                        key = workflow.key,
-                        name = workflow.name,
-                    )
-                )
-            }
-
-            workflow.initialStage?.let { stage ->
-                add {
-                    registerStage(workflowKey = workflow.key, stage = StageData(stage.key, stage.name), true)
-                }
-
-                stage.initialTask?.let { task ->
-                    add {
-                        registerTask(stage.key, TaskData(task.key, task.name), true)
-                    }
-                }
-                stage.tasks
-                    .forEach { task ->
-                        add {
-                            registerTask(stage.key, TaskData(task.key, task.name))
-                        }
-                    }
-            }
-
-            workflow.stages
-                .forEach { stage ->
-                    add {
-                        registerStage(workflowKey = workflow.key, stage = StageData(stage.key, stage.name))
-                    }
-
-                    stage.initialTask?.let { task ->
-                        add {
-                            registerTask(stage.key, TaskData(task.key, task.name), true)
-                        }
-                    }
-
-                    stage.tasks
-                        .forEach { task ->
-                            add {
-                                registerTask(stage.key, TaskData(task.key, task.name))
-                            }
-                        }
-                }
-        }
-
-        workflows.forEach { workflow ->
-            workflow.stages
-                .forEach { stage ->
-                    stage.tasks
-                        .forEach { task ->
-                            task.actions
-                                .forEach { action ->
-                                    add {
-                                        addAction(taskKey = task.key, action)
-                                    }
-                                }
-                        }
-                    stage.initialTask?.let { task ->
-                        task.actions
-                            .forEach { action ->
-                                add {
-                                    addAction(taskKey = task.key, action)
-                                }
-                            }
-                    }
-                }
-
-            workflow.initialStage?.let { stage ->
-                stage.tasks.forEach { task ->
-                    task.actions
-                        .forEach { action ->
-                            add {
-                                addAction(taskKey = task.key, action)
-                            }
-                        }
-                }
-                stage.initialTask?.let { task ->
-                    task.actions
-                        .forEach { action ->
-                            add {
-                                addAction(taskKey = task.key, action)
-                            }
-                        }
-                }
-            }
-        }
-    }
-    commands.forEach { it.invoke() }
-}
-
-@Workflow
-fun workflow(
-    builder: WorkflowDataBuilder.() -> Unit,
-) = WorkflowDataBuilder()
-    .apply(builder)
-
-@Stage
-fun stage(
-    builder: StageDataBuilder.() -> Unit,
-) =
-    StageDataBuilder()
-        .apply(builder)
-        .build()
-
-@Task
-fun task(
-    builder: TaskDataBuilder.() -> Unit,
-) =
-    TaskDataBuilder()
-        .apply(builder)
-        .build()
-
-@Action
-fun action(
-    builder: ActionDataBuilder.() -> Unit,
-) =
-    ActionDataBuilder()
-        .apply(builder)
-        .build()
 
 
 class WorkflowDataBuilder {
@@ -237,6 +107,7 @@ class StageDataBuilder {
 class TaskDataBuilder {
     private lateinit var key: String
     private lateinit var name: String
+    private var terminal: Boolean = false
     private val actions = mutableListOf<ActionData>()
 
     @Task
@@ -251,6 +122,12 @@ class TaskDataBuilder {
         return this
     }
 
+    @Task
+    fun terminal(terminal: Boolean): TaskDataBuilder {
+        this.terminal = terminal
+        return this
+    }
+
     @Action
     fun taskAction(builder: ActionDataBuilder.() -> Unit): TaskDataBuilder {
         this.actions.add(ActionDataBuilder().apply(builder).build())
@@ -261,6 +138,7 @@ class TaskDataBuilder {
         TaskData(
             key = key,
             name = name,
+            terminal = terminal,
             actions = actions
         )
 }

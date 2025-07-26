@@ -11,7 +11,7 @@ import io.arkitik.radix.develop.operation.Operation
  * Project *flotale* [arkitik.io](https://arkitik.io)
  */
 interface FlotaleStageDomainSdk {
-    val createStage: Operation<CreateStageDto, Unit>
+    val createStage: Operation<CreateStageDto, StageDomain>
     val findStage: Operation<String, StageDomain>
     val deleteStage: Operation<StageDomain, Unit>
 

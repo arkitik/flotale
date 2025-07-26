@@ -6,7 +6,7 @@ import io.arkitik.flotale.stage.initial.store.StageInitialStore
 import io.arkitik.flotale.stage.store.StageStore
 import io.arkitik.radix.develop.operation.Operation
 import io.arkitik.radix.develop.store.delete
-import io.arkitik.radix.develop.store.storeUpdaterWithSave
+import io.arkitik.radix.develop.store.storeUpdaterWithUpdate
 
 /**
  * Created By [*Ibrahim Al-Tamimi *](https://www.linkedin.com/in/iloom/)
@@ -19,7 +19,7 @@ internal class DeleteStageOperation(
 ) : Operation<StageDomain, Unit> {
     override fun StageDomain.operate() {
         with(stageStore) {
-            storeUpdaterWithSave(identityUpdater()) {
+            storeUpdaterWithUpdate(identityUpdater()) {
                 StageStatus.DELETED.status()
                 update()
             }

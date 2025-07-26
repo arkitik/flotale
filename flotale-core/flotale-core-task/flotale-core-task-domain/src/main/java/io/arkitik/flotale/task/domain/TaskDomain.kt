@@ -13,5 +13,7 @@ interface TaskDomain : Identity<String> {
 
     val taskName: String
 
+    val terminalTask: Boolean
+
     val status: TaskStatus
 }

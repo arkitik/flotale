@@ -10,8 +10,8 @@ import io.arkitik.radix.adapter.shared.query.StoreQueryImpl
 internal class WorkflowStoreQueryImpl(
     private val workflowRepository: WorkflowRepository,
 ) : StoreQueryImpl<String, WorkflowDomain, FlotaleWorkflow>(workflowRepository), WorkflowStoreQuery {
-    override fun existByKeyAndStatusIn(key: String, statuses: List<WorkflowStatus>) =
-        workflowRepository.existsByWorkflowKeyAndStatusIn(key, statuses)
+    override fun existByKeyInAndStatusIn(keys: List<String>, statuses: List<WorkflowStatus>) =
+        workflowRepository.existsByWorkflowKeyInAndStatusIn(keys, statuses)
 
     override fun findByKeyAndNotDeleted(key: String) =
         workflowRepository.findFirstByWorkflowKeyAndStatusNotIn(key, listOf(WorkflowStatus.DELETED))

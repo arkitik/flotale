@@ -7,17 +7,16 @@ import io.arkitik.radix.develop.operation.OperationRole
 import io.arkitik.radix.develop.shared.ext.unprocessableEntity
 
 /**
- * Created By [*Ibrahim Al-Tamimi *](https://www.linkedin.com/in/iloom/)
- * Created At 1:13 PM, 20 , **Tue, December 2022**
- * Project *flotale* [arkitik.io](https://arkitik.io)
+ * Created By Ibrahim Al-Tamimi 
+ * Created At 11:19 PM, 25/07/2025
  */
-internal class WorkflowDuplicationRole(
+internal class WorkflowsDuplicationRole(
     private val workflowStoreQuery: WorkflowStoreQuery,
-) : OperationRole<String, Unit> {
+) : OperationRole<List<String>, Unit> {
     private val statuses = listOf(WorkflowStatus.ACTIVE)
 
-    override fun String.operateRole() {
-        if (workflowStoreQuery.existByKeyAndStatusIn(this, statuses)) {
+    override fun List<String>.operateRole() {
+        if (workflowStoreQuery.existByKeyInAndStatusIn(this, statuses)) {
             throw FlotaleWorkflowErrors.WORKFLOW_ALREADY_EXIST.unprocessableEntity()
         }
     }

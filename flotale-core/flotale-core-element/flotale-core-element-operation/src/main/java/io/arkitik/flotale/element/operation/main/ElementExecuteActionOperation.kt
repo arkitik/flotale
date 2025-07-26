@@ -4,8 +4,8 @@ import io.arkitik.flotale.element.flow.store.ElementFlowStore
 import io.arkitik.flotale.element.sdk.dto.ElementActionDto
 import io.arkitik.flotale.element.store.ElementStore
 import io.arkitik.radix.develop.operation.Operation
-import io.arkitik.radix.develop.store.creatorWithSave
-import io.arkitik.radix.develop.store.storeUpdaterWithSave
+import io.arkitik.radix.develop.store.creatorWithInsert
+import io.arkitik.radix.develop.store.storeUpdaterWithUpdate
 
 /**
  * Created By [*Ibrahim Al-Tamimi *](https://www.linkedin.com/in/iloom/)
@@ -18,14 +18,14 @@ internal class ElementExecuteActionOperation(
 ) : Operation<ElementActionDto, Unit> {
     override fun ElementActionDto.operate() {
         with(elementStore) {
-            storeUpdaterWithSave(element.identityUpdater()) {
+            storeUpdaterWithUpdate(element.identityUpdater()) {
                 action.destinationTask.task()
                 update()
             }
-        }.also {
+        }.also { elementDomain ->
             with(elementFlowStore) {
-                creatorWithSave(identityCreator()) {
-                    it.element()
+                creatorWithInsert(identityCreator()) {
+                    elementDomain.element()
                     action.action()
                     executedBy.executedBy()
                 }

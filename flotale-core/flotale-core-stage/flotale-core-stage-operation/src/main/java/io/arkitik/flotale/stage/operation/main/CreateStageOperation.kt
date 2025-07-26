@@ -1,11 +1,12 @@
 package io.arkitik.flotale.stage.operation.main
 
+import io.arkitik.flotale.stage.domain.StageDomain
 import io.arkitik.flotale.stage.domain.embedded.StageStatus
 import io.arkitik.flotale.stage.initial.store.StageInitialStore
 import io.arkitik.flotale.stage.sdk.dto.CreateStageDto
 import io.arkitik.flotale.stage.store.StageStore
 import io.arkitik.radix.develop.operation.Operation
-import io.arkitik.radix.develop.store.creatorWithSave
+import io.arkitik.radix.develop.store.creatorWithInsert
 
 /**
  * Created By [*Ibrahim Al-Tamimi *](https://www.linkedin.com/in/iloom/)
@@ -15,22 +16,23 @@ import io.arkitik.radix.develop.store.creatorWithSave
 internal class CreateStageOperation(
     private val stageStore: StageStore,
     private val stageInitialStore: StageInitialStore,
-) : Operation<CreateStageDto, Unit> {
-    override fun CreateStageDto.operate() {
+) : Operation<CreateStageDto, StageDomain> {
+    override fun CreateStageDto.operate() =
         with(stageStore) {
-            creatorWithSave(identityCreator()) {
+            creatorWithInsert(identityCreator()) {
                 stageKey.stageKey()
                 stageName.stageName()
                 workflow.workflow()
                 StageStatus.ACTIVE.status()
             }
-        }.takeIf { initialStage }?.also {
-            with(stageInitialStore) {
-                creatorWithSave(identityCreator()) {
-                    it.stage()
-                    it.workflow.workflow()
+        }.also { stageDomain ->
+            stageDomain.takeIf { initialStage }?.also { stageDomain ->
+                with(stageInitialStore) {
+                    creatorWithInsert(identityCreator()) {
+                        stageDomain.stage()
+                        stageDomain.workflow.workflow()
+                    }
                 }
             }
         }
-    }
 }

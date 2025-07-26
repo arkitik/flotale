@@ -4,7 +4,7 @@ import io.arkitik.flotale.action.domain.ActionDomain
 import io.arkitik.flotale.action.domain.embedded.ActionStatus
 import io.arkitik.flotale.action.store.ActionStore
 import io.arkitik.radix.develop.operation.Operation
-import io.arkitik.radix.develop.store.storeUpdaterWithSave
+import io.arkitik.radix.develop.store.storeUpdaterWithUpdate
 
 /**
  * Created By [*Ibrahim Al-Tamimi *](https://www.linkedin.com/in/iloom/)
@@ -16,7 +16,7 @@ internal class DeleteActionOperation(
 ) : Operation<ActionDomain, Unit> {
     override fun ActionDomain.operate() {
         with(actionStore) {
-            storeUpdaterWithSave(identityUpdater()) {
+            storeUpdaterWithUpdate(identityUpdater()) {
                 ActionStatus.DELETED.status()
                 update()
             }

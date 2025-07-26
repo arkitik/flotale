@@ -1,7 +1,7 @@
 package io.arkitik.flotale.engine.function
 
-import io.arkitik.flotale.engine.function.action.ActionExecutor
 import io.arkitik.flotale.engine.function.action.ActionExecutionValidator
+import io.arkitik.flotale.engine.function.action.ActionExecutor
 import io.arkitik.flotale.engine.function.task.ElementTaskBroadcaster
 
 /**
@@ -10,19 +10,19 @@ import io.arkitik.flotale.engine.function.task.ElementTaskBroadcaster
  * Project *flotale* [arkitik.io](https://arkitik.io)
  */
 interface EngineBeanStore {
-    fun actionExecutionBroadcasterUnits(
+    fun actionExecutorUnits(
         actionKey: String,
-    ): List<ActionExecutor.ExecutionBroadcasterUnit>
+    ): Collection<ActionExecutor.ExecutorUnit>
 
     fun actionExecutionValidatorUnits(
         actionKey: String,
-    ): List<ActionExecutionValidator.ExecutorValidatorUnit>
+    ): Collection<ActionExecutionValidator.ExecutorValidatorUnit>
 
     fun elementTaskEnteringBroadcasterUnits(
         taskKey: String,
-    ): List<ElementTaskBroadcaster.EnteringBroadcasterUnit>
+    ): Collection<ElementTaskBroadcaster.EnteringBroadcasterUnit>
 
     fun elementTaskExitingBroadcasterUnits(
         taskKey: String,
-    ): List<ElementTaskBroadcaster.ExitingBroadcasterUnit>
+    ): Collection<ElementTaskBroadcaster.ExitingBroadcasterUnit>
 }

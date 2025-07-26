@@ -24,6 +24,7 @@ data class StageData(
 data class TaskData(
     val key: String,
     val name: String,
+    val terminal: Boolean,
     val actions: List<ActionData> = listOf(),
 )
 

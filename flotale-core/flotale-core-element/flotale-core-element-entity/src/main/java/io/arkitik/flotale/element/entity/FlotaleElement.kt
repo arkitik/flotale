@@ -3,11 +3,11 @@ package io.arkitik.flotale.element.entity
 import io.arkitik.flotale.element.domain.ElementDomain
 import io.arkitik.flotale.task.entity.FlotaleTask
 import java.time.LocalDateTime
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.FetchType
-import javax.persistence.Id
-import javax.persistence.ManyToOne
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
+import jakarta.persistence.Id
+import jakarta.persistence.ManyToOne
 
 @Entity
 class FlotaleElement(

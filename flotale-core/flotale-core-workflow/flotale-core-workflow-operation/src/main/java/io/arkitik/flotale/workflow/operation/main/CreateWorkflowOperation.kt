@@ -1,10 +1,11 @@
 package io.arkitik.flotale.workflow.operation.main
 
+import io.arkitik.flotale.workflow.domain.WorkflowDomain
 import io.arkitik.flotale.workflow.domain.embedded.WorkflowStatus
 import io.arkitik.flotale.workflow.sdk.dto.CreateWorkflowDto
 import io.arkitik.flotale.workflow.store.WorkflowStore
 import io.arkitik.radix.develop.operation.Operation
-import io.arkitik.radix.develop.store.creatorWithSave
+import io.arkitik.radix.develop.store.creatorWithInsert
 
 /**
  * Created By [*Ibrahim Al-Tamimi *](https://www.linkedin.com/in/iloom/)
@@ -13,14 +14,13 @@ import io.arkitik.radix.develop.store.creatorWithSave
  */
 internal class CreateWorkflowOperation(
     private val workflowStore: WorkflowStore,
-) : Operation<CreateWorkflowDto, Unit> {
-    override fun CreateWorkflowDto.operate() {
+) : Operation<CreateWorkflowDto, WorkflowDomain> {
+    override fun CreateWorkflowDto.operate() =
         with(workflowStore) {
-            creatorWithSave(identityCreator()) {
+            creatorWithInsert(identityCreator()) {
                 workflowKey.workflowKey()
                 workflowName.workflowName()
                 WorkflowStatus.ACTIVE.status()
             }
         }
-    }
 }

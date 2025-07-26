@@ -8,6 +8,7 @@ import io.arkitik.flotale.action.operation.main.TaskActionByKeyOperation
 import io.arkitik.flotale.action.operation.main.TaskActionsOperation
 import io.arkitik.flotale.action.operation.roles.ActionDuplicationRole
 import io.arkitik.flotale.action.operation.roles.ActionShouldBeNotDeleted
+import io.arkitik.flotale.action.operation.roles.TerminalTaskShouldNotContainAnyActionRole
 import io.arkitik.flotale.action.sdk.FlotaleActionDomainSdk
 import io.arkitik.flotale.action.sdk.dto.CreateActionDto
 import io.arkitik.flotale.action.sdk.dto.TaskActionByKeyDto
@@ -25,12 +26,15 @@ import io.arkitik.radix.develop.operation.ext.operationBuilder
 class FlotaleActionDomainSdkImpl(
     actionStore: ActionStore,
 ) : FlotaleActionDomainSdk {
-    override val createAction: Operation<CreateActionDto, Unit> =
+    private val actionDuplicationRole = ActionDuplicationRole(actionStore.storeQuery)
+
+    override val createAction: Operation<CreateActionDto, ActionDomain> =
         operationBuilder {
             install {
-                ActionDuplicationRole(actionStore.storeQuery)
-                    .operateRole(actionKey)
+                actionDuplicationRole.operateRole(actionKey)
             }
+
+            install(TerminalTaskShouldNotContainAnyActionRole)
 
             mainOperation(CreateActionOperation(actionStore))
         }

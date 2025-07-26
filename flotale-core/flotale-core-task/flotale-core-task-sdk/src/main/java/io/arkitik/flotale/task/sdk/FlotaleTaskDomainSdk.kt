@@ -11,7 +11,7 @@ import io.arkitik.radix.develop.operation.Operation
  * Project *flotale* [arkitik.io](https://arkitik.io)
  */
 interface FlotaleTaskDomainSdk {
-    val createTask: Operation<CreateTaskDto, Unit>
+    val createTask: Operation<CreateTaskDto, TaskDomain>
     val findTask: Operation<String, TaskDomain>
     val deleteTask: Operation<TaskDomain, Unit>
 

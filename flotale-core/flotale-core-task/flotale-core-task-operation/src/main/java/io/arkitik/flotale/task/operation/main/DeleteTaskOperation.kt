@@ -6,7 +6,7 @@ import io.arkitik.flotale.task.initial.store.TaskInitialStore
 import io.arkitik.flotale.task.store.TaskStore
 import io.arkitik.radix.develop.operation.Operation
 import io.arkitik.radix.develop.store.delete
-import io.arkitik.radix.develop.store.storeUpdaterWithSave
+import io.arkitik.radix.develop.store.storeUpdaterWithUpdate
 
 /**
  * Created By [*Ibrahim Al-Tamimi *](https://www.linkedin.com/in/iloom/)
@@ -19,7 +19,7 @@ internal class DeleteTaskOperation(
 ) : Operation<TaskDomain, Unit> {
     override fun TaskDomain.operate() {
         with(taskStore) {
-            storeUpdaterWithSave(identityUpdater()) {
+            storeUpdaterWithUpdate(identityUpdater()) {
                 TaskStatus.DELETED.status()
                 update()
             }

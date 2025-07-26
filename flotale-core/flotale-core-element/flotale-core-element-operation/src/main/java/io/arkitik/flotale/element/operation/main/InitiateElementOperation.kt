@@ -3,7 +3,7 @@ package io.arkitik.flotale.element.operation.main
 import io.arkitik.flotale.element.sdk.dto.CreateElementDto
 import io.arkitik.flotale.element.store.ElementStore
 import io.arkitik.radix.develop.operation.Operation
-import io.arkitik.radix.develop.store.creatorWithSave
+import io.arkitik.radix.develop.store.creatorWithInsert
 
 /**
  * Created By [*Ibrahim Al-Tamimi *](https://www.linkedin.com/in/iloom/)
@@ -15,7 +15,7 @@ internal class InitiateElementOperation(
 ) : Operation<CreateElementDto, Unit> {
     override fun CreateElementDto.operate() {
         with(elementStore) {
-            creatorWithSave(identityCreator()) {
+            creatorWithInsert(identityCreator()) {
                 elementKey.elementKey()
                 task.task()
                 addedBy.addedBy()

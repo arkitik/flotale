@@ -32,7 +32,7 @@ class FlotaleTaskDomainSdkImpl(
 
     private val taskDuplicationRole = TaskDuplicationRole(taskStore.storeQuery)
 
-    override val createTask: Operation<CreateTaskDto, Unit> =
+    override val createTask: Operation<CreateTaskDto, TaskDomain> =
         operationBuilder {
             install {
                 taskDuplicationRole

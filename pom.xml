@@ -28,7 +28,7 @@
     <developers>
         <developer>
             <name>Ibrahim Al-Tamimi</name>
-            <url>https://www.linkedin.com/in/iloom/</url>
+            <url>https://www.linkedin.com/in/arkitik/</url>
             <email>ibm.iloom@gmail.com</email>
             <organization>arkitik</organization>
             <organizationUrl>https://arkitik.io</organizationUrl>
@@ -42,10 +42,13 @@
     </scm>
 
     <properties>
-        <spring-boot.version>2.7.6</spring-boot.version>
-        <radix.version>v1.5.0</radix.version>
-        <dokka.version>1.7.20</dokka.version>
-        <kotlin.version>1.7.20</kotlin.version>
+        <spring-boot.version>3.5.4</spring-boot.version>
+        <radix.version>v2.4.4</radix.version>
+        <dokka.version>2.0.0</dokka.version>
+        <kotlin.version>2.2.0</kotlin.version>
+
+        <exposed.version>0.60.0</exposed.version>
+        <valiktor-core.version>0.12.0</valiktor-core.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -69,11 +72,6 @@
                 <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>javax.validation</groupId>
-                <artifactId>validation-api</artifactId>
-                <version>2.0.1.Final</version>
             </dependency>
             <dependency>
                 <groupId>org.valiktor</groupId>
@@ -148,11 +146,11 @@
                         <plugin>jpa</plugin>
                     </compilerPlugins>
                     <pluginOptions>
-                        <option>all-open:annotation=javax.persistence.Entity</option>
-                        <option>all-open:annotation=javax.persistence.Embeddable</option>
-                        <option>all-open:annotation=javax.persistence.MappedSuperclass</option>
+                        <option>all-open:annotation=jakarta.persistence.Entity</option>
+                        <option>all-open:annotation=jakarta.persistence.Embeddable</option>
+                        <option>all-open:annotation=jakarta.persistence.MappedSuperclass</option>
                     </pluginOptions>
-                    <jvmTarget>1.8</jvmTarget>
+                    <jvmTarget>21</jvmTarget>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -172,8 +170,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>21</source>
+                    <target>21</target>
                 </configuration>
             </plugin>
         </plugins>
@@ -249,17 +247,6 @@
                                     <version>${dokka.version}</version>
                                 </plugin>
                             </dokkaPlugins>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.8</version>
-                        <extensions>true</extensions>
-                        <configuration>
-                            <stagingProfileId>${sonatype.stagingProfileId}</stagingProfileId>
-                            <serverId>s01-ossrh</serverId>
-                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
                         </configuration>
                     </plugin>
                 </plugins>

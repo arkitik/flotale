@@ -16,6 +16,7 @@ internal class InitialWorkflowStageOperation(
     private val stageInitialStoreQuery: StageInitialStoreQuery,
 ) : Operation<WorkflowDomain, StageDomain> {
     override fun WorkflowDomain.operate(): StageDomain {
-        return stageInitialStoreQuery.findByWorkflow(this)?.stage.resourceNotFound(FlotaleStageErrors.NO_INITIAL_STAGE)
+        return stageInitialStoreQuery.findByWorkflow(this)?.stage
+            .resourceNotFound(FlotaleStageErrors.NO_INITIAL_STAGE)
     }
 }

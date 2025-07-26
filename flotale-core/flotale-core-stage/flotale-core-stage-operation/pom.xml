@@ -12,10 +12,7 @@
     <artifactId>flotale-core-stage-operation</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>io.arkitik.radix</groupId>
-            <artifactId>radix-development-operation-ext</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
             <artifactId>flotale-core-stage-sdk</artifactId>

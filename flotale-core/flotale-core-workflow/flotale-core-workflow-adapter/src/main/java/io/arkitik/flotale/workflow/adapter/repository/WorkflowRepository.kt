@@ -5,8 +5,8 @@ import io.arkitik.flotale.workflow.entity.FlotaleWorkflow
 import io.arkitik.radix.adapter.shared.repository.RadixRepository
 
 interface WorkflowRepository : RadixRepository<String, FlotaleWorkflow> {
-    fun existsByWorkflowKeyAndStatusIn(
-        actionKey: String,
+    fun existsByWorkflowKeyInAndStatusIn(
+        actionKeys: List<String>,
         statuses: List<WorkflowStatus>,
     ): Boolean
 

@@ -10,17 +10,9 @@ import io.arkitik.flotale.engine.core.dto.WorkflowData
  * Created At 9:20 PM, 22 , **Thu, December 2022**
  * Project *flotale* [arkitik.io](https://arkitik.io)
  */
-@Workflow
+@FlotaleWorkflow
 class FlotaleWorkflowsBuilder {
     private val workflows = mutableListOf<WorkflowData>()
-
-    fun workflow(
-        workflowDataBuilder: WorkflowDataBuilder.() -> Unit,
-    ): FlotaleWorkflowsBuilder {
-        workflows.add(WorkflowDataBuilder().apply(workflowDataBuilder).build())
-        return this
-    }
-
     fun addWorkflow(workflowDataBuilder: WorkflowDataBuilder.() -> Unit): FlotaleWorkflowsBuilder {
         workflows.add(WorkflowDataBuilder().apply(workflowDataBuilder).build())
         return this
@@ -29,13 +21,13 @@ class FlotaleWorkflowsBuilder {
     fun build(): List<WorkflowData> = workflows
 }
 
-@Workflow
-fun workflow(
+@FlotaleWorkflow
+fun addWorkflow(
     builder: WorkflowDataBuilder.() -> Unit,
 ) = WorkflowDataBuilder()
     .apply(builder)
 
-@Stage
+@FlotaleWorkflow
 fun stage(
     builder: StageDataBuilder.() -> Unit,
 ) =
@@ -43,7 +35,7 @@ fun stage(
         .apply(builder)
         .build()
 
-@Task
+@FlotaleWorkflow
 fun task(
     builder: TaskDataBuilder.() -> Unit,
 ) =
@@ -51,7 +43,7 @@ fun task(
         .apply(builder)
         .build()
 
-@Action
+@FlotaleWorkflow
 fun action(
     builder: ActionDataBuilder.() -> Unit,
 ) =
@@ -59,6 +51,7 @@ fun action(
         .apply(builder)
         .build()
 
+@FlotaleWorkflow
 infix fun FlotaleDomainEngine.persistWorkflow(
     builder: FlotaleWorkflowsBuilder.() -> Unit,
 ) {

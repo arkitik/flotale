@@ -9,6 +9,7 @@ import io.arkitik.flotale.engine.core.FlotaleWorkflowEngine
 import io.arkitik.flotale.engine.core.dto.ElementDetails
 import io.arkitik.flotale.engine.core.dto.ReferenceData
 import io.arkitik.flotale.engine.core.ext.persistWorkflow
+import io.arkitik.flotale.engine.core.ext.task
 import io.arkitik.flotale.stage.initial.store.StageInitialStore
 import io.arkitik.flotale.stage.store.StageStore
 import io.arkitik.flotale.task.initial.store.TaskInitialStore
@@ -37,8 +38,9 @@ import kotlin.test.assertTrue
     classes = [
         ArkitikFlotaleApp::class,
         MockValidatorUnit::class
-    ]
-)
+    ],
+
+    )
 @TestPropertySource(
     locations = ["classpath:application.yml"]
 )
@@ -99,119 +101,119 @@ internal class FlotaleEngineTest {
 
     private fun createJobWorkflow() {
         flotaleDomainEngine.persistWorkflow {
-            workflow {
-                key("job-workflow")
-                name("Job Execution workflow")
+            addWorkflow {
+                workflowKey = "job-workflow"
+                workflowName = "Job Execution workflow"
                 initialStage {
-                    stageKey("pending-job-execution")
-                    stageName("Pending Stage")
-                    stageInitialTask {
-                        taskKey("pending-job-execution-task")
-                        taskName("Waiting")
-                        taskAction {
-                            actionKey("trigger-job")
-                            actionName("Run Job")
-                            actionDestinationTask("running-job-execution-task")
+                    stageKey = "pending-job-execution"
+                    stageName = "Pending Stage"
+                    initialTask {
+                        taskKey = "pending-job-execution-task"
+                        taskName = "Waiting"
+                        addAction {
+                            actionKey = "trigger-job"
+                            actionName = "Run Job"
+                            actionDestinationTask = "running-job-execution-task"
                         }
-                        taskAction {
-                            actionKey("cancel-waiting-job")
-                            actionName("Cancel pending job")
-                            actionDestinationTask("cancelled-job-execution-task")
-                        }
-                    }
-                }
-                stage {
-                    stageName("Running Stage")
-                    stageKey("running-job-execution")
-                    stageTask {
-                        taskKey("running-job-execution-task")
-                        taskName("In Processing")
-                        taskAction {
-                            actionKey("mark-job-as-done")
-                            actionName("Mark As Done")
-                            actionDestinationTask("processed-job-execution-task")
-                        }
-                        taskAction {
-                            actionKey("mark-job-as-failed")
-                            actionName("Mark As Failed")
-                            actionDestinationTask("failed-job-execution-task")
-                        }
-                        taskAction {
-                            actionKey("internal-failure")
-                            actionName("Internal Failure")
-                            actionDestinationTask("internal-failure-job-execution-task")
+                        addAction {
+                            actionKey = "cancel-waiting-job"
+                            actionName = "Cancel pending job"
+                            actionDestinationTask = "cancelled-job-execution-task"
                         }
                     }
                 }
-                stage {
-                    stageKey("processed-job-execution")
-                    stageName("Processed Stage")
-                    stageTask {
-                        taskKey("processed-job-execution-task")
-                        taskName("Done")
-                        terminal(true)
-                    }
-                }
-                stage {
-                    stageKey("failed-job-execution")
-                    stageName("Failed Stage")
-                    stageTask {
-                        taskKey("failed-job-execution-task")
-                        taskName("Execution-Failed")
-                        taskAction {
-                            actionKey("re-trigger")
-                            actionName("Re-Trigger")
-                            actionDestinationTask("pending-job-execution-task")
+                addStage {
+                    stageName = "Running Stage"
+                    stageKey = "running-job-execution"
+                    addStageTask {
+                        taskKey = "running-job-execution-task"
+                        taskName = "In Processing"
+                        addAction {
+                            actionKey = "mark-job-as-done"
+                            actionName = "Mark As Done"
+                            actionDestinationTask = "processed-job-execution-task"
                         }
-                        taskAction {
-                            actionKey("cancel-failed-job")
-                            actionName("Cancel failed job")
-                            actionDestinationTask("cancelled-job-execution-task")
+                        addAction {
+                            actionKey = "mark-job-as-failed"
+                            actionName = "Mark As Failed"
+                            actionDestinationTask = "failed-job-execution-task"
+                        }
+                        addAction {
+                            actionKey = "internal-failure"
+                            actionName = "Internal Failure"
+                            actionDestinationTask = "internal-failure-job-execution-task"
                         }
                     }
                 }
-                stage {
-                    stageKey("cancelled-job-execution")
-                    stageName("Cancelled Stage")
-                    stageTask {
-                        taskKey("cancelled-job-execution-task")
-                        taskName("Cancelled")
-                        terminal(true)
+                addStage {
+                    stageKey = "processed-job-execution"
+                    stageName = "Processed Stage"
+                    addStageTask {
+                        taskKey = "processed-job-execution-task"
+                        taskName = "Done"
+                        terminal = true
                     }
                 }
-                stage {
-                    stageKey("internal-failed-job-execution")
-                    stageName("Internal-Failure")
-                    stageTask {
-                        taskKey("internal-failure-job-execution-task")
-                        taskName("Internal-Failure")
-                        taskAction {
-                            actionKey("internal-failed-job-execution-start-recovering")
-                            actionName("internal-failed-job-execution-start-recovering")
-                            actionDestinationTask("internal-failed-job-execution-recovering-task")
+                addStage {
+                    stageKey = "failed-job-execution"
+                    stageName = "Failed Stage"
+                    addStageTask {
+                        taskKey = "failed-job-execution-task"
+                        taskName = "Execution-Failed"
+                        addAction {
+                            actionKey = "re-trigger"
+                            actionName = "Re-Trigger"
+                            actionDestinationTask = "pending-job-execution-task"
+                        }
+                        addAction {
+                            actionKey = "cancel-failed-job"
+                            actionName = "Cancel failed job"
+                            actionDestinationTask = "cancelled-job-execution-task"
                         }
                     }
                 }
-                stage {
-                    stageKey("internal-failed-job-execution-recovering")
-                    stageName("Internal Failed Recovering")
-                    stageTask {
-                        taskKey("internal-failed-job-execution-recovering-task")
-                        taskName("Recovering")
-                        taskAction {
-                            actionKey("internal-failed-job-execution-recovered")
-                            actionName("Recovered")
-                            actionDestinationTask("pending-job-execution-task")
+                addStage {
+                    stageKey = "cancelled-job-execution"
+                    stageName = "Cancelled Stage"
+                    addStageTask {
+                        taskKey = "cancelled-job-execution-task"
+                        taskName = "Cancelled"
+                        terminal = true
+                    }
+                }
+                addStage {
+                    stageKey = "internal-failed-job-execution"
+                    stageName = "Internal-Failure"
+                    addStageTask {
+                        taskKey = "internal-failure-job-execution-task"
+                        taskName = "Internal-Failure"
+                        addAction {
+                            actionKey = "internal-failed-job-execution-start-recovering"
+                            actionName = "internal-failed-job-execution-start-recovering"
+                            actionDestinationTask = "internal-failed-job-execution-recovering-task"
                         }
-                        taskAction {
-                            actionKey("internal-failed-job-execution-failed")
-                            actionName("Failed internal-failed recovering job")
-                            actionDestinationTask("failed-job-execution-task")
+                    }
+                }
+                addStage {
+                    stageKey = "internal-failed-job-execution-recovering"
+                    stageName = "Internal Failed Recovering"
+                    addStageTask {
+                        taskKey = "internal-failed-job-execution-recovering-task"
+                        taskName = "Recovering"
+                        addAction {
+                            actionKey = "internal-failed-job-execution-recovered"
+                            actionName = "Recovered"
+                            actionDestinationTask = "pending-job-execution-task"
                         }
-                        taskAction {
-                            actionKey("internal-failed-job-execution-cancel")
-                            actionName("Cancel internal-failed recovering job")
-                            actionDestinationTask("cancelled-job-execution-task")
+                        addAction {
+                            actionKey = "internal-failed-job-execution-failed"
+                            actionName = "Failed internal-failed recovering job"
+                            actionDestinationTask = "failed-job-execution-task"
+                        }
+                        addAction {
+                            actionKey = "internal-failed-job-execution-cancel"
+                            actionName = "Cancel internal-failed recovering job"
+                            actionDestinationTask = "cancelled-job-execution-task"
                         }
                     }
                 }
@@ -242,16 +244,16 @@ internal class FlotaleEngineTest {
     @Test
     fun verifyWorkflowWithElementCreation() {
         flotaleDomainEngine.persistWorkflow {
-            workflow {
-                key("WF")
-                name("WF")
+            addWorkflow {
+                workflowKey = "WF"
+                workflowName = "WF"
                 initialStage {
-                    stageKey("WF-STAGE")
-                    stageName("WF-STAGE")
-                    stageInitialTask {
-                        taskKey("WF-TASK")
-                        taskName("WF-TASK")
-                        terminal(true)
+                    stageKey = "WF-STAGE"
+                    stageName = "WF-STAGE"
+                    initialTask = task {
+                        taskKey = "WF-TASK"
+                        taskName = "WF-TASK"
+                        terminal = true
                     }
                 }
             }
@@ -270,20 +272,20 @@ internal class FlotaleEngineTest {
     fun verifyWorkflowWithTerminalTaskCreation() {
         assertThrows<NotAcceptableException> {
             flotaleDomainEngine.persistWorkflow {
-                workflow {
-                    key("WF")
-                    name("WF")
+                addWorkflow {
+                    workflowKey = "WF"
+                    workflowName = "WF"
                     initialStage {
-                        stageKey("WF-STAGE")
-                        stageName("WF-STAGE")
-                        stageInitialTask {
-                            taskKey("WF-TASK")
-                            taskName("WF-TASK")
-                            terminal(true)
-                            taskAction {
-                                actionKey("WF-ACTION")
-                                actionName("WF-ACTION")
-                                actionDestinationTask("WF-TASK")
+                        stageKey = "WF-STAGE"
+                        stageName = "WF-STAGE"
+                        initialTask {
+                            taskKey = "WF-TASK"
+                            taskName = "WF-TASK"
+                            terminal = true
+                            addAction {
+                                actionKey = "WF-ACTION"
+                                actionName = "WF-ACTION"
+                                actionDestinationTask = "WF-TASK"
                             }
                         }
                     }
@@ -298,25 +300,25 @@ internal class FlotaleEngineTest {
         mockValidatorUnit.registerVerifier(MockValidatorUnits.SupportedAndCantExecute)
 
         flotaleDomainEngine.persistWorkflow {
-            workflow {
-                key("ABC")
-                name("ABC")
+            addWorkflow {
+                workflowKey = "ABC"
+                workflowName = "ABC"
                 initialStage {
-                    stageKey("ABC-STAGE")
-                    stageName("ABC-STAGE")
-                    stageInitialTask {
-                        taskKey("ABC-TASK")
-                        taskName("ABC-TASK")
-                        taskAction {
-                            actionKey("ABC-ACTION")
-                            actionName("ABC-ACTION")
-                            actionDestinationTask("2ND-TASK")
+                    stageKey = "ABC-STAGE"
+                    stageName = "ABC-STAGE"
+                    initialTask {
+                        taskKey = "ABC-TASK"
+                        taskName = "ABC-TASK"
+                        addAction {
+                            actionKey = "ABC-ACTION"
+                            actionName = "ABC-ACTION"
+                            actionDestinationTask = "2ND-TASK"
                         }
                     }
-                    stageTask {
-                        taskKey("2ND-TASK")
-                        taskName("2ND-TASK")
-                        terminal(true)
+                    addStageTask {
+                        taskKey = "2ND-TASK"
+                        taskName = "2ND-TASK"
+                        terminal = true
                     }
                 }
             }

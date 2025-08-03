@@ -8,7 +8,7 @@ package io.arkitik.flotale.engine.function.action
 interface ActionExecutionValidator {
     fun validateExecution(actionKey: String, elementKey: String, requestedBy: String): Boolean
 
-    interface ExecutorValidatorUnit {
+    interface ValidatorUnit {
         fun isSupported(actionKey: String, elementKey: String, requestedBy: String): Boolean
 
         fun canExecute(actionKey: String, elementKey: String, requestedBy: String): Boolean

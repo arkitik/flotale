@@ -19,8 +19,8 @@ internal class SpringEngineBeanStore(
         listableBeanFactory.getBeansOfType<ActionExecutor.ExecutorUnit>()
             .values
 
-    override fun actionExecutionValidatorUnits(actionKey: String): Collection<ActionExecutionValidator.ExecutorValidatorUnit> =
-        listableBeanFactory.getBeansOfType<ActionExecutionValidator.ExecutorValidatorUnit>()
+    override fun actionExecutionValidatorUnits(actionKey: String): Collection<ActionExecutionValidator.ValidatorUnit> =
+        listableBeanFactory.getBeansOfType<ActionExecutionValidator.ValidatorUnit>()
             .values
 
     override fun elementTaskEnteringBroadcasterUnits(taskKey: String): Collection<ElementTaskBroadcaster.EnteringBroadcasterUnit> =

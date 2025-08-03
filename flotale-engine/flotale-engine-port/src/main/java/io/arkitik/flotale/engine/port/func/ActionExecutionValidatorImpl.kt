@@ -12,15 +12,14 @@ internal class ActionExecutionValidatorImpl(
     private val engineBeanStores: List<EngineBeanStore>,
 ) : ActionExecutionValidator {
     override fun validateExecution(actionKey: String, elementKey: String, requestedBy: String): Boolean {
-        return engineBeanStores.asSequence()
-            .map {
-                it.actionExecutionValidatorUnits(actionKey)
-            }.flatten()
-            .distinctBy { it.javaClass }
-            .filter {
-                it.isSupported(actionKey, elementKey, requestedBy)
-            }.all {
-                it.canExecute(actionKey, elementKey, requestedBy)
+        return engineBeanStores.map { validatorUnit ->
+            validatorUnit.actionExecutionValidatorUnits(actionKey)
+        }.flatten()
+            .distinctBy { validatorUnit -> validatorUnit.javaClass }
+            .filter { validatorUnit ->
+                validatorUnit.isSupported(actionKey, elementKey, requestedBy)
+            }.all { validatorUnit ->
+                validatorUnit.canExecute(actionKey, elementKey, requestedBy)
             }
     }
 }

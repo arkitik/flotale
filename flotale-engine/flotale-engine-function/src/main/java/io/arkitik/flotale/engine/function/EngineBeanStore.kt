@@ -16,7 +16,7 @@ interface EngineBeanStore {
 
     fun actionExecutionValidatorUnits(
         actionKey: String,
-    ): Collection<ActionExecutionValidator.ExecutorValidatorUnit>
+    ): Collection<ActionExecutionValidator.ValidatorUnit>
 
     fun elementTaskEnteringBroadcasterUnits(
         taskKey: String,

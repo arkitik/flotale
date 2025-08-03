@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service
  * Project *flotale* [arkitik.io](https://arkitik.io)
  */
 @Service
-internal class MockValidatorUnit : ActionExecutionValidator.ExecutorValidatorUnit {
-    private val verifiers = mutableListOf<ActionExecutionValidator.ExecutorValidatorUnit>()
+internal class MockValidatorUnit : ActionExecutionValidator.ValidatorUnit {
+    private val verifiers = mutableListOf<ActionExecutionValidator.ValidatorUnit>()
 
-    internal fun registerVerifier(validatorUnit: ActionExecutionValidator.ExecutorValidatorUnit) {
+    internal fun registerVerifier(validatorUnit: ActionExecutionValidator.ValidatorUnit) {
         verifiers.add(validatorUnit)
     }
 
@@ -30,20 +30,20 @@ internal class MockValidatorUnit : ActionExecutionValidator.ExecutorValidatorUni
 }
 
 object MockValidatorUnits {
-    internal object AllAccept : ActionExecutionValidator.ExecutorValidatorUnit {
+    internal object AllAccept : ActionExecutionValidator.ValidatorUnit {
         override fun isSupported(actionKey: String, elementKey: String, requestedBy: String) = true
 
         override fun canExecute(actionKey: String, elementKey: String, requestedBy: String) = true
     }
 
-    internal object SupportedAndCantExecute : ActionExecutionValidator.ExecutorValidatorUnit {
+    internal object SupportedAndCantExecute : ActionExecutionValidator.ValidatorUnit {
         override fun isSupported(actionKey: String, elementKey: String, requestedBy: String) = true
 
         override fun canExecute(actionKey: String, elementKey: String, requestedBy: String) = false
     }
 
     internal class SupportedAndCanExecuteForAction(private val actionKey: String) :
-        ActionExecutionValidator.ExecutorValidatorUnit {
+        ActionExecutionValidator.ValidatorUnit {
         override fun isSupported(actionKey: String, elementKey: String, requestedBy: String) = true
 
         override fun canExecute(actionKey: String, elementKey: String, requestedBy: String) =
@@ -53,7 +53,7 @@ object MockValidatorUnits {
     internal class ConditionalUnit(
         private val conditionSupported: (actionKey: String, elementKey: String) -> Boolean,
         private val condition: (actionKey: String, elementKey: String) -> Boolean = conditionSupported,
-    ) : ActionExecutionValidator.ExecutorValidatorUnit {
+    ) : ActionExecutionValidator.ValidatorUnit {
         override fun isSupported(actionKey: String, elementKey: String, requestedBy: String) =
             conditionSupported(actionKey, elementKey)
 

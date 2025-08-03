@@ -51,12 +51,12 @@ class StageDataBuilder {
     var initialTask: TaskData? = null
     private var tasks: MutableList<TaskData> = ArrayList()
 
-    fun addStageTask(taskData: TaskData) {
+    fun addTask(taskData: TaskData) {
         tasks.add(taskData)
     }
 
-    fun addStageTask(builder: TaskDataBuilder.() -> Unit) {
-        addStageTask(TaskDataBuilder().apply(builder).build())
+    fun addTask(builder: TaskDataBuilder.() -> Unit) {
+        addTask(TaskDataBuilder().apply(builder).build())
     }
 
     fun initialTask(builder: TaskDataBuilder.() -> Unit) {

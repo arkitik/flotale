@@ -125,7 +125,7 @@ internal class FlotaleEngineTest {
                 addStage {
                     stageName = "Running Stage"
                     stageKey = "running-job-execution"
-                    addStageTask {
+                    addTask {
                         taskKey = "running-job-execution-task"
                         taskName = "In Processing"
                         addAction {
@@ -148,7 +148,7 @@ internal class FlotaleEngineTest {
                 addStage {
                     stageKey = "processed-job-execution"
                     stageName = "Processed Stage"
-                    addStageTask {
+                    addTask {
                         taskKey = "processed-job-execution-task"
                         taskName = "Done"
                         terminal = true
@@ -157,7 +157,7 @@ internal class FlotaleEngineTest {
                 addStage {
                     stageKey = "failed-job-execution"
                     stageName = "Failed Stage"
-                    addStageTask {
+                    addTask {
                         taskKey = "failed-job-execution-task"
                         taskName = "Execution-Failed"
                         addAction {
@@ -175,7 +175,7 @@ internal class FlotaleEngineTest {
                 addStage {
                     stageKey = "cancelled-job-execution"
                     stageName = "Cancelled Stage"
-                    addStageTask {
+                    addTask {
                         taskKey = "cancelled-job-execution-task"
                         taskName = "Cancelled"
                         terminal = true
@@ -184,7 +184,7 @@ internal class FlotaleEngineTest {
                 addStage {
                     stageKey = "internal-failed-job-execution"
                     stageName = "Internal-Failure"
-                    addStageTask {
+                    addTask {
                         taskKey = "internal-failure-job-execution-task"
                         taskName = "Internal-Failure"
                         addAction {
@@ -197,7 +197,7 @@ internal class FlotaleEngineTest {
                 addStage {
                     stageKey = "internal-failed-job-execution-recovering"
                     stageName = "Internal Failed Recovering"
-                    addStageTask {
+                    addTask {
                         taskKey = "internal-failed-job-execution-recovering-task"
                         taskName = "Recovering"
                         addAction {
@@ -315,7 +315,7 @@ internal class FlotaleEngineTest {
                             actionDestinationTask = "2ND-TASK"
                         }
                     }
-                    addStageTask {
+                    addTask {
                         taskKey = "2ND-TASK"
                         taskName = "2ND-TASK"
                         terminal = true

@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.arkitik.flotale</groupId>
     <artifactId>flotale</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>v1.0.0</version>
     <packaging>pom</packaging>
     <modules>
         <module>flotale-core</module>
         <module>flotale-engine</module>
-        <module>flotale-deploy</module>
-        <module>flotale-test</module>
+        <module>flotale-api</module>
+        <module>flotale-plugin</module>
     </modules>
 
     <name>flotale workflow engine</name>
@@ -47,8 +47,8 @@
         <dokka.version>2.0.0</dokka.version>
         <kotlin.version>2.2.0</kotlin.version>
 
-        <exposed.version>0.60.0</exposed.version>
         <valiktor-core.version>0.12.0</valiktor-core.version>
+        <exposed.version>0.61.0</exposed.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -101,6 +101,21 @@
     </dependencies>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.sonatype.central</groupId>
+                    <artifactId>central-publishing-maven-plugin</artifactId>
+                    <version>0.8.0</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <deploymentName>arkitik-${project.artifactId}-${project.version}</deploymentName>
+                        <publishingServerId>central-sonatype</publishingServerId>
+                        <outputFilename>arkitik-${project.artifactId}-${project.version}.zip</outputFilename>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
@@ -138,7 +153,6 @@
                 <configuration>
                     <args>
                         <arg>-Xjsr305=strict</arg>
-                        <arg>-Xcontext-parameters</arg>
                     </args>
                     <compilerPlugins>
                         <plugin>spring</plugin>
@@ -168,10 +182,69 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.13.0</version>
                 <configuration>
                     <source>21</source>
                     <target>21</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.6.2</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jetbrains.dokka</groupId>
+                <artifactId>dokka-maven-plugin</artifactId>
+                <version>${dokka.version}</version>
+                <executions>
+                    <execution>
+                        <phase>pre-site</phase>
+                        <goals>
+                            <goal>dokka</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <dokkaPlugins>
+                        <plugin>
+                            <groupId>org.jetbrains.dokka</groupId>
+                            <artifactId>kotlin-as-java-plugin</artifactId>
+                            <version>${dokka.version}</version>
+                        </plugin>
+                    </dokkaPlugins>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <configuration>
+                    <publishingServerId>central-sonatype</publishingServerId>
+                    <outputFilename>arkitik-${project.artifactId}-${project.version}.zip</outputFilename>
                 </configuration>
             </plugin>
         </plugins>
@@ -190,7 +263,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.0.1</version>
+                        <version>3.2.8</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -200,54 +273,6 @@
                                 </goals>
                             </execution>
                         </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <version>3.2.1</version>
-                        <executions>
-                            <execution>
-                                <id>attach-sources</id>
-                                <goals>
-                                    <goal>jar-no-fork</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>3.2.0</version>
-                        <executions>
-                            <execution>
-                                <id>attach-javadocs</id>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.jetbrains.dokka</groupId>
-                        <artifactId>dokka-maven-plugin</artifactId>
-                        <version>${dokka.version}</version>
-                        <executions>
-                            <execution>
-                                <phase>pre-site</phase>
-                                <goals>
-                                    <goal>dokka</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <dokkaPlugins>
-                                <plugin>
-                                    <groupId>org.jetbrains.dokka</groupId>
-                                    <artifactId>kotlin-as-java-plugin</artifactId>
-                                    <version>${dokka.version}</version>
-                                </plugin>
-                            </dokkaPlugins>
-                        </configuration>
                     </plugin>
                 </plugins>
             </build>

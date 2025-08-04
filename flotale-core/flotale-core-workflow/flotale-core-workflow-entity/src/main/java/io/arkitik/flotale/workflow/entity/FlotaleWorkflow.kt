@@ -2,12 +2,12 @@ package io.arkitik.flotale.workflow.entity
 
 import io.arkitik.flotale.workflow.domain.WorkflowDomain
 import io.arkitik.flotale.workflow.domain.embedded.WorkflowStatus
-import java.time.LocalDateTime
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
+import java.time.LocalDateTime
 
 @Entity
 class FlotaleWorkflow(

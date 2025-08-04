@@ -26,6 +26,7 @@ fun addWorkflow(
     builder: WorkflowDataBuilder.() -> Unit,
 ) = WorkflowDataBuilder()
     .apply(builder)
+    .build()
 
 @FlotaleWorkflow
 fun stage(

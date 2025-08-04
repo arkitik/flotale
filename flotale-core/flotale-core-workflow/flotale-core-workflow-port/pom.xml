@@ -6,9 +6,10 @@
     <parent>
         <groupId>io.arkitik.flotale</groupId>
         <artifactId>flotale-core-workflow</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>v1.0.0</version>
     </parent>
     <artifactId>flotale-core-workflow-port</artifactId>
+    <name>${project.artifactId}</name>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

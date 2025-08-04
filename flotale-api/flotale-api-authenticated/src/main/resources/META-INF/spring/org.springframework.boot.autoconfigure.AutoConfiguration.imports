@@ -1,0 +1,2 @@
+io.arkitik.flotale.api.authenticated.controller.FlotaleAuthenticatedController
+io.arkitik.flotale.api.authenticated.FlotaleAuthenticatedStarter

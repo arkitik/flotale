@@ -2,7 +2,6 @@ package io.arkitik.flotale.action.operation.main
 
 import io.arkitik.flotale.action.domain.ActionDomain
 import io.arkitik.flotale.action.store.query.ActionStoreQuery
-import io.arkitik.flotale.stage.domain.StageDomain
 import io.arkitik.flotale.task.domain.TaskDomain
 import io.arkitik.radix.develop.operation.Operation
 

@@ -3,12 +3,12 @@ package io.arkitik.flotale.task.initial.entity
 import io.arkitik.flotale.stage.entity.FlotaleStage
 import io.arkitik.flotale.task.entity.FlotaleTask
 import io.arkitik.flotale.task.initial.domain.TaskInitialDomain
-import java.time.LocalDateTime
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
 import jakarta.persistence.Id
 import jakarta.persistence.ManyToOne
+import java.time.LocalDateTime
 
 @Entity
 class FlotaleTaskInitial(

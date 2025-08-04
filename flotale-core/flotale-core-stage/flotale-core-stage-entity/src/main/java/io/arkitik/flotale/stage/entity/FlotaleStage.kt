@@ -3,7 +3,6 @@ package io.arkitik.flotale.stage.entity
 import io.arkitik.flotale.stage.domain.StageDomain
 import io.arkitik.flotale.stage.domain.embedded.StageStatus
 import io.arkitik.flotale.workflow.entity.FlotaleWorkflow
-import java.time.LocalDateTime
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -11,6 +10,7 @@ import jakarta.persistence.Enumerated
 import jakarta.persistence.FetchType
 import jakarta.persistence.Id
 import jakarta.persistence.ManyToOne
+import java.time.LocalDateTime
 
 @Entity
 class FlotaleStage(

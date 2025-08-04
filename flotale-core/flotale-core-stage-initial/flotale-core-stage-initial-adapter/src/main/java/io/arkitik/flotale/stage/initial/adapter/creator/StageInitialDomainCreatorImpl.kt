@@ -5,7 +5,7 @@ import io.arkitik.flotale.stage.initial.entity.FlotaleStageInitial
 import io.arkitik.flotale.stage.initial.store.creator.StageInitialDomainCreator
 import io.arkitik.flotale.workflow.domain.WorkflowDomain
 import java.time.LocalDateTime
-import java.util.UUID
+import java.util.*
 
 internal class StageInitialDomainCreatorImpl : StageInitialDomainCreator {
     private var uuid: String = UUID.randomUUID().toString().replace("-", "")

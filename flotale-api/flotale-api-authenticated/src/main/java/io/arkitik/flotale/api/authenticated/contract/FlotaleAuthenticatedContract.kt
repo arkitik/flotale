@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping
  */
 @RequestMapping("/flotale/api/v1/engine")
 interface FlotaleAuthenticatedContract {
-    @PostMapping("elements/{elementKey}/execute/{actionKey}")
+    @PostMapping("elements/{elementKey}/actions/{actionKey}/execute")
     fun executeAction(
         @PathVariable("elementKey") elementKey: String,
         @PathVariable("actionKey") actionKey: String,

@@ -1,5 +1,3 @@
-server:
-  port: 9988
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/arkitik_flotale
@@ -8,11 +6,6 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   main:
     allow-bean-definition-overriding: true
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: false
-    open-in-view: false
   profiles:
     active: mysql
   web:

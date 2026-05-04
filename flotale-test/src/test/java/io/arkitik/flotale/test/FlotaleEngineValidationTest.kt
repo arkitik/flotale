@@ -88,10 +88,9 @@ internal class FlotaleEngineValidationTest {
     fun `validate non-existent workflow`() {
         val result = flotaleDomainEngine.validateWorkflow("NON_EXISTENT_WORKFLOW")
         assertInstanceOf<WorkflowValidationResult.Companion.Invalid>(result)
-        val invalid = result
-        assertEquals(1, invalid.errors.size)
-        assertEquals("NON_EXISTENT_WORKFLOW", invalid.errors[0].key)
-        assertTrue(invalid.errors[0].reason.contains("does not exist"))
+        assertEquals(1, result.errors.size)
+        assertEquals("NON_EXISTENT_WORKFLOW", result.errors[0].key)
+        assertTrue(result.errors[0].reason.contains("does not exist"))
     }
 
     // Test case 2: Workflow without stages
@@ -106,10 +105,9 @@ internal class FlotaleEngineValidationTest {
 
         val result = flotaleDomainEngine.validateWorkflow("EMPTY_WF")
         assertInstanceOf<WorkflowValidationResult.Companion.Invalid>(result)
-        val invalid = result
-        assertEquals(1, invalid.errors.size)
-        assertEquals("EMPTY_WF", invalid.errors[0].key)
-        assertTrue(invalid.errors[0].reason.contains("does not have any stages"))
+        assertEquals(1, result.errors.size)
+        assertEquals("EMPTY_WF", result.errors[0].key)
+        assertTrue(result.errors[0].reason.contains("does not have any stages"))
     }
 
     // Test case 3: Workflow without initial stage
@@ -132,8 +130,7 @@ internal class FlotaleEngineValidationTest {
         }
         val result = flotaleDomainEngine.validateWorkflow("WF")
         assertInstanceOf<WorkflowValidationResult.Companion.Invalid>(result)
-        val invalid = result
-        assertTrue(invalid.errors.any { it.reason.contains("does not have an initial stage") })
+        assertTrue(result.errors.any { it.reason.contains("does not have an initial stage") })
     }
 
     // Test case 4: Initial stage without initial task
@@ -156,8 +153,7 @@ internal class FlotaleEngineValidationTest {
         }
         val result = flotaleDomainEngine.validateWorkflow("WF")
         assertInstanceOf<WorkflowValidationResult.Companion.Invalid>(result)
-        val invalid = result
-        assertTrue(invalid.errors.any { it.reason.contains("initial stage does not have an initial task") })
+        assertTrue(result.errors.any { it.reason.contains("initial stage does not have an initial task") })
     }
 
     // Test case 5: Tasks without outgoing actions and not marked as terminal
@@ -179,8 +175,7 @@ internal class FlotaleEngineValidationTest {
         }
         val result = flotaleDomainEngine.validateWorkflow("WF")
         assertInstanceOf<WorkflowValidationResult.Companion.Invalid>(result)
-        val invalid = result
-        assertTrue(invalid.errors.any { it.reason.contains("not marked as terminal tasks") })
+        assertTrue(result.errors.any { it.reason.contains("not marked as terminal tasks") })
     }
 
     // Test case 6: Stage without tasks
@@ -208,9 +203,8 @@ internal class FlotaleEngineValidationTest {
         }
         val result = flotaleDomainEngine.validateWorkflow("WF")
         assertInstanceOf<WorkflowValidationResult.Companion.Invalid>(result)
-        val invalid = result
-        assertTrue(invalid.errors.any { it.reason.contains("stages do not have any tasks") })
-        assertTrue(invalid.errors.any { it.reason.contains("WF-STAGE-2") })
+        assertTrue(result.errors.any { it.reason.contains("stages do not have any tasks") })
+        assertTrue(result.errors.any { it.reason.contains("WF-STAGE-2") })
     }
 
     // Test case 7: Unreachable tasks
@@ -238,9 +232,8 @@ internal class FlotaleEngineValidationTest {
         }
         val result = flotaleDomainEngine.validateWorkflow("WF")
         assertInstanceOf<WorkflowValidationResult.Companion.Invalid>(result)
-        val invalid = result
-        assertTrue(invalid.errors.any { it.reason.contains("unreachable") })
-        assertTrue(invalid.errors.any { it.reason.contains("WF-TASK-2") })
+        assertTrue(result.errors.any { it.reason.contains("unreachable") })
+        assertTrue(result.errors.any { it.reason.contains("WF-TASK-2") })
     }
 
     // Test case 9: Valid workflow configuration
@@ -301,10 +294,9 @@ internal class FlotaleEngineValidationTest {
         }
         val result = flotaleDomainEngine.validateWorkflow("MULTI_ERROR_WF")
         assertInstanceOf<WorkflowValidationResult.Companion.Invalid>(result)
-        val invalid = result
-        assertTrue(invalid.errors.size >= 3) // At least 3 errors
-        assertTrue(invalid.errors.any { it.reason.contains("initial task") })
-        assertTrue(invalid.errors.any { it.reason.contains("do not have any tasks") })
-        assertTrue(invalid.errors.any { it.reason.contains("not marked as terminal tasks") })
+        assertTrue(result.errors.size >= 3) // At least 3 errors
+        assertTrue(result.errors.any { it.reason.contains("initial task") })
+        assertTrue(result.errors.any { it.reason.contains("do not have any tasks") })
+        assertTrue(result.errors.any { it.reason.contains("not marked as terminal tasks") })
     }
 }

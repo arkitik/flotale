@@ -6,16 +6,18 @@
     <parent>
         <groupId>io.arkitik.flotale</groupId>
         <artifactId>flotale</artifactId>
-        <version>v1.0.0</version>
+        <version>1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>flotale-engine</artifactId>
-    <name>${project.artifactId}</name>
+
     <packaging>pom</packaging>
     <modules>
-        <module>flotale-engine-sdk</module>
-        <module>flotale-engine-operation</module>
-        <module>flotale-engine-function</module>
-        <module>flotale-engine-port</module>
+        <module>flotale-engine-core</module>
+        <module>flotale-engine-workflow</module>
+        <module>flotale-engine-stage</module>
+        <module>flotale-engine-task</module>
+        <module>flotale-engine-action</module>
+        <module>flotale-engine-element</module>
     </modules>
 </project>

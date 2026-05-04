@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>io.arkitik.flotale</groupId>
+        <artifactId>flotale</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>flotale-dependencies</artifactId>
+    <packaging>pom</packaging>
+    <description>Bill of Materials — version management for all flotale modules</description>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- ══════════════════════════════════════════════════════════════
+                 flotale-core — workflow
+            ══════════════════════════════════════════════════════════════ -->
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-workflow-domain</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-workflow-store</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-workflow-entity</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-workflow-adapter</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-workflow-port-jpa</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-workflow-entity-exposed</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-workflow-adapter-exposed</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-workflow-port-exposed</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+
+            <!-- ══════════════════════════════════════════════════════════════
+                 flotale-core — stage
+            ══════════════════════════════════════════════════════════════ -->
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-stage-domain</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-stage-store</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-stage-entity</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-stage-adapter</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-stage-port-jpa</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-stage-entity-exposed</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-stage-adapter-exposed</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-stage-port-exposed</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+
+            <!-- ══════════════════════════════════════════════════════════════
+                 flotale-core — stage-initial
+            ══════════════════════════════════════════════════════════════ -->
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-stage-initial-domain</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-stage-initial-store</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-stage-initial-entity</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-stage-initial-adapter</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-stage-initial-port-jpa</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-stage-initial-entity-exposed</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-stage-initial-adapter-exposed</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-stage-initial-port-exposed</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+
+            <!-- ══════════════════════════════════════════════════════════════
+                 flotale-core — task
+            ══════════════════════════════════════════════════════════════ -->
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-task-domain</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-task-store</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-task-entity</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-task-adapter</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-task-port-jpa</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-task-entity-exposed</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-task-adapter-exposed</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-task-port-exposed</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+
+            <!-- ══════════════════════════════════════════════════════════════
+                 flotale-core — task-initial
+            ══════════════════════════════════════════════════════════════ -->
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-task-initial-domain</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-task-initial-store</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-task-initial-entity</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-task-initial-adapter</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-task-initial-port-jpa</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-task-initial-entity-exposed</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-task-initial-adapter-exposed</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-task-initial-port-exposed</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+
+            <!-- ══════════════════════════════════════════════════════════════
+                 flotale-core — action
+            ══════════════════════════════════════════════════════════════ -->
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-action-domain</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-action-store</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-action-entity</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-action-adapter</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-action-port-jpa</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-action-entity-exposed</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-action-adapter-exposed</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-action-port-exposed</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+
+            <!-- ══════════════════════════════════════════════════════════════
+                 flotale-core — element
+            ══════════════════════════════════════════════════════════════ -->
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-element-domain</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-element-store</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-element-entity</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-element-adapter</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-element-port-jpa</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-element-entity-exposed</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-element-adapter-exposed</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-element-port-exposed</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+
+            <!-- ══════════════════════════════════════════════════════════════
+                 flotale-core — element-flow
+            ══════════════════════════════════════════════════════════════ -->
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-element-flow-domain</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-element-flow-store</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-element-flow-entity</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-element-flow-adapter</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-element-flow-port-jpa</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-element-flow-entity-exposed</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-element-flow-adapter-exposed</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-core-element-flow-port-exposed</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+
+            <!-- ══════════════════════════════════════════════════════════════
+                 flotale-engine — core
+            ══════════════════════════════════════════════════════════════ -->
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-engine-core-sdk</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-engine-core-function</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-engine-core-operation</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-engine-core-port</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+
+            <!-- ══════════════════════════════════════════════════════════════
+                 flotale-engine — workflow
+            ══════════════════════════════════════════════════════════════ -->
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-engine-workflow-sdk</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-engine-workflow-operation</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-engine-workflow-port</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+
+            <!-- ══════════════════════════════════════════════════════════════
+                 flotale-engine — stage
+            ══════════════════════════════════════════════════════════════ -->
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-engine-stage-sdk</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-engine-stage-operation</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-engine-stage-port</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+
+            <!-- ══════════════════════════════════════════════════════════════
+                 flotale-engine — task
+            ══════════════════════════════════════════════════════════════ -->
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-engine-task-sdk</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-engine-task-operation</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-engine-task-port</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+
+            <!-- ══════════════════════════════════════════════════════════════
+                 flotale-engine — action
+            ══════════════════════════════════════════════════════════════ -->
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-engine-action-sdk</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-engine-action-operation</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-engine-action-port</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+
+            <!-- ══════════════════════════════════════════════════════════════
+                 flotale-engine — element
+            ══════════════════════════════════════════════════════════════ -->
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-engine-element-sdk</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-engine-element-operation</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-engine-element-port</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+
+            <!-- ══════════════════════════════════════════════════════════════
+                 flotale-api
+            ══════════════════════════════════════════════════════════════ -->
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-api-authenticated</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+
+            <!-- ══════════════════════════════════════════════════════════════
+                 flotale-starter
+            ══════════════════════════════════════════════════════════════ -->
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-starter-core</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-starter-jpa</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-starter-exposed</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+</project>

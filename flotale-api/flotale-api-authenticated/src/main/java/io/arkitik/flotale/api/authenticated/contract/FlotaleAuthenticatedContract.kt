@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping
 interface FlotaleAuthenticatedContract {
     @PostMapping("elements/{elementKey}/execute/{actionKey}")
     fun executeAction(
-        @PathVariable("elementKey") elementKey: String,
-        @PathVariable("actionKey") actionKey: String,
+        @PathVariable elementKey: String,
+        @PathVariable actionKey: String,
         @RequestHeader(HttpHeaders.AUTHORIZATION) userData: FlotaleUserData,
     )
 
     @GetMapping("/elements/{elementKey}")
     fun elementDetails(
-        @PathVariable("elementKey") elementKey: String,
+        @PathVariable elementKey: String,
         @RequestHeader(HttpHeaders.AUTHORIZATION) userData: FlotaleUserData,
     ): ResponseEntity<ElementDetails>
 }

@@ -11,9 +11,9 @@ interface StageRepository : RadixRepository<String, FlotaleStage> {
         statuses: List<StageStatus>,
     ): Boolean
 
-    fun findFirstByStageKeyAndStatusNotIn(
+    fun findFirstByStageKeyAndStatus(
         actionKey: String,
-        statuses: List<StageStatus>,
+        status: StageStatus,
     ): FlotaleStage?
 
     fun findAllByWorkflowAndStatus(

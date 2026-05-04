@@ -15,7 +15,7 @@ interface ActionStoreQuery : StoreQuery<String, ActionDomain> {
         key: String,
     ): ActionDomain?
 
-    fun allTaskActions(
+    fun allTaskActionsAndActive(
         task: TaskDomain,
     ): List<ActionDomain>
 

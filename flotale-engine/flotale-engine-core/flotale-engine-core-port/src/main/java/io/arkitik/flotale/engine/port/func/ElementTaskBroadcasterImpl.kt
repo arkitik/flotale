@@ -11,23 +11,15 @@ import io.arkitik.flotale.engine.function.task.ElementTaskBroadcaster
 internal class ElementTaskBroadcasterImpl(
     private val engineBeanStores: List<EngineBeanStore>,
 ) : ElementTaskBroadcaster {
-    override fun elementEnter(elementKey: String, taskKey: String, executedBy: String) {
-        engineBeanStores.flatMap {
-            it.elementTaskEnteringBroadcasterUnits(taskKey)
-        }.filter {
-            it.isSupported(elementKey, taskKey, executedBy)
-        }.forEach {
-            it.elementEnter(elementKey, taskKey, executedBy)
-        }
+    override fun elementEnter(elementKey: String, elementType: String, taskKey: String, executedBy: String) {
+        engineBeanStores.flatMap { it.elementTaskEnteringBroadcasterUnits(taskKey) }
+            .filter { it.isSupported(elementKey, elementType, taskKey, executedBy) }
+            .forEach { it.elementEnter(elementKey, elementType, taskKey, executedBy) }
     }
 
-    override fun elementExit(elementKey: String, taskKey: String, executedBy: String) {
-        engineBeanStores.flatMap {
-            it.elementTaskExitingBroadcasterUnits(taskKey)
-        }.filter {
-            it.isSupported(elementKey, taskKey, executedBy)
-        }.forEach {
-            it.elementExit(elementKey, taskKey, executedBy)
-        }
+    override fun elementExit(elementKey: String, elementType: String, taskKey: String, executedBy: String) {
+        engineBeanStores.flatMap { it.elementTaskExitingBroadcasterUnits(taskKey) }
+            .filter { it.isSupported(elementKey, elementType, taskKey, executedBy) }
+            .forEach { it.elementExit(elementKey, elementType, taskKey, executedBy) }
     }
 }

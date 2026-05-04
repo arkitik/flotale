@@ -11,13 +11,9 @@ import io.arkitik.flotale.engine.function.action.ActionExecutor
 internal class ActionExecutorImpl(
     private val engineBeanStores: List<EngineBeanStore>,
 ) : ActionExecutor {
-    override fun executeAction(actionKey: String, elementKey: String, executedBy: String) {
-        engineBeanStores.flatMap { engineBeanStore ->
-            engineBeanStore.actionExecutorUnits(actionKey)
-        }.filter { validatorUnit ->
-            validatorUnit.isSupported(actionKey, elementKey, executedBy)
-        }.forEach { validatorUnit ->
-            validatorUnit.executeAction(actionKey, elementKey, executedBy)
-        }
+    override fun executeAction(actionKey: String, elementKey: String, elementType: String, executedBy: String) {
+        engineBeanStores.flatMap { it.actionExecutorUnits(actionKey) }
+            .filter { it.isSupported(actionKey, elementKey, elementType, executedBy) }
+            .forEach { it.executeAction(actionKey, elementKey, elementType, executedBy) }
     }
 }

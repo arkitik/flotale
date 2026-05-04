@@ -17,6 +17,7 @@ internal class InitiateElementOperation(
         with(elementStore) {
             creatorWithInsert(identityCreator()) {
                 elementKey.elementKey()
+                elementType.elementType()
                 task.task()
                 addedBy.addedBy()
             }

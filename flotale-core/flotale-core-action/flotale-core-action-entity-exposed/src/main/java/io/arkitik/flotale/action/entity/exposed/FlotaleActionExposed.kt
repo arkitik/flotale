@@ -2,6 +2,7 @@ package io.arkitik.flotale.action.entity.exposed
 
 import io.arkitik.flotale.action.domain.ActionDomain
 import io.arkitik.flotale.action.domain.embedded.ActionStatus
+import io.arkitik.flotale.action.domain.embedded.ActionType
 import io.arkitik.flotale.task.domain.TaskDomain
 import io.arkitik.flotale.task.entity.exposed.FlotaleTaskTable
 import org.jetbrains.exposed.v1.jdbc.Database
@@ -14,6 +15,7 @@ class FlotaleActionExposed(
     val destinationTaskUuid: String,
     override val actionKey: String,
     override val actionName: String,
+    override val actionType: ActionType,
     override var status: ActionStatus,
     val database: Database?,
 ) : ActionDomain {

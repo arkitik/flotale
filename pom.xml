@@ -12,8 +12,8 @@
         <module>flotale-core</module>
         <module>flotale-engine</module>
         <module>flotale-starter</module>
-        <module>flotale-api</module>
         <module>flotale-plugin</module>
+        <module>flotale-protocol</module>
     </modules>
 
     <name>flotale workflow engine</name>

@@ -27,6 +27,7 @@
             <artifactId>kotlin-test</artifactId>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
             <artifactId>flotale-deploy-app</artifactId>

@@ -10,6 +10,7 @@ internal class ElementDomainCreatorImpl : ElementDomainCreator {
     private var uuid: String = UUID.randomUUID().toString().replace("-", "")
 
     private lateinit var elementKey: String
+    private lateinit var elementType: String
     private lateinit var addedBy: String
 
     private lateinit var task: TaskDomain
@@ -21,6 +22,11 @@ internal class ElementDomainCreatorImpl : ElementDomainCreator {
 
     override fun String.elementKey(): ElementDomainCreator {
         elementKey = this
+        return this@ElementDomainCreatorImpl
+    }
+
+    override fun String.elementType(): ElementDomainCreator {
+        elementType = this
         return this@ElementDomainCreatorImpl
     }
 
@@ -36,6 +42,7 @@ internal class ElementDomainCreatorImpl : ElementDomainCreator {
 
     override fun create(): FlotaleElement = FlotaleElement(
         elementKey = elementKey,
+        elementType = elementType,
         task = task as io.arkitik.flotale.task.entity.FlotaleTask,
         uuid = uuid,
         creationDate = LocalDateTime.now(),

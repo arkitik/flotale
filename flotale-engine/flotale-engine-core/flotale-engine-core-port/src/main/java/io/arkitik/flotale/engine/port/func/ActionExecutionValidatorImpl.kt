@@ -11,13 +11,14 @@ import io.arkitik.flotale.engine.function.action.ActionExecutionValidator
 internal class ActionExecutionValidatorImpl(
     private val engineBeanStores: List<EngineBeanStore>,
 ) : ActionExecutionValidator {
-    override fun validateExecution(actionKey: String, elementKey: String, requestedBy: String): Boolean {
-        return engineBeanStores.flatMap { validatorUnit ->
-            validatorUnit.actionExecutionValidatorUnits(actionKey)
-        }.filter { validatorUnit ->
-            validatorUnit.isSupported(actionKey, elementKey, requestedBy)
-        }.all { validatorUnit ->
-            validatorUnit.canExecute(actionKey, elementKey, requestedBy)
-        }
+    override fun validateExecution(
+        actionKey: String,
+        elementKey: String,
+        elementType: String,
+        requestedBy: String,
+    ): Boolean {
+        return engineBeanStores.flatMap { it.actionExecutionValidatorUnits(actionKey) }
+            .filter { it.isSupported(actionKey, elementKey, elementType, requestedBy) }
+            .all { it.canExecute(actionKey, elementKey, elementType, requestedBy) }
     }
 }

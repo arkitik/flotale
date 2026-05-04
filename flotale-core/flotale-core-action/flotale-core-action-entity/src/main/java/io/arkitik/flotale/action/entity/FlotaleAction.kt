@@ -2,6 +2,7 @@ package io.arkitik.flotale.action.entity
 
 import io.arkitik.flotale.action.domain.ActionDomain
 import io.arkitik.flotale.action.domain.embedded.ActionStatus
+import io.arkitik.flotale.action.domain.embedded.ActionType
 import io.arkitik.flotale.task.entity.FlotaleTask
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -45,6 +46,9 @@ class FlotaleAction(
         updatable = false,
     )
     override val actionName: String,
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    override val actionType: ActionType,
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     override var status: ActionStatus,

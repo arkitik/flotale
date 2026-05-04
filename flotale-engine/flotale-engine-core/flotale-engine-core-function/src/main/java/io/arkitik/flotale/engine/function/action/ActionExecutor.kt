@@ -6,11 +6,11 @@ package io.arkitik.flotale.engine.function.action
  * Project *flotale* [arkitik.io](https://arkitik.io)
  */
 interface ActionExecutor {
-    fun executeAction(actionKey: String, elementKey: String, executedBy: String)
+    fun executeAction(actionKey: String, elementKey: String, elementType: String, executedBy: String)
 
     interface ExecutorUnit {
-        fun isSupported(actionKey: String, elementKey: String, executedBy: String): Boolean
+        fun isSupported(actionKey: String, elementKey: String, elementType: String, executedBy: String): Boolean
 
-        fun executeAction(actionKey: String, elementKey: String, executedBy: String)
+        fun executeAction(actionKey: String, elementKey: String, elementType: String, executedBy: String)
     }
 }

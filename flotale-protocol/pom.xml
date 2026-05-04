@@ -9,10 +9,10 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>flotale-api</artifactId>
-
+    <artifactId>flotale-protocol</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>flotale-api-authenticated</module>
+        <module>flotale-protocol-form</module>
     </modules>
+
 </project>

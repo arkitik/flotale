@@ -33,6 +33,7 @@ class ExposedActionStore(
         this[identityTable.sourceTask] = identity.sourceTaskUuid
         this[identityTable.destinationTask] = identity.destinationTaskUuid
         this[identityTable.actionKey] = identity.actionKey
+        this[identityTable.actionType] = identity.actionType
         this[identityTable.actionName] = identity.actionName
         this[identityTable.status] = identity.status
     }

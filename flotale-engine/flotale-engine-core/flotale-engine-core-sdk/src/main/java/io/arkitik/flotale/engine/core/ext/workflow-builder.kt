@@ -84,7 +84,15 @@ class TaskDataBuilder {
     }
 
     fun addAction(builder: ActionDataBuilder.() -> Unit) {
-        addAction(ActionDataBuilder().apply(builder).build())
+        addStandardAction(builder)
+    }
+
+    fun addStandardAction(builder: ActionDataBuilder.() -> Unit) {
+        addAction(ActionDataBuilder(false).apply(builder).build())
+    }
+
+    fun addFormAction(builder: ActionDataBuilder.() -> Unit) {
+        addAction(ActionDataBuilder(true).apply(builder).build())
     }
 
     fun build() =
@@ -97,7 +105,7 @@ class TaskDataBuilder {
 }
 
 @FlotaleWorkflow
-class ActionDataBuilder {
+class ActionDataBuilder(private val formAction: Boolean = false) {
     lateinit var actionKey: String
     lateinit var actionName: String
     lateinit var actionDestinationTask: String
@@ -107,5 +115,6 @@ class ActionDataBuilder {
             key = actionKey,
             name = actionName,
             destinationTaskKey = actionDestinationTask,
+            formAction = formAction,
         )
 }

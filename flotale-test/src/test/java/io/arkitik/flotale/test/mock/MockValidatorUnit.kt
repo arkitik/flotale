@@ -18,35 +18,35 @@ internal class MockValidatorUnit : ActionExecutionValidator.ValidatorUnit {
 
     internal fun clearAll() = verifiers.clear()
 
-    override fun isSupported(actionKey: String, elementKey: String, requestedBy: String) =
+    override fun isSupported(actionKey: String, elementKey: String, elementType: String, requestedBy: String) =
         verifiers.all {
-            it.isSupported(actionKey, elementKey, requestedBy)
+            it.isSupported(actionKey, elementKey, elementType, requestedBy)
         }
 
-    override fun canExecute(actionKey: String, elementKey: String, requestedBy: String) =
+    override fun canExecute(actionKey: String, elementKey: String, elementType: String, requestedBy: String) =
         verifiers.all {
-            it.canExecute(actionKey, elementKey, requestedBy)
+            it.canExecute(actionKey, elementKey, elementType, requestedBy)
         }
 }
 
 object MockValidatorUnits {
     internal object AllAccept : ActionExecutionValidator.ValidatorUnit {
-        override fun isSupported(actionKey: String, elementKey: String, requestedBy: String) = true
+        override fun isSupported(actionKey: String, elementKey: String, elementType: String, requestedBy: String) = true
 
-        override fun canExecute(actionKey: String, elementKey: String, requestedBy: String) = true
+        override fun canExecute(actionKey: String, elementKey: String, elementType: String, requestedBy: String) = true
     }
 
     internal object SupportedAndCantExecute : ActionExecutionValidator.ValidatorUnit {
-        override fun isSupported(actionKey: String, elementKey: String, requestedBy: String) = true
+        override fun isSupported(actionKey: String, elementKey: String, elementType: String, requestedBy: String) = true
 
-        override fun canExecute(actionKey: String, elementKey: String, requestedBy: String) = false
+        override fun canExecute(actionKey: String, elementKey: String, elementType: String, requestedBy: String) = false
     }
 
     internal class SupportedAndCanExecuteForAction(private val actionKey: String) :
         ActionExecutionValidator.ValidatorUnit {
-        override fun isSupported(actionKey: String, elementKey: String, requestedBy: String) = true
+        override fun isSupported(actionKey: String, elementKey: String, elementType: String, requestedBy: String) = true
 
-        override fun canExecute(actionKey: String, elementKey: String, requestedBy: String) =
+        override fun canExecute(actionKey: String, elementKey: String, elementType: String, requestedBy: String) =
             actionKey == this@SupportedAndCanExecuteForAction.actionKey
     }
 
@@ -54,10 +54,10 @@ object MockValidatorUnits {
         private val conditionSupported: (actionKey: String, elementKey: String) -> Boolean,
         private val condition: (actionKey: String, elementKey: String) -> Boolean = conditionSupported,
     ) : ActionExecutionValidator.ValidatorUnit {
-        override fun isSupported(actionKey: String, elementKey: String, requestedBy: String) =
+        override fun isSupported(actionKey: String, elementKey: String, elementType: String, requestedBy: String) =
             conditionSupported(actionKey, elementKey)
 
-        override fun canExecute(actionKey: String, elementKey: String, requestedBy: String) =
+        override fun canExecute(actionKey: String, elementKey: String, elementType: String, requestedBy: String) =
             condition(actionKey, elementKey)
     }
 }

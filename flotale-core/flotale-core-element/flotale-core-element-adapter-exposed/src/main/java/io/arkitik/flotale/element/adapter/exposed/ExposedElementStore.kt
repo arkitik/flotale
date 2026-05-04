@@ -31,6 +31,7 @@ class ExposedElementStore(
     override fun <K : Any> UpdateBuilder<K>.createEntity(identity: ElementDomain) {
         identity as FlotaleElementExposed
         this[identityTable.elementKey] = identity.elementKey
+        this[identityTable.elementType] = identity.elementType
         this[identityTable.task] = identity.taskUuid
         this[identityTable.addedBy] = identity.addedBy
     }

@@ -10,6 +10,7 @@ class FlotaleElementExposed(
     override val uuid: String,
     override val creationDate: LocalDateTime,
     override val elementKey: String,
+    override val elementType: String,
     var taskUuid: String,
     override val addedBy: String,
     val database: Database?,

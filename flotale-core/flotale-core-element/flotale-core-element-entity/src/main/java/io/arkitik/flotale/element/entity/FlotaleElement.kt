@@ -27,6 +27,11 @@ class FlotaleElement(
         updatable = false,
     )
     override val elementKey: String,
+    @Column(
+        nullable = false,
+        updatable = false,
+    )
+    override val elementType: String,
     @ManyToOne(
         optional = false,
         fetch = FetchType.EAGER,

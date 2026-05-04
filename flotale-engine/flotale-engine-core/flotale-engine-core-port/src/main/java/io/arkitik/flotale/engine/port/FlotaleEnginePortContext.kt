@@ -7,11 +7,13 @@ import io.arkitik.flotale.engine.core.FlotaleWorkflowEngine
 import io.arkitik.flotale.engine.function.EngineBeanStore
 import io.arkitik.flotale.engine.function.action.ActionExecutionValidator
 import io.arkitik.flotale.engine.function.action.ActionExecutor
+import io.arkitik.flotale.engine.function.action.ActionFormProvider
 import io.arkitik.flotale.engine.function.task.ElementTaskBroadcaster
 import io.arkitik.flotale.engine.operation.domain.FlotaleDomainEngineImpl
 import io.arkitik.flotale.engine.operation.workflow.FlotaleWorkflowEngineImpl
 import io.arkitik.flotale.engine.port.func.ActionExecutionValidatorImpl
 import io.arkitik.flotale.engine.port.func.ActionExecutorImpl
+import io.arkitik.flotale.engine.port.func.ActionFormProviderImpl
 import io.arkitik.flotale.engine.port.func.ElementTaskBroadcasterImpl
 import io.arkitik.flotale.engine.port.func.SpringEngineBeanStore
 import io.arkitik.flotale.stage.sdk.FlotaleStageDomainSdk
@@ -53,6 +55,7 @@ class FlotaleEnginePortContext {
         elementTaskBroadcaster: ElementTaskBroadcaster,
         actionExecutionValidator: ActionExecutionValidator,
         actionExecutor: ActionExecutor,
+        actionFormProvider: ActionFormProvider,
     ): FlotaleWorkflowEngine = FlotaleWorkflowEngineImpl(
         flotaleWorkflowDomainSdk = flotaleWorkflowDomainSdk,
         flotaleStageDomainSdk = flotaleStageDomainSdk,
@@ -62,7 +65,13 @@ class FlotaleEnginePortContext {
         elementTaskBroadcaster = elementTaskBroadcaster,
         actionExecutionValidator = actionExecutionValidator,
         actionExecutor = actionExecutor,
+        actionFormProvider = actionFormProvider,
     )
+
+    @Bean
+    fun actionFormProvider(
+        engineBeanStores: List<EngineBeanStore>,
+    ): ActionFormProvider = ActionFormProviderImpl(engineBeanStores)
 
     @Bean
     fun actionExecutionBroadcaster(

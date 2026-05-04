@@ -33,4 +33,5 @@ data class ActionData(
     val key: String,
     val name: String,
     val destinationTaskKey: String,
+    val formAction: Boolean,
 )

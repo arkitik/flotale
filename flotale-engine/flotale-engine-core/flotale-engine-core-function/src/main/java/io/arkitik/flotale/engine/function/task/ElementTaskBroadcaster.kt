@@ -6,16 +6,16 @@ package io.arkitik.flotale.engine.function.task
  * Project *flotale* [arkitik.io](https://arkitik.io)
  */
 interface ElementTaskBroadcaster {
-    fun elementEnter(elementKey: String, taskKey: String, executedBy: String)
-    fun elementExit(elementKey: String, taskKey: String, executedBy: String)
+    fun elementEnter(elementKey: String, elementType: String, taskKey: String, executedBy: String)
+    fun elementExit(elementKey: String, elementType: String, taskKey: String, executedBy: String)
 
     interface EnteringBroadcasterUnit {
-        fun isSupported(elementKey: String, taskKey: String, executedBy: String): Boolean
-        fun elementEnter(elementKey: String, taskKey: String, executedBy: String)
+        fun isSupported(elementKey: String, elementType: String, taskKey: String, executedBy: String): Boolean
+        fun elementEnter(elementKey: String, elementType: String, taskKey: String, executedBy: String)
     }
 
     interface ExitingBroadcasterUnit {
-        fun isSupported(elementKey: String, taskKey: String, executedBy: String): Boolean
-        fun elementExit(elementKey: String, taskKey: String, executedBy: String)
+        fun isSupported(elementKey: String, elementType: String, taskKey: String, executedBy: String): Boolean
+        fun elementExit(elementKey: String, elementType: String, taskKey: String, executedBy: String)
     }
 }

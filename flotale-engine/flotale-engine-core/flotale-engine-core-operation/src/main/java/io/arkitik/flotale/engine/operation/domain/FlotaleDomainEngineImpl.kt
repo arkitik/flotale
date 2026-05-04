@@ -1,5 +1,6 @@
 package io.arkitik.flotale.engine.operation.domain
 
+import io.arkitik.flotale.action.domain.embedded.ActionType
 import io.arkitik.flotale.action.sdk.FlotaleActionDomainSdk
 import io.arkitik.flotale.action.sdk.dto.CreateActionDto
 import io.arkitik.flotale.engine.core.FlotaleDomainEngine
@@ -292,6 +293,7 @@ class FlotaleDomainEngineImpl(
         val createActionDto = CreateActionDto(
             actionKey = action.key,
             actionName = action.name,
+            actionType = if (action.formAction) ActionType.FORM_ACTION else ActionType.STANDARD,
             sourceTask = sourceTask,
             destinationTask = destinationTask
         )

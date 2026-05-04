@@ -2,6 +2,7 @@ package io.arkitik.flotale.engine.function
 
 import io.arkitik.flotale.engine.function.action.ActionExecutionValidator
 import io.arkitik.flotale.engine.function.action.ActionExecutor
+import io.arkitik.flotale.engine.function.action.ActionFormProvider
 import io.arkitik.flotale.engine.function.task.ElementTaskBroadcaster
 
 /**
@@ -25,4 +26,8 @@ interface EngineBeanStore {
     fun elementTaskExitingBroadcasterUnits(
         taskKey: String,
     ): Collection<ElementTaskBroadcaster.ExitingBroadcasterUnit>
+
+    fun actionFormProviderUnits(
+        actionKey: String,
+    ): Collection<ActionFormProvider.FormProviderUnit>
 }

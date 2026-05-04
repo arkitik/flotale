@@ -1,6 +1,7 @@
 package io.arkitik.flotale.action.adapter.creator
 
 import io.arkitik.flotale.action.domain.embedded.ActionStatus
+import io.arkitik.flotale.action.domain.embedded.ActionType
 import io.arkitik.flotale.action.entity.FlotaleAction
 import io.arkitik.flotale.action.store.creator.ActionDomainCreator
 import io.arkitik.flotale.task.domain.TaskDomain
@@ -17,6 +18,8 @@ internal class ActionDomainCreatorImpl : ActionDomainCreator {
     private lateinit var actionKey: String
 
     private lateinit var actionName: String
+
+    private lateinit var actionType: ActionType
 
     private lateinit var status: ActionStatus
 
@@ -45,6 +48,11 @@ internal class ActionDomainCreatorImpl : ActionDomainCreator {
         return this@ActionDomainCreatorImpl
     }
 
+    override fun ActionType.actionType(): ActionDomainCreator {
+        actionType = this
+        return this@ActionDomainCreatorImpl
+    }
+
     override fun ActionStatus.status(): ActionDomainCreator {
         status = this
         return this@ActionDomainCreatorImpl
@@ -56,6 +64,7 @@ internal class ActionDomainCreatorImpl : ActionDomainCreator {
         destinationTask = destinationTask as io.arkitik.flotale.task.entity.FlotaleTask,
         actionKey = actionKey,
         actionName = actionName,
+        actionType = actionType,
         status = status,
         uuid = uuid,
         creationDate = LocalDateTime.now(),

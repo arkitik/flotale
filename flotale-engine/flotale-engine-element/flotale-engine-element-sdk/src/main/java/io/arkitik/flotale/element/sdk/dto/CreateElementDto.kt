@@ -9,6 +9,7 @@ import io.arkitik.flotale.task.domain.TaskDomain
  */
 class CreateElementDto(
     val elementKey: String,
+    val elementType: String,
     val task: TaskDomain,
     val addedBy: String,
 )

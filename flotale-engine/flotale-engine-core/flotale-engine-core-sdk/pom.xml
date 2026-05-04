@@ -10,4 +10,12 @@
     </parent>
     <artifactId>flotale-engine-core-sdk</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>${project.parent.groupId}</groupId>
+            <artifactId>flotale-protocol-form</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+    </dependencies>
+
 </project>

@@ -6,11 +6,11 @@ package io.arkitik.flotale.engine.function.action
  * Project *flotale* [arkitik.io](https://arkitik.io)
  */
 interface ActionExecutionValidator {
-    fun validateExecution(actionKey: String, elementKey: String, requestedBy: String): Boolean
+    fun validateExecution(actionKey: String, elementKey: String, elementType: String, requestedBy: String): Boolean
 
     interface ValidatorUnit {
-        fun isSupported(actionKey: String, elementKey: String, requestedBy: String): Boolean
+        fun isSupported(actionKey: String, elementKey: String, elementType: String, requestedBy: String): Boolean
 
-        fun canExecute(actionKey: String, elementKey: String, requestedBy: String): Boolean
+        fun canExecute(actionKey: String, elementKey: String, elementType: String, requestedBy: String): Boolean
     }
 }

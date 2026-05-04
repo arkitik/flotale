@@ -14,6 +14,7 @@ internal class ElementDomainCreatorImpl(
 
     private var uuid: String = Uuid.generateV7().toString().replace("-", "")
     private lateinit var elementKey: String
+    private lateinit var elementType: String
     private lateinit var task: TaskDomain
     private lateinit var addedBy: String
 
@@ -24,6 +25,11 @@ internal class ElementDomainCreatorImpl(
 
     override fun String.elementKey(): ElementDomainCreator {
         this@ElementDomainCreatorImpl.elementKey = this
+        return this@ElementDomainCreatorImpl
+    }
+
+    override fun String.elementType(): ElementDomainCreator {
+        this@ElementDomainCreatorImpl.elementType = this
         return this@ElementDomainCreatorImpl
     }
 
@@ -41,6 +47,7 @@ internal class ElementDomainCreatorImpl(
         uuid = uuid,
         creationDate = LocalDateTime.now(),
         elementKey = elementKey,
+        elementType = elementType,
         taskUuid = task.uuid,
         addedBy = addedBy,
         database = database,

@@ -20,6 +20,7 @@ internal class CreateActionOperation(
             creatorWithInsert(identityCreator()) {
                 actionKey.actionKey()
                 actionName.actionName()
+                actionType.actionType()
                 sourceTask.sourceTask()
                 destinationTask.destinationTask()
                 ActionStatus.ACTIVE.status()

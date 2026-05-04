@@ -32,8 +32,7 @@ import org.springframework.test.context.TestPropertySource
         ArkitikFlotaleApp::class,
         MockValidatorUnit::class
     ],
-
-    )
+)
 @TestPropertySource(
     locations = ["classpath:application.yml"]
 )

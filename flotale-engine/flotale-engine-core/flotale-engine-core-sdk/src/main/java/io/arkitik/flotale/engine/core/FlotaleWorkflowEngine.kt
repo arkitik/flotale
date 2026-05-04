@@ -23,6 +23,7 @@ interface FlotaleWorkflowEngine {
     fun initiateElement(
         workflowKey: String,
         elementKey: String,
+        elementType: String,
         addedBy: String,
     ): ElementDetails
 
@@ -36,6 +37,7 @@ interface FlotaleWorkflowEngine {
     fun validateExecuteAction(
         actionKey: String,
         elementKey: String,
+        elementType: String,
         requestedBy: String,
     )
 
@@ -49,6 +51,7 @@ interface FlotaleWorkflowEngine {
     fun executeAction(
         actionKey: String,
         elementKey: String,
+        elementType: String,
         executedBy: String,
     )
 
@@ -61,6 +64,7 @@ interface FlotaleWorkflowEngine {
      */
     fun elementDetails(
         elementKey: String,
+        elementType: String,
         requestedBy: String,
     ): ElementDetails
 }

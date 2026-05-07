@@ -9,6 +9,7 @@ import io.arkitik.flotale.element.operation.roles.ElementKeyShouldBeUnique
 import io.arkitik.flotale.element.sdk.FlotaleElementDomainSdk
 import io.arkitik.flotale.element.sdk.dto.CreateElementDto
 import io.arkitik.flotale.element.sdk.dto.ElementActionDto
+import io.arkitik.flotale.element.sdk.dto.ElementReferenceData
 import io.arkitik.flotale.element.store.ElementStore
 import io.arkitik.radix.develop.operation.Operation
 import io.arkitik.radix.develop.operation.ext.operateRole
@@ -28,13 +29,13 @@ class FlotaleElementDomainSdkImpl(
     override val createElement: Operation<CreateElementDto, Unit> =
         operationBuilder {
             install {
-                elementKeyShouldBeUnique.operateRole(elementKey)
+                elementKeyShouldBeUnique.operateRole(elementReference)
             }
 
             mainOperation(InitiateElementOperation(elementStore))
         }
 
-    override val findElementByReference: Operation<String, ElementDomain> =
+    override val findElementByReference: Operation<ElementReferenceData, ElementDomain> =
         operationBuilder {
             mainOperation(FindElementByReferenceOperation(elementStore.storeQuery))
         }

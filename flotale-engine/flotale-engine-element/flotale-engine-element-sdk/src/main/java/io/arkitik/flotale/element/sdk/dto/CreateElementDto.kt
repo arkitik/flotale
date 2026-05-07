@@ -8,8 +8,7 @@ import io.arkitik.flotale.task.domain.TaskDomain
  * Project *flotale* [arkitik.io](https://arkitik.io)
  */
 class CreateElementDto(
-    val elementKey: String,
-    val elementType: String,
+    val elementReference: ElementReferenceData,
     val task: TaskDomain,
     val addedBy: String,
 )

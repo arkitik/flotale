@@ -2,6 +2,7 @@ package io.arkitik.flotale.engine.port.func
 
 import io.arkitik.flotale.engine.function.EngineBeanStore
 import io.arkitik.flotale.engine.function.action.ActionExecutionValidator
+import io.arkitik.flotale.engine.function.dtos.ExecuteActionData
 
 /**
  * Created By [*Ibrahim Al-Tamimi *](https://www.linkedin.com/in/iloom/)
@@ -11,14 +12,9 @@ import io.arkitik.flotale.engine.function.action.ActionExecutionValidator
 internal class ActionExecutionValidatorImpl(
     private val engineBeanStores: List<EngineBeanStore>,
 ) : ActionExecutionValidator {
-    override fun validateExecution(
-        actionKey: String,
-        elementKey: String,
-        elementType: String,
-        requestedBy: String,
-    ): Boolean {
-        return engineBeanStores.flatMap { it.actionExecutionValidatorUnits(actionKey) }
-            .filter { it.isSupported(actionKey, elementKey, elementType, requestedBy) }
-            .all { it.canExecute(actionKey, elementKey, elementType, requestedBy) }
+    override fun validateExecution(actionData: ExecuteActionData.Companion.Standard): Boolean {
+        return engineBeanStores.flatMap { it.actionExecutionValidatorUnits(actionData.actionKey) }
+            .filter { it.isSupported(actionData) }
+            .all { it.canExecute(actionData) }
     }
 }

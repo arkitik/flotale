@@ -17,6 +17,10 @@ object FlotaleElementTable : RadixTable<String, ElementDomain>("flotale_element"
     )
     val addedBy = varchar("added_by", 255)
 
+    init {
+        uniqueIndex(customIndexName = "flotale_element_unique", elementKey, elementType)
+    }
+
     override fun mapToIdentity(resultRow: ResultRow, database: Database?): ElementDomain =
         FlotaleElementExposed(
             uuid = resultRow[uuid],

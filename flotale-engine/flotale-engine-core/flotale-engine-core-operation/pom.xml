@@ -13,6 +13,12 @@
     <dependencies>
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
+            <artifactId>flotale-protocol-transactional</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.parent.groupId}</groupId>
             <artifactId>flotale-engine-core-sdk</artifactId>
             <version>${project.parent.version}</version>
         </dependency>

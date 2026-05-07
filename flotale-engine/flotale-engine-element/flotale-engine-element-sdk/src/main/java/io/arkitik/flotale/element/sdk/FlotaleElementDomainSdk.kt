@@ -3,6 +3,7 @@ package io.arkitik.flotale.element.sdk
 import io.arkitik.flotale.element.domain.ElementDomain
 import io.arkitik.flotale.element.sdk.dto.CreateElementDto
 import io.arkitik.flotale.element.sdk.dto.ElementActionDto
+import io.arkitik.flotale.element.sdk.dto.ElementReferenceData
 import io.arkitik.radix.develop.operation.Operation
 
 /**
@@ -12,7 +13,7 @@ import io.arkitik.radix.develop.operation.Operation
  */
 interface FlotaleElementDomainSdk {
     val createElement: Operation<CreateElementDto, Unit>
-    val findElementByReference: Operation<String, ElementDomain>
+    val findElementByReference: Operation<ElementReferenceData, ElementDomain>
 
     val elementExecuteAction: Operation<ElementActionDto, Unit>
 }

@@ -19,7 +19,7 @@ data class ElementDetails(
 data class ActionDetails(
     val key: String,
     val name: String,
-    val actionType: String,
+    val formAction: Boolean,
     val form: ActionForm?,
 )
 

@@ -16,8 +16,8 @@ internal class InitiateElementOperation(
     override fun CreateElementDto.operate() {
         with(elementStore) {
             creatorWithInsert(identityCreator()) {
-                elementKey.elementKey()
-                elementType.elementType()
+                elementReference.elementKey.elementKey()
+                elementReference.elementType.elementType()
                 task.task()
                 addedBy.addedBy()
             }

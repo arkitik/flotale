@@ -7,9 +7,19 @@ import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
 import jakarta.persistence.Id
 import jakarta.persistence.ManyToOne
+import jakarta.persistence.Table
+import jakarta.persistence.UniqueConstraint
 import java.time.LocalDateTime
 
 @Entity
+@Table(
+    uniqueConstraints = [
+        UniqueConstraint(
+            name = "flotale_element_unique",
+            columnNames = ["elementKey", "elementType"],
+        )
+    ],
+)
 class FlotaleElement(
     @Column(
         nullable = false,

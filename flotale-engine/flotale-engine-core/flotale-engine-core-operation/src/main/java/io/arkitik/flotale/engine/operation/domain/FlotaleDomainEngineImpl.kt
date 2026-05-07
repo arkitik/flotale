@@ -10,6 +10,7 @@ import io.arkitik.flotale.engine.core.dto.TaskData
 import io.arkitik.flotale.engine.core.dto.WorkflowData
 import io.arkitik.flotale.engine.core.dto.WorkflowValidationResult
 import io.arkitik.flotale.engine.core.dto.WorkflowValidationResult.Companion.InvalidReason
+import io.arkitik.flotale.protocol.transactional.FlotaleTransactionalExecutor
 import io.arkitik.flotale.stage.domain.StageDomain
 import io.arkitik.flotale.stage.sdk.FlotaleStageDomainSdk
 import io.arkitik.flotale.stage.sdk.dto.CreateStageDto
@@ -31,28 +32,31 @@ class FlotaleDomainEngineImpl(
     private val flotaleStageDomainSdk: FlotaleStageDomainSdk,
     private val flotaleTaskDomainSdk: FlotaleTaskDomainSdk,
     private val flotaleActionDomainSdk: FlotaleActionDomainSdk,
+    private val flotaleTransactionalExecutor: FlotaleTransactionalExecutor,
 ) : FlotaleDomainEngine {
     override fun registerWorkflows(workflows: List<WorkflowData>) {
         workflows.forEach(::registerWorkflow)
     }
 
     override fun registerWorkflow(workflow: WorkflowData) {
-        createWorkflow(workflow)
+        flotaleTransactionalExecutor.runOnTransaction {
+            createWorkflow(workflow)
 
-        workflow.initialStage?.let { initialStage ->
-            registerStage(
-                workflowKey = workflow.key,
-                stage = initialStage,
-                initialStage = true
-            )
-        }
+            workflow.initialStage?.let { initialStage ->
+                registerStage(
+                    workflowKey = workflow.key,
+                    stage = initialStage,
+                    initialStage = true
+                )
+            }
 
-        workflow.stages.forEach { stage ->
-            registerStage(
-                workflowKey = workflow.key,
-                stage = stage,
-                initialStage = false
-            )
+            workflow.stages.forEach { stage ->
+                registerStage(
+                    workflowKey = workflow.key,
+                    stage = stage,
+                    initialStage = false
+                )
+            }
         }
     }
 
@@ -228,46 +232,54 @@ class FlotaleDomainEngineImpl(
     }
 
     override fun registerStage(workflowKey: String, stage: StageData, initialStage: Boolean) {
-        val workflowDomain = findWorkflow(workflowKey)
-        createStage(workflowDomain, stage, initialStage)
+        flotaleTransactionalExecutor.runOnTransaction {
+            val workflowDomain = findWorkflow(workflowKey)
+            createStage(workflowDomain, stage, initialStage)
 
-        stage.initialTask?.let { initialTask ->
-            registerTask(
-                stageKey = stage.key,
-                task = initialTask,
-                initialTask = true
-            )
-        }
+            stage.initialTask?.let { initialTask ->
+                registerTask(
+                    stageKey = stage.key,
+                    task = initialTask,
+                    initialTask = true
+                )
+            }
 
-        stage.tasks.forEach { task ->
-            registerTask(
-                stageKey = stage.key,
-                task = task,
-                initialTask = false
-            )
+            stage.tasks.forEach { task ->
+                registerTask(
+                    stageKey = stage.key,
+                    task = task,
+                    initialTask = false
+                )
+            }
         }
     }
 
     private fun findWorkflow(workflowKey: String): WorkflowDomain {
-        return flotaleWorkflowDomainSdk.findWorkflow.runOperation(workflowKey)
+        return flotaleTransactionalExecutor.runOnTransaction {
+            flotaleWorkflowDomainSdk.findWorkflow.runOperation(workflowKey)
+        }
     }
 
     private fun createStage(workflowDomain: WorkflowDomain, stage: StageData, initialStage: Boolean) {
-        val createStageDto = CreateStageDto(
-            workflow = workflowDomain,
-            stageKey = stage.key,
-            stageName = stage.name,
-            initialStage = initialStage
-        )
-        flotaleStageDomainSdk.createStage.runOperation(createStageDto)
+        flotaleTransactionalExecutor.runOnTransaction {
+            val createStageDto = CreateStageDto(
+                workflow = workflowDomain,
+                stageKey = stage.key,
+                stageName = stage.name,
+                initialStage = initialStage
+            )
+            flotaleStageDomainSdk.createStage.runOperation(createStageDto)
+        }
     }
 
     override fun registerTask(stageKey: String, task: TaskData, initialTask: Boolean) {
-        val stageDomain = findStage(stageKey)
-        createTask(stageDomain, task, initialTask)
+        flotaleTransactionalExecutor.runOnTransaction {
+            val stageDomain = findStage(stageKey)
+            createTask(stageDomain, task, initialTask)
 
-        task.actions.forEach { action ->
-            addAction(task.key, action)
+            task.actions.forEach { action ->
+                addAction(task.key, action)
+            }
         }
     }
 
@@ -276,28 +288,32 @@ class FlotaleDomainEngineImpl(
     }
 
     private fun createTask(stageDomain: StageDomain, task: TaskData, initialTask: Boolean) {
-        val createTaskDto = CreateTaskDto(
-            stage = stageDomain,
-            taskKey = task.key,
-            taskName = task.name,
-            terminal = task.terminal,
-            initialTask = initialTask
-        )
-        flotaleTaskDomainSdk.createTask.runOperation(createTaskDto)
+        flotaleTransactionalExecutor.runOnTransaction {
+            val createTaskDto = CreateTaskDto(
+                stage = stageDomain,
+                taskKey = task.key,
+                taskName = task.name,
+                terminal = task.terminal,
+                initialTask = initialTask
+            )
+            flotaleTaskDomainSdk.createTask.runOperation(createTaskDto)
+        }
     }
 
     override fun addAction(taskKey: String, action: ActionData) {
-        val sourceTask = findTask(taskKey)
-        val destinationTask = findTask(action.destinationTaskKey)
+        flotaleTransactionalExecutor.runOnTransaction {
+            val sourceTask = findTask(taskKey)
+            val destinationTask = findTask(action.destinationTaskKey)
 
-        val createActionDto = CreateActionDto(
-            actionKey = action.key,
-            actionName = action.name,
-            actionType = if (action.formAction) ActionType.FORM_ACTION else ActionType.STANDARD,
-            sourceTask = sourceTask,
-            destinationTask = destinationTask
-        )
-        flotaleActionDomainSdk.createAction.runOperation(createActionDto)
+            val createActionDto = CreateActionDto(
+                actionKey = action.key,
+                actionName = action.name,
+                actionType = if (action.formAction) ActionType.FORM_ACTION else ActionType.STANDARD,
+                sourceTask = sourceTask,
+                destinationTask = destinationTask
+            )
+            flotaleActionDomainSdk.createAction.runOperation(createActionDto)
+        }
     }
 
     private fun findTask(taskKey: String): TaskDomain {
@@ -305,41 +321,53 @@ class FlotaleDomainEngineImpl(
     }
 
     override fun deleteWorkflow(workflowKey: String) {
-        val workflowDomain = findWorkflow(workflowKey)
-        flotaleWorkflowDomainSdk.deleteWorkflow.runOperation(workflowDomain)
+        flotaleTransactionalExecutor.runOnTransaction {
+            val workflowDomain = findWorkflow(workflowKey)
+            flotaleWorkflowDomainSdk.deleteWorkflow.runOperation(workflowDomain)
 
-        val stages = flotaleStageDomainSdk.workflowStages.runOperation(workflowDomain)
-        stages.forEach(::deleteStage)
+            val stages = flotaleStageDomainSdk.workflowStages.runOperation(workflowDomain)
+            stages.forEach(::deleteStage)
+        }
     }
 
     override fun deleteStage(stageKey: String) {
-        val stageDomain = findStage(stageKey)
-        deleteStage(stageDomain)
+        flotaleTransactionalExecutor.runOnTransaction {
+            val stageDomain = findStage(stageKey)
+            deleteStage(stageDomain)
+        }
     }
 
     private fun deleteStage(stageDomain: StageDomain) {
-        flotaleStageDomainSdk.deleteStage.runOperation(stageDomain)
+        flotaleTransactionalExecutor.runOnTransaction {
+            flotaleStageDomainSdk.deleteStage.runOperation(stageDomain)
 
-        val tasks = flotaleTaskDomainSdk.stageTasks.runOperation(stageDomain)
-        tasks.forEach(::deleteTask)
+            val tasks = flotaleTaskDomainSdk.stageTasks.runOperation(stageDomain)
+            tasks.forEach(::deleteTask)
+        }
     }
 
     override fun deleteTask(taskKey: String) {
-        val taskDomain = findTask(taskKey)
-        deleteTask(taskDomain)
+        flotaleTransactionalExecutor.runOnTransaction {
+            val taskDomain = findTask(taskKey)
+            deleteTask(taskDomain)
+        }
     }
 
     private fun deleteTask(taskDomain: TaskDomain) {
-        flotaleTaskDomainSdk.deleteTask.runOperation(taskDomain)
+        flotaleTransactionalExecutor.runOnTransaction {
+            flotaleTaskDomainSdk.deleteTask.runOperation(taskDomain)
 
-        val actions = flotaleActionDomainSdk.taskActions.runOperation(taskDomain)
-        actions.forEach { actionDomain ->
-            flotaleActionDomainSdk.deleteAction.runOperation(actionDomain)
+            val actions = flotaleActionDomainSdk.taskActions.runOperation(taskDomain)
+            actions.forEach { actionDomain ->
+                flotaleActionDomainSdk.deleteAction.runOperation(actionDomain)
+            }
         }
     }
 
     override fun deleteAction(actionKey: String) {
-        val actionDomain = flotaleActionDomainSdk.findAction.runOperation(actionKey)
-        flotaleActionDomainSdk.deleteAction.runOperation(actionDomain)
+        flotaleTransactionalExecutor.runOnTransaction {
+            val actionDomain = flotaleActionDomainSdk.findAction.runOperation(actionKey)
+            flotaleActionDomainSdk.deleteAction.runOperation(actionDomain)
+        }
     }
 }

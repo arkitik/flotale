@@ -6,10 +6,10 @@ import io.arkitik.flotale.engine.core.dto.ElementDetails
  * Interface representing the core workflow engine for managing and executing workflow elements.
  * Provides methods to initiate elements, validate and execute actions, and retrieve element details.
  *
- * Created By [*Ibrahim Al-Tamimi *](https://www.linkedin.com/in/iloom/)
- * Created At 7:46 PM, 20 , **Tue, December 2022**
- * Project *flotale* [arkitik.io](https://arkitik.io)
- */
+ *
+ * @author Ibrahim Al-Tamimi 
+ * @since 19:46, Tuesday, 20/12/2022
+ **/
 interface FlotaleWorkflowEngine {
 
     /**
@@ -53,6 +53,7 @@ interface FlotaleWorkflowEngine {
         elementKey: String,
         elementType: String,
         executedBy: String,
+        data: Map<String, Any> = emptyMap(),
     )
 
     /**

@@ -2,6 +2,7 @@ package io.arkitik.flotale.engine.port.func
 
 import io.arkitik.flotale.engine.function.EngineBeanStore
 import io.arkitik.flotale.engine.function.action.ActionExecutor
+import io.arkitik.flotale.engine.function.dtos.ExecuteActionData
 
 /**
  * Created By [*Ibrahim Al-Tamimi *](https://www.linkedin.com/in/iloom/)
@@ -11,9 +12,9 @@ import io.arkitik.flotale.engine.function.action.ActionExecutor
 internal class ActionExecutorImpl(
     private val engineBeanStores: List<EngineBeanStore>,
 ) : ActionExecutor {
-    override fun executeAction(actionKey: String, elementKey: String, elementType: String, executedBy: String) {
-        engineBeanStores.flatMap { it.actionExecutorUnits(actionKey) }
-            .filter { it.isSupported(actionKey, elementKey, elementType, executedBy) }
-            .forEach { it.executeAction(actionKey, elementKey, elementType, executedBy) }
+    override fun executeAction(actionData: ExecuteActionData) {
+        engineBeanStores.flatMap { it.actionExecutorUnits(actionData.actionKey) }
+            .filter { it.isSupported(actionData) }
+            .forEach { it.executeAction(actionData) }
     }
 }

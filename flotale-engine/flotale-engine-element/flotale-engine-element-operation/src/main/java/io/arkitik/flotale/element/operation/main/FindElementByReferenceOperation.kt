@@ -2,6 +2,7 @@ package io.arkitik.flotale.element.operation.main
 
 import io.arkitik.flotale.element.domain.ElementDomain
 import io.arkitik.flotale.element.operation.errors.FlotaleElementErrors
+import io.arkitik.flotale.element.sdk.dto.ElementReferenceData
 import io.arkitik.flotale.element.store.query.ElementStoreQuery
 import io.arkitik.radix.develop.operation.Operation
 import io.arkitik.radix.develop.shared.ext.resourceNotFound
@@ -13,8 +14,8 @@ import io.arkitik.radix.develop.shared.ext.resourceNotFound
  */
 internal class FindElementByReferenceOperation(
     private val elementStoreQuery: ElementStoreQuery,
-) : Operation<String, ElementDomain> {
-    override fun String.operate() =
-        elementStoreQuery.findByElementKey(this)
+) : Operation<ElementReferenceData, ElementDomain> {
+    override fun ElementReferenceData.operate() =
+        elementStoreQuery.findByElementKeyAndType(elementKey, elementType)
             .resourceNotFound(FlotaleElementErrors.ELEMENT_DOES_NOT_EXIST)
 }

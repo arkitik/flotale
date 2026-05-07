@@ -16,6 +16,7 @@ import io.arkitik.flotale.engine.port.func.ActionExecutorImpl
 import io.arkitik.flotale.engine.port.func.ActionFormProviderImpl
 import io.arkitik.flotale.engine.port.func.ElementTaskBroadcasterImpl
 import io.arkitik.flotale.engine.port.func.SpringEngineBeanStore
+import io.arkitik.flotale.protocol.transactional.FlotaleTransactionalExecutor
 import io.arkitik.flotale.stage.sdk.FlotaleStageDomainSdk
 import io.arkitik.flotale.task.sdk.FlotaleTaskDomainSdk
 import io.arkitik.flotale.workflow.sdk.FlotaleWorkflowDomainSdk
@@ -36,12 +37,14 @@ class FlotaleEnginePortContext {
         flotaleStageDomainSdk: FlotaleStageDomainSdk,
         flotaleTaskDomainSdk: FlotaleTaskDomainSdk,
         flotaleActionDomainSdk: FlotaleActionDomainSdk,
+        flotaleTransactionalExecutor: FlotaleTransactionalExecutor,
     ): FlotaleDomainEngine =
         FlotaleDomainEngineImpl(
             flotaleWorkflowDomainSdk = flotaleWorkflowDomainSdk,
             flotaleStageDomainSdk = flotaleStageDomainSdk,
             flotaleTaskDomainSdk = flotaleTaskDomainSdk,
             flotaleActionDomainSdk = flotaleActionDomainSdk,
+            flotaleTransactionalExecutor = flotaleTransactionalExecutor,
         )
 
     @Bean
@@ -56,6 +59,7 @@ class FlotaleEnginePortContext {
         actionExecutionValidator: ActionExecutionValidator,
         actionExecutor: ActionExecutor,
         actionFormProvider: ActionFormProvider,
+        flotaleTransactionalExecutor: FlotaleTransactionalExecutor,
     ): FlotaleWorkflowEngine = FlotaleWorkflowEngineImpl(
         flotaleWorkflowDomainSdk = flotaleWorkflowDomainSdk,
         flotaleStageDomainSdk = flotaleStageDomainSdk,
@@ -66,6 +70,7 @@ class FlotaleEnginePortContext {
         actionExecutionValidator = actionExecutionValidator,
         actionExecutor = actionExecutor,
         actionFormProvider = actionFormProvider,
+        flotaleTransactionalExecutor = flotaleTransactionalExecutor,
     )
 
     @Bean

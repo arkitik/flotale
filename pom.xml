@@ -5,13 +5,17 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.arkitik.flotale</groupId>
     <artifactId>flotale</artifactId>
-    <version>v1.0.0</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
+        <module>flotale-dependencies</module>
         <module>flotale-core</module>
         <module>flotale-engine</module>
+        <module>flotale-starter</module>
         <module>flotale-api</module>
         <module>flotale-plugin</module>
+        <module>flotale-protocol</module>
+        <module>flotale-migrator</module>
     </modules>
 
     <name>flotale workflow engine</name>
@@ -42,13 +46,13 @@
     </scm>
 
     <properties>
-        <spring-boot.version>3.5.4</spring-boot.version>
-        <radix.version>v2.4.4</radix.version>
-        <dokka.version>2.0.0</dokka.version>
-        <kotlin.version>2.2.0</kotlin.version>
+        <spring-boot.version>4.0.6</spring-boot.version>
+        <radix.version>v3.1.1</radix.version>
+        <dokka.version>2.2.0</dokka.version>
+        <kotlin.version>2.3.20</kotlin.version>
 
-        <valiktor-core.version>0.12.0</valiktor-core.version>
-        <exposed.version>0.61.0</exposed.version>
+        <exposed.version>1.2.0</exposed.version>
+        <java-jwt.version>4.5.0</java-jwt.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -60,13 +64,6 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>io.arkitik.radix</groupId>
-                <artifactId>radix-dependencies</artifactId>
-                <version>${radix.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring-boot.version}</version>
@@ -74,9 +71,18 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>org.valiktor</groupId>
-                <artifactId>valiktor-core</artifactId>
-                <version>${valiktor-core.version}</version>
+                <groupId>io.arkitik.radix</groupId>
+                <artifactId>radix-dependencies</artifactId>
+                <version>${radix.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains.exposed</groupId>
+                <artifactId>exposed-bom</artifactId>
+                <version>${exposed.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -90,10 +96,6 @@
             <artifactId>kotlin-stdlib</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-common</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <scope>test</scope>
@@ -101,21 +103,6 @@
     </dependencies>
 
     <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.sonatype.central</groupId>
-                    <artifactId>central-publishing-maven-plugin</artifactId>
-                    <version>0.8.0</version>
-                    <extensions>true</extensions>
-                    <configuration>
-                        <deploymentName>arkitik-${project.artifactId}-${project.version}</deploymentName>
-                        <publishingServerId>central-sonatype</publishingServerId>
-                        <outputFilename>arkitik-${project.artifactId}-${project.version}.zip</outputFilename>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
@@ -153,6 +140,7 @@
                 <configuration>
                     <args>
                         <arg>-Xjsr305=strict</arg>
+                        <arg>-opt-in=kotlin.uuid.ExperimentalUuidApi</arg>
                     </args>
                     <compilerPlugins>
                         <plugin>spring</plugin>
@@ -242,9 +230,11 @@
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.10.0</version>
+                <extensions>true</extensions>
                 <configuration>
                     <publishingServerId>central-sonatype</publishingServerId>
-                    <outputFilename>arkitik-${project.artifactId}-${project.version}.zip</outputFilename>
+                    <outputFilename>arkitik-radix-${project.version}.zip</outputFilename>
                 </configuration>
             </plugin>
         </plugins>

@@ -7,8 +7,8 @@ import io.arkitik.flotale.action.store.updater.ActionDomainUpdater
 internal class ActionDomainUpdaterImpl(
     private val entity: FlotaleAction,
 ) : ActionDomainUpdater {
-    override fun ActionStatus.status(): ActionDomainUpdater {
-        entity.status = this
+    override fun ActionStatus.actionStatus(): ActionDomainUpdater {
+        entity.actionStatus = this
         return this@ActionDomainUpdaterImpl
     }
 

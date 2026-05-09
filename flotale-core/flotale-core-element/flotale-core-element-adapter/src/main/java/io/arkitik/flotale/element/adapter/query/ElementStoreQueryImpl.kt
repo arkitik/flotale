@@ -9,9 +9,9 @@ import io.arkitik.radix.adapter.shared.query.StoreQueryImpl
 internal class ElementStoreQueryImpl(
     private val elementRepository: ElementRepository,
 ) : StoreQueryImpl<String, ElementDomain, FlotaleElement>(elementRepository), ElementStoreQuery {
-    override fun existByElementKey(elementKey: String) =
-        elementRepository.existsByElementKey(elementKey)
+    override fun existByElementKeyAndType(elementKey: String, elementType: String) =
+        elementRepository.existsByElementKeyAndElementType(elementKey, elementType)
 
-    override fun findByElementKey(elementKey: String) =
-        elementRepository.findByElementKey(elementKey)
+    override fun findByElementKeyAndType(elementKey: String, elementType: String) =
+        elementRepository.findByElementKeyAndElementType(elementKey, elementType)
 }

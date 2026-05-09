@@ -7,6 +7,7 @@ interface ElementDomain : Identity<String> {
     override val uuid: String
 
     val elementKey: String
+    val elementType: String
     val task: TaskDomain
 
     val addedBy: String

@@ -1,6 +1,7 @@
 package io.arkitik.flotale.test.mock
 
 import io.arkitik.flotale.engine.function.action.ActionExecutionValidator
+import io.arkitik.flotale.engine.function.dtos.ExecuteActionData
 import org.springframework.stereotype.Service
 
 /**
@@ -18,46 +19,46 @@ internal class MockValidatorUnit : ActionExecutionValidator.ValidatorUnit {
 
     internal fun clearAll() = verifiers.clear()
 
-    override fun isSupported(actionKey: String, elementKey: String, requestedBy: String) =
+    override fun isSupported(actionData: ExecuteActionData.Companion.Standard) =
         verifiers.all {
-            it.isSupported(actionKey, elementKey, requestedBy)
+            it.isSupported(actionData)
         }
 
-    override fun canExecute(actionKey: String, elementKey: String, requestedBy: String) =
+    override fun canExecute(actionData: ExecuteActionData.Companion.Standard) =
         verifiers.all {
-            it.canExecute(actionKey, elementKey, requestedBy)
+            it.canExecute(actionData)
         }
 }
 
 object MockValidatorUnits {
     internal object AllAccept : ActionExecutionValidator.ValidatorUnit {
-        override fun isSupported(actionKey: String, elementKey: String, requestedBy: String) = true
+        override fun isSupported(actionData: ExecuteActionData.Companion.Standard) = true
 
-        override fun canExecute(actionKey: String, elementKey: String, requestedBy: String) = true
+        override fun canExecute(actionData: ExecuteActionData.Companion.Standard) = true
     }
 
     internal object SupportedAndCantExecute : ActionExecutionValidator.ValidatorUnit {
-        override fun isSupported(actionKey: String, elementKey: String, requestedBy: String) = true
+        override fun isSupported(actionData: ExecuteActionData.Companion.Standard) = true
 
-        override fun canExecute(actionKey: String, elementKey: String, requestedBy: String) = false
+        override fun canExecute(actionData: ExecuteActionData.Companion.Standard) = false
     }
 
     internal class SupportedAndCanExecuteForAction(private val actionKey: String) :
         ActionExecutionValidator.ValidatorUnit {
-        override fun isSupported(actionKey: String, elementKey: String, requestedBy: String) = true
+        override fun isSupported(actionData: ExecuteActionData.Companion.Standard) = true
 
-        override fun canExecute(actionKey: String, elementKey: String, requestedBy: String) =
-            actionKey == this@SupportedAndCanExecuteForAction.actionKey
+        override fun canExecute(actionData: ExecuteActionData.Companion.Standard) =
+            actionKey == actionData.actionKey
     }
 
     internal class ConditionalUnit(
         private val conditionSupported: (actionKey: String, elementKey: String) -> Boolean,
         private val condition: (actionKey: String, elementKey: String) -> Boolean = conditionSupported,
     ) : ActionExecutionValidator.ValidatorUnit {
-        override fun isSupported(actionKey: String, elementKey: String, requestedBy: String) =
-            conditionSupported(actionKey, elementKey)
+        override fun isSupported(actionData: ExecuteActionData.Companion.Standard) =
+            conditionSupported(actionData.actionKey, actionData.elementKey)
 
-        override fun canExecute(actionKey: String, elementKey: String, requestedBy: String) =
-            condition(actionKey, elementKey)
+        override fun canExecute(actionData: ExecuteActionData.Companion.Standard) =
+            condition(actionData.actionKey, actionData.elementKey)
     }
 }

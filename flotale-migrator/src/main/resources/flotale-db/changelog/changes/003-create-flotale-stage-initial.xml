@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="flotale-migrator-3" author="ibrahim.al-tamimi">
+        <createTable tableName="flotale_stage_initial">
+            <column name="uuid" type="VARCHAR(255 ${char})">
+                <constraints primaryKey="true" nullable="false"
+                             primaryKeyName="pk_flotale_stage_initial"/>
+            </column>
+            <column name="workflow_uuid" type="VARCHAR(255 ${char})">
+                <constraints nullable="false"
+                             foreignKeyName="fk_stage_init_workflow"
+                             references="flotale_workflow(uuid)"/>
+            </column>
+            <column name="stage_uuid" type="VARCHAR(255 ${char})">
+                <constraints nullable="false"
+                             foreignKeyName="fk_stage_init_stage"
+                             references="flotale_stage(uuid)"/>
+            </column>
+            <column name="creation_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="flotale_stage_initial"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

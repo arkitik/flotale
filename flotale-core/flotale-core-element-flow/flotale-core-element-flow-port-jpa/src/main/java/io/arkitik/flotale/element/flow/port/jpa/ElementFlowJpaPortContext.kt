@@ -3,7 +3,7 @@ package io.arkitik.flotale.element.flow.port.jpa
 import io.arkitik.flotale.element.flow.adapter.ElementFlowStoreImpl
 import io.arkitik.flotale.element.flow.adapter.repository.ElementFlowRepository
 import io.arkitik.flotale.element.flow.store.ElementFlowStore
-import org.springframework.boot.autoconfigure.domain.EntityScan
+import org.springframework.boot.persistence.autoconfigure.EntityScan
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories

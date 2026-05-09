@@ -11,9 +11,9 @@ interface StageStoreQuery : StoreQuery<String, StageDomain> {
         statuses: List<StageStatus>,
     ): Boolean
 
-    fun findByKeyAndNotDeleted(
+    fun findByKeyAndActive(
         key: String,
     ): StageDomain?
 
-    fun allWorkflowStages(workflow: WorkflowDomain): List<StageDomain>
+    fun allWorkflowStagesAndActive(workflow: WorkflowDomain): List<StageDomain>
 }

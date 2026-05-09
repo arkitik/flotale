@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="flotale-migrator-9" author="ibrahim.al-tamimi">
+        <createTable tableName="flotale_element_flow">
+            <column name="uuid" type="VARCHAR(255 ${char})">
+                <constraints primaryKey="true" nullable="false"
+                             primaryKeyName="pk_flotale_element_flow"/>
+            </column>
+            <column name="element_uuid" type="VARCHAR(255 ${char})">
+                <constraints nullable="false"
+                             foreignKeyName="fk_elem_flow_element"
+                             references="flotale_element(uuid)"/>
+            </column>
+            <column name="action_uuid" type="VARCHAR(255 ${char})">
+                <constraints nullable="false"
+                             foreignKeyName="fk_elem_flow_action"
+                             references="flotale_action(uuid)"/>
+            </column>
+            <column name="executed_by" type="VARCHAR(255 ${char})">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creation_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="flotale_element_flow"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

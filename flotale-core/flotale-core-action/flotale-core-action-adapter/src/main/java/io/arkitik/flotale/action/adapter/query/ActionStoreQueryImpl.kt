@@ -18,7 +18,7 @@ internal class ActionStoreQueryImpl(
     override fun findByKeyAndNotDeleted(key: String) =
         actionRepository.findFirstByActionKeyAndStatusNotIn(key, listOf(ActionStatus.DELETED))
 
-    override fun allTaskActions(task: TaskDomain) =
+    override fun allTaskActionsAndActive(task: TaskDomain) =
         actionRepository.findAllBySourceTaskAndStatus(task as FlotaleTask, ActionStatus.ACTIVE)
 
     override fun findBySourceTaskAndActionKey(task: TaskDomain, key: String) =

@@ -1,6 +1,7 @@
 package io.arkitik.flotale.action.domain
 
 import io.arkitik.flotale.action.domain.embedded.ActionStatus
+import io.arkitik.flotale.action.domain.embedded.ActionType
 import io.arkitik.flotale.task.domain.TaskDomain
 import io.arkitik.radix.develop.identity.Identity
 
@@ -15,5 +16,19 @@ interface ActionDomain : Identity<String> {
 
     val actionName: String
 
-    val status: ActionStatus
+    val actionType: ActionType
+
+    val actionStatus: ActionStatus
+
+    val actionMessage: String?
+
+    val actionColor: String
+
+    val actionHint: String?
+
+    val actionOutlined: Boolean
+
+    val successExecutionMessage: String?
+
+    val failedExecutionMessage: String?
 }

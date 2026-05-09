@@ -6,20 +6,20 @@
     <parent>
         <groupId>io.arkitik.flotale</groupId>
         <artifactId>flotale-core</artifactId>
-        <version>v1.0.0</version>
+        <version>1.0-SNAPSHOT</version>
     </parent>
     <artifactId>flotale-core-stage</artifactId>
-    <name>${project.artifactId}</name>
-    <version>v1.0.0</version>
+
     <packaging>pom</packaging>
     <modules>
+        <module>flotale-core-stage-entity-exposed</module>
+        <module>flotale-core-stage-adapter-exposed</module>
+        <module>flotale-core-stage-port-exposed</module>
         <module>flotale-core-stage-adapter</module>
         <module>flotale-core-stage-entity</module>
         <module>flotale-core-stage-domain</module>
         <module>flotale-core-stage-port-jpa</module>
         <module>flotale-core-stage-store</module>
-        <module>flotale-core-stage-sdk</module>
-        <module>flotale-core-stage-operation</module>
-        <module>flotale-core-stage-port</module>
+
     </modules>
 </project>

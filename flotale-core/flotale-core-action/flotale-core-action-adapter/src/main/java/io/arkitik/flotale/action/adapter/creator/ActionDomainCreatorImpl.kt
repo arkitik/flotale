@@ -1,9 +1,11 @@
 package io.arkitik.flotale.action.adapter.creator
 
 import io.arkitik.flotale.action.domain.embedded.ActionStatus
+import io.arkitik.flotale.action.domain.embedded.ActionType
 import io.arkitik.flotale.action.entity.FlotaleAction
 import io.arkitik.flotale.action.store.creator.ActionDomainCreator
 import io.arkitik.flotale.task.domain.TaskDomain
+import io.arkitik.flotale.task.entity.FlotaleTask
 import java.time.LocalDateTime
 import java.util.*
 
@@ -18,7 +20,21 @@ internal class ActionDomainCreatorImpl : ActionDomainCreator {
 
     private lateinit var actionName: String
 
+    private lateinit var actionType: ActionType
+
     private lateinit var status: ActionStatus
+
+    private var actionMessage: String? = null
+
+    private lateinit var actionColor: String
+
+    private var actionHint: String? = null
+
+    private var actionOutlined: Boolean = false
+
+    private var successExecutionMessage: String? = null
+
+    private var failedExecutionMessage: String? = null
 
     override fun String.uuid(): ActionDomainCreator {
         uuid = this
@@ -45,18 +61,59 @@ internal class ActionDomainCreatorImpl : ActionDomainCreator {
         return this@ActionDomainCreatorImpl
     }
 
-    override fun ActionStatus.status(): ActionDomainCreator {
+    override fun ActionType.actionType(): ActionDomainCreator {
+        actionType = this
+        return this@ActionDomainCreatorImpl
+    }
+
+    override fun ActionStatus.actionStatus(): ActionDomainCreator {
         status = this
         return this@ActionDomainCreatorImpl
     }
 
+    override fun String?.actionMessage(): ActionDomainCreator {
+        actionMessage = this
+        return this@ActionDomainCreatorImpl
+    }
+
+    override fun String.actionColor(): ActionDomainCreator {
+        actionColor = this
+        return this@ActionDomainCreatorImpl
+    }
+
+    override fun String?.actionHint(): ActionDomainCreator {
+        actionHint = this
+        return this@ActionDomainCreatorImpl
+    }
+
+    override fun Boolean.actionOutlined(): ActionDomainCreator {
+        actionOutlined = this
+        return this@ActionDomainCreatorImpl
+    }
+
+    override fun String?.successExecutionMessage(): ActionDomainCreator {
+        successExecutionMessage = this
+        return this@ActionDomainCreatorImpl
+    }
+
+    override fun String?.failedExecutionMessage(): ActionDomainCreator {
+        failedExecutionMessage = this
+        return this@ActionDomainCreatorImpl
+    }
+
     override fun create(): FlotaleAction = FlotaleAction(
-        sourceTask = sourceTask as
-                io.arkitik.flotale.task.entity.FlotaleTask,
-        destinationTask = destinationTask as io.arkitik.flotale.task.entity.FlotaleTask,
+        sourceTask = sourceTask as FlotaleTask,
+        destinationTask = destinationTask as FlotaleTask,
         actionKey = actionKey,
         actionName = actionName,
-        status = status,
+        actionType = actionType,
+        actionStatus = status,
+        actionMessage = actionMessage,
+        actionColor = actionColor,
+        actionHint = actionHint,
+        actionOutlined = actionOutlined,
+        successExecutionMessage = successExecutionMessage,
+        failedExecutionMessage = failedExecutionMessage,
         uuid = uuid,
         creationDate = LocalDateTime.now(),
     )

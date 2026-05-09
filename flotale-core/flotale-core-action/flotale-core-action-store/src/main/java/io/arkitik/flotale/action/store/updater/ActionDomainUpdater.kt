@@ -5,5 +5,5 @@ import io.arkitik.flotale.action.domain.embedded.ActionStatus
 import io.arkitik.radix.develop.store.updater.StoreIdentityUpdater
 
 interface ActionDomainUpdater : StoreIdentityUpdater<String, ActionDomain> {
-    fun ActionStatus.status(): ActionDomainUpdater
+    fun ActionStatus.actionStatus(): ActionDomainUpdater
 }

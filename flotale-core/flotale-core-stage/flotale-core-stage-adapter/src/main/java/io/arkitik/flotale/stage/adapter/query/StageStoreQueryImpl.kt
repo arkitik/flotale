@@ -15,9 +15,9 @@ internal class StageStoreQueryImpl(
     override fun existByKeyAndStatusIn(key: String, statuses: List<StageStatus>) =
         stageRepository.existsByStageKeyAndStatusIn(key, statuses)
 
-    override fun findByKeyAndNotDeleted(key: String) =
-        stageRepository.findFirstByStageKeyAndStatusNotIn(key, listOf(StageStatus.DELETED))
+    override fun findByKeyAndActive(key: String) =
+        stageRepository.findFirstByStageKeyAndStatus(key, StageStatus.ACTIVE)
 
-    override fun allWorkflowStages(workflow: WorkflowDomain) =
+    override fun allWorkflowStagesAndActive(workflow: WorkflowDomain) =
         stageRepository.findAllByWorkflowAndStatus(workflow as FlotaleWorkflow, StageStatus.ACTIVE)
 }

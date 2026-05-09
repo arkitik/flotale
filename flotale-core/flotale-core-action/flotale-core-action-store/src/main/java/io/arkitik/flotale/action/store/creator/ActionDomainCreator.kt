@@ -17,5 +17,17 @@ interface ActionDomainCreator : StoreIdentityCreator<String, ActionDomain> {
 
     fun ActionType.actionType(): ActionDomainCreator
 
-    fun ActionStatus.status(): ActionDomainCreator
+    fun ActionStatus.actionStatus(): ActionDomainCreator
+
+    fun String?.actionMessage(): ActionDomainCreator
+
+    fun String.actionColor(): ActionDomainCreator
+
+    fun String?.actionHint(): ActionDomainCreator
+
+    fun Boolean.actionOutlined(): ActionDomainCreator
+
+    fun String?.successExecutionMessage(): ActionDomainCreator
+
+    fun String?.failedExecutionMessage(): ActionDomainCreator
 }

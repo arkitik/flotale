@@ -1,4 +1,4 @@
-package io.arkitik.flotale.engine.operation.errors
+package io.arkitik.flotale.engine.operation.core.errors
 
 import io.arkitik.radix.develop.shared.error.ErrorResponse
 

@@ -19,7 +19,7 @@ sealed interface WorkflowValidationResult {
          * validated without any errors or issues. It implements the `WorkflowValidationResult`
          * interface as a type of validation result.
          */
-        object Valid : WorkflowValidationResult
+        data object Valid : WorkflowValidationResult
 
         /**
          * Represents an invalid result from workflow validation.
@@ -38,7 +38,7 @@ sealed interface WorkflowValidationResult {
         /**
          * Represents an invalidation reason with a key and its associated descriptive reason.
          *
-         * This class is utilized within the workflow validation process to define specific reasons
+         * This class is used within the workflow validation process to define specific reasons
          * for invalid workflows or elements. It includes a `key` that identifies the invalidation
          * category or field, and a `reason` that provides a detailed descriptive explanation.
          *

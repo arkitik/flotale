@@ -14,6 +14,6 @@ import io.arkitik.radix.develop.operation.Operation
 interface FlotaleElementDomainSdk {
     val createElement: Operation<CreateElementDto, Unit>
     val findElementByReference: Operation<ElementReferenceData, ElementDomain>
-
+    val elementExist: Operation<ElementReferenceData, Boolean>
     val elementExecuteAction: Operation<ElementActionDto, Unit>
 }

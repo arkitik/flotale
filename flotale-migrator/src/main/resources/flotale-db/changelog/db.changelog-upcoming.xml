@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <include file="flotale-db/changelog/changes/001-create-flotale-workflow.xml"/>
+    <include file="flotale-db/changelog/changes/002-create-flotale-stage.xml"/>
+    <include file="flotale-db/changelog/changes/003-create-flotale-stage-initial.xml"/>
+    <include file="flotale-db/changelog/changes/004-create-flotale-task.xml"/>
+    <include file="flotale-db/changelog/changes/005-create-flotale-task-initial.xml"/>
+    <include file="flotale-db/changelog/changes/006-create-flotale-action.xml"/>
+    <include file="flotale-db/changelog/changes/007-create-flotale-element.xml"/>
+    <include file="flotale-db/changelog/changes/008-create-flotale-element-flow.xml"/>
+
+</databaseChangeLog>

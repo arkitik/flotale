@@ -1,5 +1,6 @@
 package io.arkitik.flotale.element.sdk.dto
 
+import io.arkitik.flotale.protocol.user.FlotaleUserTokenData
 import io.arkitik.flotale.task.domain.TaskDomain
 
 /**
@@ -10,5 +11,5 @@ import io.arkitik.flotale.task.domain.TaskDomain
 class CreateElementDto(
     val elementReference: ElementReferenceData,
     val task: TaskDomain,
-    val addedBy: String,
+    val addedBy: FlotaleUserTokenData,
 )

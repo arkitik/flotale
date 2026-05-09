@@ -1,4 +1,4 @@
-package io.arkitik.flotale.engine.operation.domain
+package io.arkitik.flotale.engine.operation.core
 
 import io.arkitik.flotale.action.domain.embedded.ActionType
 import io.arkitik.flotale.action.sdk.FlotaleActionDomainSdk
@@ -9,7 +9,6 @@ import io.arkitik.flotale.engine.core.dto.StageData
 import io.arkitik.flotale.engine.core.dto.TaskData
 import io.arkitik.flotale.engine.core.dto.WorkflowData
 import io.arkitik.flotale.engine.core.dto.WorkflowValidationResult
-import io.arkitik.flotale.engine.core.dto.WorkflowValidationResult.Companion.InvalidReason
 import io.arkitik.flotale.protocol.transactional.FlotaleTransactionalExecutor
 import io.arkitik.flotale.stage.domain.StageDomain
 import io.arkitik.flotale.stage.sdk.FlotaleStageDomainSdk
@@ -21,6 +20,7 @@ import io.arkitik.flotale.workflow.domain.WorkflowDomain
 import io.arkitik.flotale.workflow.sdk.FlotaleWorkflowDomainSdk
 import io.arkitik.flotale.workflow.sdk.dto.CreateWorkflowDto
 import io.arkitik.radix.develop.operation.ext.runOperation
+import kotlin.collections.forEach
 
 /**
  * Created By [*Ibrahim Al-Tamimi *](https://www.linkedin.com/in/iloom/)
@@ -75,7 +75,7 @@ class FlotaleDomainEngineImpl(
      * @return WorkflowValidationResult indicating validity or containing error details
      */
     override fun validateWorkflow(workflowKey: String): WorkflowValidationResult {
-        val errors = mutableListOf<InvalidReason>()
+        val errors = mutableListOf<WorkflowValidationResult.Companion.InvalidReason>()
 
         val workflowDomain = runCatching {
             findWorkflow(workflowKey)
@@ -84,13 +84,18 @@ class FlotaleDomainEngineImpl(
         // Step 2: Validate workflow has at least one stage
         val stages = flotaleStageDomainSdk.workflowStages.runOperation(workflowDomain)
         if (stages.isEmpty()) {
-            return WorkflowValidationResult.invalid(InvalidReason(workflowKey, "Workflow does not have any stages"))
+            return WorkflowValidationResult.invalid(
+                WorkflowValidationResult.Companion.InvalidReason(
+                    workflowKey,
+                    "Workflow does not have any stages"
+                )
+            )
         }
         flotaleStageDomainSdk.runCatching {
             initialWorkflowStage.runOperation(workflowDomain)
         }.onFailure {
             errors.add(
-                InvalidReason(
+                WorkflowValidationResult.Companion.InvalidReason(
                     workflowKey,
                     "Workflow does not have an initial stage"
                 )
@@ -144,7 +149,7 @@ class FlotaleDomainEngineImpl(
         // Add errors for stages without tasks
         if (stagesWithoutTasks.isNotEmpty()) {
             errors.add(
-                InvalidReason(
+                WorkflowValidationResult.Companion.InvalidReason(
                     workflowKey,
                     "The following stages do not have any tasks: ${stagesWithoutTasks.joinToString()}"
                 )
@@ -154,7 +159,7 @@ class FlotaleDomainEngineImpl(
         // Add errors for initial stage without initial task
         if (stagesWithoutInitialTask.isNotEmpty()) {
             errors.add(
-                InvalidReason(
+                WorkflowValidationResult.Companion.InvalidReason(
                     workflowKey,
                     "The initial stage does not have an initial task: ${stagesWithoutInitialTask.joinToString()}"
                 )
@@ -168,7 +173,7 @@ class FlotaleDomainEngineImpl(
         // Any remaining tasks in the set are unreachable
         if (unreachableTasks.isNotEmpty()) {
             errors.add(
-                InvalidReason(
+                WorkflowValidationResult.Companion.InvalidReason(
                     workflowKey,
                     "The following tasks are unreachable: ${unreachableTasks.joinToString()}"
                 )
@@ -187,7 +192,7 @@ class FlotaleDomainEngineImpl(
         val invalidDestinations = destinationTaskKeys.filter { !allTaskKeys.contains(it) }
         if (invalidDestinations.isNotEmpty()) {
             errors.add(
-                InvalidReason(
+                WorkflowValidationResult.Companion.InvalidReason(
                     workflowKey,
                     "The following destination tasks do not exist: ${invalidDestinations.joinToString()}"
                 )
@@ -208,7 +213,7 @@ class FlotaleDomainEngineImpl(
 
         if (tasksWithoutOutgoingActions.isNotEmpty()) {
             errors.add(
-                InvalidReason(
+                WorkflowValidationResult.Companion.InvalidReason(
                     workflowKey,
                     "The following tasks have no outgoing actions and are not marked as terminal tasks: ${tasksWithoutOutgoingActions.joinToString()}"
                 )
@@ -310,7 +315,13 @@ class FlotaleDomainEngineImpl(
                 actionName = action.name,
                 actionType = if (action.formAction) ActionType.FORM_ACTION else ActionType.STANDARD,
                 sourceTask = sourceTask,
-                destinationTask = destinationTask
+                destinationTask = destinationTask,
+                actionMessage = action.actionMessage,
+                actionColor = action.actionColor,
+                actionHint = action.actionHint,
+                actionOutlined = action.actionOutlined,
+                successExecutionMessage = action.successExecutionMessage,
+                failedExecutionMessage = action.failedExecutionMessage,
             )
             flotaleActionDomainSdk.createAction.runOperation(createActionDto)
         }

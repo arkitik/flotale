@@ -51,5 +51,17 @@ class FlotaleAction(
     override val actionType: ActionType,
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    override var status: ActionStatus,
+    override var actionStatus: ActionStatus,
+    @Column(nullable = true)
+    override var actionMessage: String?,
+    @Column(nullable = true)
+    override var actionColor: String,
+    @Column(nullable = true, length = 500)
+    override var actionHint: String?,
+    @Column(nullable = false)
+    override var actionOutlined: Boolean,
+    @Column(nullable = true, length = 500)
+    override var successExecutionMessage: String?,
+    @Column(nullable = true, length = 500)
+    override var failedExecutionMessage: String?,
 ) : ActionDomain

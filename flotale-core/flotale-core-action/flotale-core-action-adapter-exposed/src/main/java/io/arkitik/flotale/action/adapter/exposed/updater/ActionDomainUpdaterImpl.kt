@@ -9,8 +9,8 @@ internal class ActionDomainUpdaterImpl(
     private val entity: FlotaleActionExposed,
 ) : ActionDomainUpdater {
 
-    override fun ActionStatus.status(): ActionDomainUpdater {
-        entity.status = this
+    override fun ActionStatus.actionStatus(): ActionDomainUpdater {
+        entity.actionStatus = this
         return this@ActionDomainUpdaterImpl
     }
 

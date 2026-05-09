@@ -9,6 +9,7 @@ data class ActionForm(
 )
 
 data class ActionFormField(
+    val fieldKey: String,
     val fieldLabel: String,
     val fieldType: String,
     val fieldOrder: Int,

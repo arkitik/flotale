@@ -1,19 +1,29 @@
 package io.arkitik.flotale.test
 
+import io.arkitik.flotale.action.entity.exposed.FlotaleActionTable
 import io.arkitik.flotale.action.store.ActionStore
 import io.arkitik.flotale.deploy.app.ArkitikFlotaleApp
+import io.arkitik.flotale.element.entity.exposed.FlotaleElementTable
+import io.arkitik.flotale.element.flow.entity.exposed.FlotaleElementFlowTable
 import io.arkitik.flotale.element.flow.store.ElementFlowStore
 import io.arkitik.flotale.element.store.ElementStore
 import io.arkitik.flotale.engine.core.FlotaleDomainEngine
 import io.arkitik.flotale.engine.core.dto.WorkflowValidationResult
 import io.arkitik.flotale.engine.core.ext.persistWorkflow
+import io.arkitik.flotale.stage.entity.exposed.FlotaleStageTable
+import io.arkitik.flotale.stage.initial.entity.exposed.FlotaleStageInitialTable
 import io.arkitik.flotale.stage.initial.store.StageInitialStore
 import io.arkitik.flotale.stage.store.StageStore
+import io.arkitik.flotale.task.entity.exposed.FlotaleTaskTable
+import io.arkitik.flotale.task.initial.entity.exposed.FlotaleTaskInitialTable
 import io.arkitik.flotale.task.initial.store.TaskInitialStore
 import io.arkitik.flotale.task.store.TaskStore
 import io.arkitik.flotale.test.mock.MockValidatorUnit
+import io.arkitik.flotale.workflow.entity.exposed.FlotaleWorkflowTable
 import io.arkitik.flotale.workflow.store.WorkflowStore
+import io.arkitik.radix.develop.exposed.table.ensureInTransaction
 import io.arkitik.radix.develop.store.delete
+import org.jetbrains.exposed.v1.jdbc.SchemaUtils
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -71,6 +81,18 @@ internal class FlotaleEngineValidationTest {
 
     @BeforeEach
     fun setUp() {
+        ensureInTransaction {
+            SchemaUtils.createMissingTablesAndColumns(
+                FlotaleActionTable,
+                FlotaleElementFlowTable,
+                FlotaleElementTable,
+                FlotaleStageInitialTable,
+                FlotaleStageTable,
+                FlotaleTaskInitialTable,
+                FlotaleTaskTable,
+                FlotaleWorkflowTable,
+            )
+        }
         mockValidatorUnit.clearAll()
         elementFlowStore.delete(elementFlowStore.storeQuery.all())
         elementStore.delete(elementStore.storeQuery.all())

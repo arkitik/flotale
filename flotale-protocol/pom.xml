@@ -14,6 +14,8 @@
     <modules>
         <module>flotale-protocol-form</module>
         <module>flotale-protocol-transactional</module>
+        <module>flotale-protocol-user</module>
+        <module>flotale-protocol-user-converter</module>
     </modules>
 
 </project>

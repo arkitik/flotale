@@ -9,4 +9,10 @@ data class CreateActionDto(
     val actionType: ActionType = ActionType.STANDARD,
     val sourceTask: TaskDomain,
     val destinationTask: TaskDomain,
+    val actionMessage: String?,
+    val actionColor: String,
+    val actionHint: String?,
+    val actionOutlined: Boolean,
+    val successExecutionMessage: String?,
+    val failedExecutionMessage: String?,
 )

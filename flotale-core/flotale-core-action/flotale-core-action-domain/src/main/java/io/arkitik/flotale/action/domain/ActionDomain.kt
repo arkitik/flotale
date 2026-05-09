@@ -18,5 +18,17 @@ interface ActionDomain : Identity<String> {
 
     val actionType: ActionType
 
-    val status: ActionStatus
+    val actionStatus: ActionStatus
+
+    val actionMessage: String?
+
+    val actionColor: String
+
+    val actionHint: String?
+
+    val actionOutlined: Boolean
+
+    val successExecutionMessage: String?
+
+    val failedExecutionMessage: String?
 }

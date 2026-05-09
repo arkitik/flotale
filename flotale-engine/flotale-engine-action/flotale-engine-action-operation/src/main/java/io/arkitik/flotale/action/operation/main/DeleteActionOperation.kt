@@ -17,7 +17,7 @@ internal class DeleteActionOperation(
     override fun ActionDomain.operate() {
         with(actionStore) {
             storeUpdaterWithUpdate(identityUpdater()) {
-                ActionStatus.DELETED.status()
+                ActionStatus.DELETED.actionStatus()
                 update()
             }
         }

@@ -12,6 +12,15 @@
 
     <dependencies>
         <dependency>
+            <groupId>io.arkitik.radix</groupId>
+            <artifactId>radix-development-shared</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${project.parent.groupId}</groupId>
+            <artifactId>flotale-protocol-user</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
             <groupId>${project.parent.groupId}</groupId>
             <artifactId>flotale-protocol-form</artifactId>
             <version>${project.parent.version}</version>

@@ -22,7 +22,13 @@ object FlotaleActionTable : RadixTable<String, ActionDomain>("flotale_action") {
     val actionKey = varchar("action_key", 255)
     val actionName = varchar("action_name", 255)
     val actionType = enumerationByName<ActionType>("action_type", 50)
-    val status = enumerationByName<ActionStatus>("status", 50)
+    val actionStatus = enumerationByName<ActionStatus>("action_status", 50)
+    val actionMessage = varchar("action_message", 500).nullable()
+    val actionColor = varchar("action_color", 50)
+    val actionHint = varchar("action_hint", 500).nullable()
+    val actionOutlined = bool("action_outlined")
+    val successExecutionMessage = varchar("success_execution_message", 500).nullable()
+    val failedExecutionMessage = varchar("failed_execution_message", 500).nullable()
 
     override fun mapToIdentity(resultRow: ResultRow, database: Database?): ActionDomain =
         FlotaleActionExposed(
@@ -33,7 +39,13 @@ object FlotaleActionTable : RadixTable<String, ActionDomain>("flotale_action") {
             actionKey = resultRow[actionKey],
             actionName = resultRow[actionName],
             actionType = resultRow[actionType],
-            status = resultRow[status],
+            actionStatus = resultRow[actionStatus],
+            actionMessage = resultRow[actionMessage],
+            actionColor = resultRow[actionColor],
+            actionHint = resultRow[actionHint],
+            actionOutlined = resultRow[actionOutlined],
+            successExecutionMessage = resultRow[successExecutionMessage],
+            failedExecutionMessage = resultRow[failedExecutionMessage],
             database = database,
         )
 }

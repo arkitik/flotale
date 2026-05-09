@@ -34,4 +34,10 @@ data class ActionData(
     val name: String,
     val destinationTaskKey: String,
     val formAction: Boolean,
+    val actionMessage: String?,
+    val actionColor: String,
+    val actionHint: String?,
+    val actionOutlined: Boolean,
+    val successExecutionMessage: String?,
+    val failedExecutionMessage: String?,
 )

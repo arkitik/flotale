@@ -13,7 +13,7 @@ import io.arkitik.radix.develop.shared.ext.unprocessableEntity
  */
 internal object ActionShouldBeNotDeleted : OperationRole<ActionDomain, Unit> {
     override fun ActionDomain.operateRole() {
-        if (status == ActionStatus.DELETED) {
+        if (actionStatus == ActionStatus.DELETED) {
             throw FlotaleActionErrors.ACTION_DOES_NOT_EXIST.unprocessableEntity()
         }
     }

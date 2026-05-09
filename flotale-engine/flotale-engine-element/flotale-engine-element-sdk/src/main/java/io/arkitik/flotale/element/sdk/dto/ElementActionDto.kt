@@ -2,6 +2,7 @@ package io.arkitik.flotale.element.sdk.dto
 
 import io.arkitik.flotale.action.domain.ActionDomain
 import io.arkitik.flotale.element.domain.ElementDomain
+import io.arkitik.flotale.protocol.user.FlotaleUserTokenData
 
 /**
  * Created By [*Ibrahim Al-Tamimi *](https://www.linkedin.com/in/iloom/)
@@ -11,5 +12,5 @@ import io.arkitik.flotale.element.domain.ElementDomain
 class ElementActionDto(
     val action: ActionDomain,
     val element: ElementDomain,
-    val executedBy: String,
+    val executedBy: FlotaleUserTokenData,
 )

@@ -12,5 +12,8 @@
     <artifactId>flotale-plugin</artifactId>
 
     <packaging>pom</packaging>
+    <modules>
+        <module>flotale-plugin-jwt</module>
+    </modules>
 
 </project>

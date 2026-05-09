@@ -2,6 +2,7 @@ package io.arkitik.flotale.element.operation
 
 import io.arkitik.flotale.element.domain.ElementDomain
 import io.arkitik.flotale.element.flow.store.ElementFlowStore
+import io.arkitik.flotale.element.operation.main.ElementExistOperation
 import io.arkitik.flotale.element.operation.main.ElementExecuteActionOperation
 import io.arkitik.flotale.element.operation.main.FindElementByReferenceOperation
 import io.arkitik.flotale.element.operation.main.InitiateElementOperation
@@ -39,6 +40,12 @@ class FlotaleElementDomainSdkImpl(
         operationBuilder {
             mainOperation(FindElementByReferenceOperation(elementStore.storeQuery))
         }
+
+    override val elementExist: Operation<ElementReferenceData, Boolean> =
+        operationBuilder {
+            mainOperation(ElementExistOperation(elementStore.storeQuery))
+        }
+
     override val elementExecuteAction: Operation<ElementActionDto, Unit> =
         operationBuilder {
             mainOperation(

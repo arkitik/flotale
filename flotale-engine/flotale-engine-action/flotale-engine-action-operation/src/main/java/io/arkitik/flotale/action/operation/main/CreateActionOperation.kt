@@ -23,7 +23,14 @@ internal class CreateActionOperation(
                 actionType.actionType()
                 sourceTask.sourceTask()
                 destinationTask.destinationTask()
-                ActionStatus.ACTIVE.status()
+                ActionStatus.ACTIVE.actionStatus()
+
+                actionColor.actionColor()
+                actionHint.actionHint()
+                actionOutlined.actionOutlined()
+                actionMessage.actionMessage()
+                successExecutionMessage.successExecutionMessage()
+                failedExecutionMessage.failedExecutionMessage()
             }
         }
 }

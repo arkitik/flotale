@@ -488,11 +488,35 @@
             </dependency>
 
             <!-- ══════════════════════════════════════════════════════════════
-                 flotale-api
+                 flotale-protocol
             ══════════════════════════════════════════════════════════════ -->
             <dependency>
                 <groupId>${project.parent.groupId}</groupId>
-                <artifactId>flotale-api-authenticated</artifactId>
+                <artifactId>flotale-protocol-form</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-protocol-transactional</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-protocol-user</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-protocol-user-converter</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+
+            <!-- ══════════════════════════════════════════════════════════════
+                 flotale-plugin
+            ══════════════════════════════════════════════════════════════ -->
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-plugin-jwt</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
 
@@ -514,7 +538,20 @@
                 <artifactId>flotale-starter-exposed</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-migrator</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
 
+            <!-- ══════════════════════════════════════════════════════════════
+                 flotale-api
+            ══════════════════════════════════════════════════════════════ -->
+            <dependency>
+                <groupId>${project.parent.groupId}</groupId>
+                <artifactId>flotale-api-element</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>

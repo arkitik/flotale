@@ -9,8 +9,8 @@ import io.arkitik.flotale.engine.function.action.ActionExecutionValidator
 import io.arkitik.flotale.engine.function.action.ActionExecutor
 import io.arkitik.flotale.engine.function.action.ActionFormProvider
 import io.arkitik.flotale.engine.function.task.ElementTaskBroadcaster
-import io.arkitik.flotale.engine.operation.domain.FlotaleDomainEngineImpl
-import io.arkitik.flotale.engine.operation.workflow.FlotaleWorkflowEngineImpl
+import io.arkitik.flotale.engine.operation.core.FlotaleDomainEngineImpl
+import io.arkitik.flotale.engine.operation.core.FlotaleWorkflowEngineImpl
 import io.arkitik.flotale.engine.port.func.ActionExecutionValidatorImpl
 import io.arkitik.flotale.engine.port.func.ActionExecutorImpl
 import io.arkitik.flotale.engine.port.func.ActionFormProviderImpl

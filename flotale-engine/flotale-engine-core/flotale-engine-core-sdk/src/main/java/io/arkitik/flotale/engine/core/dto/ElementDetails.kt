@@ -19,6 +19,12 @@ data class ElementDetails(
 data class ActionDetails(
     val key: String,
     val name: String,
+    val actionMessage: String?,
+    val actionColor: String,
+    val actionHint: String?,
+    val actionOutlined: Boolean,
+    val successExecutionMessage: String?,
+    val failedExecutionMessage: String?,
     val formAction: Boolean,
     val form: ActionForm?,
 )

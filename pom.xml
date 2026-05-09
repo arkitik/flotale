@@ -12,8 +12,10 @@
         <module>flotale-core</module>
         <module>flotale-engine</module>
         <module>flotale-starter</module>
+        <module>flotale-api</module>
         <module>flotale-plugin</module>
         <module>flotale-protocol</module>
+        <module>flotale-migrator</module>
     </modules>
 
     <name>flotale workflow engine</name>
@@ -50,6 +52,7 @@
         <kotlin.version>2.3.20</kotlin.version>
 
         <exposed.version>1.2.0</exposed.version>
+        <java-jwt.version>4.5.0</java-jwt.version>
     </properties>
     <dependencyManagement>
         <dependencies>

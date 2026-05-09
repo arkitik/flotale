@@ -110,11 +110,41 @@ class ActionDataBuilder(private val formAction: Boolean = false) {
     lateinit var actionName: String
     lateinit var actionDestinationTask: String
 
+    var actionMessage: String? = null
+    var actionColor: ActionColor = ActionColor.primary()
+    var actionHint: String? = null
+    var actionOutlined: Boolean = false
+    var successExecutionMessage: String? = null
+    var failedExecutionMessage: String? = null
+
     fun build() =
         ActionData(
             key = actionKey,
             name = actionName,
             destinationTaskKey = actionDestinationTask,
             formAction = formAction,
+            actionMessage = actionMessage,
+            actionColor = actionColor.name,
+            actionHint = actionHint,
+            actionOutlined = actionOutlined,
+            successExecutionMessage = successExecutionMessage,
+            failedExecutionMessage = failedExecutionMessage,
         )
+}
+
+sealed interface ActionColor {
+    val name: String
+        get() = javaClass.simpleName.lowercase()
+
+    companion object {
+        data object Primary : ActionColor
+        data object Accent : ActionColor
+        data object Warn : ActionColor
+        class Custom(override val name: String) : ActionColor
+
+        fun primary() = Primary
+        fun accent() = Accent
+        fun warn() = Warn
+        fun custom(name: String) = Custom(name)
+    }
 }

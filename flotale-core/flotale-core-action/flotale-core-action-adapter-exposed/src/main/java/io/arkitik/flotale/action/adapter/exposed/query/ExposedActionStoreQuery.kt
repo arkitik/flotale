@@ -22,14 +22,14 @@ internal class ExposedActionStoreQuery(
     override fun existByKeyAndStatusIn(key: String, statuses: List<ActionStatus>): Boolean =
         ensureInTransaction(database) {
             identityTable.selectAll()
-                .where { identityTable.actionKey.eq(key).and(identityTable.status.inList(statuses)) }
+                .where { identityTable.actionKey.eq(key).and(identityTable.actionStatus.inList(statuses)) }
                 .exist()
         }
 
     override fun findByKeyAndNotDeleted(key: String): ActionDomain? =
         ensureInTransaction(database) {
             identityTable.selectAll()
-                .where { identityTable.actionKey.eq(key).and(identityTable.status.neq(ActionStatus.DELETED)) }
+                .where { identityTable.actionKey.eq(key).and(identityTable.actionStatus.neq(ActionStatus.DELETED)) }
                 .singleOrNull()
                 ?.let { identityTable.mapToIdentity(it, database) }
         }
@@ -37,7 +37,7 @@ internal class ExposedActionStoreQuery(
     override fun allTaskActionsAndActive(task: TaskDomain): List<ActionDomain> =
         ensureInTransaction(database) {
             identityTable.selectAll()
-                .where { identityTable.sourceTask.eq(task.uuid).and(identityTable.status.eq(ActionStatus.ACTIVE)) }
+                .where { identityTable.sourceTask.eq(task.uuid).and(identityTable.actionStatus.eq(ActionStatus.ACTIVE)) }
                 .map { identityTable.mapToIdentity(it, database) }
         }
 

@@ -19,7 +19,7 @@ internal class InitiateElementOperation(
                 elementReference.elementKey.elementKey()
                 elementReference.elementType.elementType()
                 task.task()
-                addedBy.addedBy()
+                addedBy.username.addedBy()
             }
         }
     }

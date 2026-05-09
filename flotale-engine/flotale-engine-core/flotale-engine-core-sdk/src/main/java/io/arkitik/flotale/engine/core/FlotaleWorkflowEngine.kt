@@ -1,6 +1,7 @@
 package io.arkitik.flotale.engine.core
 
 import io.arkitik.flotale.engine.core.dto.ElementDetails
+import io.arkitik.flotale.protocol.user.FlotaleUserTokenData
 
 /**
  * Interface representing the core workflow engine for managing and executing workflow elements.
@@ -24,7 +25,7 @@ interface FlotaleWorkflowEngine {
         workflowKey: String,
         elementKey: String,
         elementType: String,
-        addedBy: String,
+        addedBy: FlotaleUserTokenData,
     ): ElementDetails
 
     /**
@@ -38,7 +39,7 @@ interface FlotaleWorkflowEngine {
         actionKey: String,
         elementKey: String,
         elementType: String,
-        requestedBy: String,
+        requestedBy: FlotaleUserTokenData,
     )
 
     /**
@@ -52,9 +53,21 @@ interface FlotaleWorkflowEngine {
         actionKey: String,
         elementKey: String,
         elementType: String,
-        executedBy: String,
-        data: Map<String, Any> = emptyMap(),
+        executedBy: FlotaleUserTokenData,
+        formData: Map<String, Any> = emptyMap(),
     )
+
+    /**
+     * Checks whether a workflow has already been initiated for a given element.
+     *
+     * @param elementKey The unique key identifying the element.
+     * @param elementType The type of the element.
+     * @return `true` if the element workflow is already initiated, `false` otherwise.
+     */
+    fun elementExist(
+        elementKey: String,
+        elementType: String,
+    ): Boolean
 
     /**
      * Retrieves the details of a specific element.
@@ -66,6 +79,6 @@ interface FlotaleWorkflowEngine {
     fun elementDetails(
         elementKey: String,
         elementType: String,
-        requestedBy: String,
+        requestedBy: FlotaleUserTokenData,
     ): ElementDetails
 }

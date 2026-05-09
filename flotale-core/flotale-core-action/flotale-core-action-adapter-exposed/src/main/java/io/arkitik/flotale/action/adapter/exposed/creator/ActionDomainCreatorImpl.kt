@@ -21,6 +21,12 @@ internal class ActionDomainCreatorImpl(
     private lateinit var actionName: String
     private lateinit var actionType: ActionType
     private lateinit var status: ActionStatus
+    private var actionMessage: String? = null
+    private lateinit var actionColor: String
+    private var actionHint: String? = null
+    private var actionOutlined: Boolean = false
+    private var successExecutionMessage: String? = null
+    private var failedExecutionMessage: String? = null
 
     override fun String.uuid(): ActionDomainCreator {
         this@ActionDomainCreatorImpl.uuid = this
@@ -52,8 +58,38 @@ internal class ActionDomainCreatorImpl(
         return this@ActionDomainCreatorImpl
     }
 
-    override fun ActionStatus.status(): ActionDomainCreator {
+    override fun ActionStatus.actionStatus(): ActionDomainCreator {
         this@ActionDomainCreatorImpl.status = this
+        return this@ActionDomainCreatorImpl
+    }
+
+    override fun String?.actionMessage(): ActionDomainCreator {
+        this@ActionDomainCreatorImpl.actionMessage = this
+        return this@ActionDomainCreatorImpl
+    }
+
+    override fun String.actionColor(): ActionDomainCreator {
+        this@ActionDomainCreatorImpl.actionColor = this
+        return this@ActionDomainCreatorImpl
+    }
+
+    override fun String?.actionHint(): ActionDomainCreator {
+        this@ActionDomainCreatorImpl.actionHint = this
+        return this@ActionDomainCreatorImpl
+    }
+
+    override fun Boolean.actionOutlined(): ActionDomainCreator {
+        this@ActionDomainCreatorImpl.actionOutlined = this
+        return this@ActionDomainCreatorImpl
+    }
+
+    override fun String?.successExecutionMessage(): ActionDomainCreator {
+        this@ActionDomainCreatorImpl.successExecutionMessage = this
+        return this@ActionDomainCreatorImpl
+    }
+
+    override fun String?.failedExecutionMessage(): ActionDomainCreator {
+        this@ActionDomainCreatorImpl.failedExecutionMessage = this
         return this@ActionDomainCreatorImpl
     }
 
@@ -65,7 +101,13 @@ internal class ActionDomainCreatorImpl(
         actionKey = actionKey,
         actionName = actionName,
         actionType = actionType,
-        status = status,
+        actionStatus = status,
+        actionMessage = actionMessage,
+        actionColor = actionColor,
+        actionHint = actionHint,
+        actionOutlined = actionOutlined,
+        successExecutionMessage = successExecutionMessage,
+        failedExecutionMessage = failedExecutionMessage,
         database = database,
     )
 }

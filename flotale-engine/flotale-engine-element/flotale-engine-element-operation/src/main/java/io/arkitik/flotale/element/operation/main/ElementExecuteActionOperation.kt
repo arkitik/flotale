@@ -27,7 +27,7 @@ internal class ElementExecuteActionOperation(
                 creatorWithInsert(identityCreator()) {
                     elementDomain.element()
                     action.action()
-                    executedBy.executedBy()
+                    executedBy.username.executedBy()
                 }
             }
         }

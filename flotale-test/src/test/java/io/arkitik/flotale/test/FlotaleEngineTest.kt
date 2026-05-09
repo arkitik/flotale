@@ -13,6 +13,7 @@ import io.arkitik.flotale.engine.core.dto.ActionDetails
 import io.arkitik.flotale.engine.core.dto.ElementDetails
 import io.arkitik.flotale.engine.core.ext.persistWorkflow
 import io.arkitik.flotale.engine.core.ext.task
+import io.arkitik.flotale.protocol.user.FlotaleUserTokenData
 import io.arkitik.flotale.stage.entity.exposed.FlotaleStageTable
 import io.arkitik.flotale.stage.initial.entity.exposed.FlotaleStageInitialTable
 import io.arkitik.flotale.stage.initial.store.StageInitialStore
@@ -259,7 +260,7 @@ internal class FlotaleEngineTest {
             flotaleWorkflowEngine.elementDetails(
                 elementKey = "sample",
                 elementType = "UNIT_TEST",
-                requestedBy = "TEST",
+                requestedBy = FlotaleUserTokenData.system,
             )
         }
     }
@@ -285,7 +286,7 @@ internal class FlotaleEngineTest {
             workflowKey = "WF",
             elementKey = "ELEMENT-0",
             elementType = "UNIT_TEST",
-            addedBy = "TEST"
+            addedBy = FlotaleUserTokenData.system
         )
         assertEquals("WF", elementDetails.workflow.key)
         assertEquals("WF", elementDetails.workflow.name)
@@ -355,13 +356,14 @@ internal class FlotaleEngineTest {
             workflowKey = "ABC",
             elementKey = "ELEMENT-0",
             elementType = "UNIT_TEST",
-            addedBy = "TEST"
+            addedBy = FlotaleUserTokenData.system
         )
 
 
         val elementDetails = flotaleWorkflowEngine.elementDetails(
-            "ELEMENT-0",
-            "UNIT_TEST", "TEST"
+            elementKey = "ELEMENT-0",
+            elementType = "UNIT_TEST",
+            requestedBy = FlotaleUserTokenData.system
         )
 
         assertEquals("ABC", elementDetails.workflow.key)
@@ -376,7 +378,7 @@ internal class FlotaleEngineTest {
                 actionKey = "UNKNOWN_ACTION",
                 elementKey = "ELEMENT-0",
                 elementType = "UNIT_TEST",
-                executedBy = "TEST"
+                executedBy = FlotaleUserTokenData.system
             )
         }
     }
@@ -390,7 +392,7 @@ internal class FlotaleEngineTest {
             workflowKey = "job-workflow",
             elementKey = "job-0",
             elementType = "UNIT_TEST",
-            addedBy = "TEST"
+            addedBy = FlotaleUserTokenData.system
         )
 
         assertDetails(
@@ -409,13 +411,14 @@ internal class FlotaleEngineTest {
             actionKey = "trigger-job",
             elementKey = job.elementKey,
             elementType = "UNIT_TEST",
-            executedBy = "TEST"
+            executedBy = FlotaleUserTokenData.system
         )
 
         assertDetails(
             details = flotaleWorkflowEngine.elementDetails(
-                job.elementKey,
-                "UNIT_TEST", "TEST"
+                elementKey = job.elementKey,
+                elementType = "UNIT_TEST",
+                requestedBy = FlotaleUserTokenData.system
             ),
             expectedElementKey = "job-0",
             expectedWorkflowKey = "job-workflow",
@@ -432,14 +435,14 @@ internal class FlotaleEngineTest {
             actionKey = "mark-job-as-done",
             elementKey = job.elementKey,
             elementType = "UNIT_TEST",
-            executedBy = "TEST"
+            executedBy = FlotaleUserTokenData.system
         )
 
         assertDetails(
             details = flotaleWorkflowEngine.elementDetails(
                 elementKey = job.elementKey,
                 elementType = "UNIT_TEST",
-                requestedBy = "TEST"
+                requestedBy = FlotaleUserTokenData.system
             ),
             expectedElementKey = "job-0",
             expectedWorkflowKey = "job-workflow",
@@ -458,7 +461,7 @@ internal class FlotaleEngineTest {
             workflowKey = "job-workflow",
             elementKey = "job-0",
             elementType = "UNIT_TEST",
-            addedBy = "TEST"
+            addedBy = FlotaleUserTokenData.system
         )
         assertDetails(
             details = job,
@@ -473,15 +476,18 @@ internal class FlotaleEngineTest {
         )
 
         flotaleWorkflowEngine.executeAction(
-            "cancel-waiting-job", job.elementKey,
-            "UNIT_TEST", "TEST"
+            actionKey = "cancel-waiting-job",
+            elementKey = job.elementKey,
+            elementType = "UNIT_TEST",
+            executedBy = FlotaleUserTokenData.system
         )
 
 
         assertDetails(
             details = flotaleWorkflowEngine.elementDetails(
-                job.elementKey,
-                "UNIT_TEST", "TEST"
+                elementKey = job.elementKey,
+                elementType = "UNIT_TEST",
+                requestedBy = FlotaleUserTokenData.system
             ),
             expectedElementKey = "job-0",
             expectedWorkflowKey = "job-workflow",
@@ -497,10 +503,10 @@ internal class FlotaleEngineTest {
         createJobWorkflow()
 
         val job = flotaleWorkflowEngine.initiateElement(
-            "job-workflow",
-            "job-0",
-            "UNIT_TEST",
-            "TEST"
+            workflowKey = "job-workflow",
+            elementKey = "job-0",
+            elementType = "UNIT_TEST",
+            addedBy = FlotaleUserTokenData.system
         )
         assertDetails(
             details = job,
@@ -515,15 +521,18 @@ internal class FlotaleEngineTest {
         )
 
         flotaleWorkflowEngine.executeAction(
-            "trigger-job", job.elementKey,
-            "UNIT_TEST", "TEST"
+            actionKey = "trigger-job",
+            elementKey = job.elementKey,
+            elementType = "UNIT_TEST",
+            executedBy = FlotaleUserTokenData.system
         )
 
 
         assertDetails(
             details = flotaleWorkflowEngine.elementDetails(
-                job.elementKey,
-                "UNIT_TEST", "TEST"
+                elementKey = job.elementKey,
+                elementType = "UNIT_TEST",
+                requestedBy = FlotaleUserTokenData.system
             ),
             expectedElementKey = "job-0",
             expectedWorkflowKey = "job-workflow",
@@ -540,13 +549,13 @@ internal class FlotaleEngineTest {
             actionKey = "internal-failure",
             elementKey = job.elementKey,
             elementType = "UNIT_TEST",
-            executedBy = "TEST"
+            executedBy = FlotaleUserTokenData.system
         )
         assertDetails(
             details = flotaleWorkflowEngine.elementDetails(
                 elementKey = job.elementKey,
                 elementType = "UNIT_TEST",
-                requestedBy = "TEST"
+                requestedBy = FlotaleUserTokenData.system
             ),
             expectedElementKey = "job-0",
             expectedWorkflowKey = "job-workflow",
@@ -561,13 +570,13 @@ internal class FlotaleEngineTest {
             actionKey = "internal-failed-job-execution-start-recovering",
             elementKey = job.elementKey,
             elementType = "UNIT_TEST",
-            executedBy = "TEST"
+            executedBy = FlotaleUserTokenData.system
         )
         assertDetails(
             details = flotaleWorkflowEngine.elementDetails(
                 elementKey = job.elementKey,
                 elementType = "UNIT_TEST",
-                requestedBy = "TEST"
+                requestedBy = FlotaleUserTokenData.system
             ),
             expectedElementKey = "job-0",
             expectedWorkflowKey = "job-workflow",
@@ -584,13 +593,13 @@ internal class FlotaleEngineTest {
             actionKey = "internal-failed-job-execution-cancel",
             elementKey = job.elementKey,
             elementType = "UNIT_TEST",
-            executedBy = "TEST"
+            executedBy = FlotaleUserTokenData.system
         )
         assertDetails(
             details = flotaleWorkflowEngine.elementDetails(
                 elementKey = job.elementKey,
                 elementType = "UNIT_TEST",
-                requestedBy = "TEST"
+                requestedBy = FlotaleUserTokenData.system
             ),
             expectedElementKey = "job-0",
             expectedWorkflowKey = "job-workflow",

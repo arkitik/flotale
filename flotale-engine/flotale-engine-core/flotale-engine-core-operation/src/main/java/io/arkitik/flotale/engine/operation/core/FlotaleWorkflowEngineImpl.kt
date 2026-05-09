@@ -1,4 +1,4 @@
-package io.arkitik.flotale.engine.operation.workflow
+package io.arkitik.flotale.engine.operation.core
 
 import io.arkitik.flotale.action.domain.ActionDomain
 import io.arkitik.flotale.action.domain.embedded.ActionType
@@ -17,9 +17,11 @@ import io.arkitik.flotale.engine.function.action.ActionExecutionValidator
 import io.arkitik.flotale.engine.function.action.ActionExecutor
 import io.arkitik.flotale.engine.function.action.ActionFormProvider
 import io.arkitik.flotale.engine.function.dtos.ExecuteActionData
+import io.arkitik.flotale.engine.function.dtos.FormValidationResult
 import io.arkitik.flotale.engine.function.task.ElementTaskBroadcaster
-import io.arkitik.flotale.engine.operation.errors.EngineErrors
+import io.arkitik.flotale.engine.operation.core.errors.EngineErrors
 import io.arkitik.flotale.protocol.transactional.FlotaleTransactionalExecutor
+import io.arkitik.flotale.protocol.user.FlotaleUserTokenData
 import io.arkitik.flotale.stage.sdk.FlotaleStageDomainSdk
 import io.arkitik.flotale.task.sdk.FlotaleTaskDomainSdk
 import io.arkitik.flotale.workflow.sdk.FlotaleWorkflowDomainSdk
@@ -53,10 +55,16 @@ class FlotaleWorkflowEngineImpl(
         workflowKey: String,
         elementKey: String,
         elementType: String,
-        addedBy: String,
+        addedBy: FlotaleUserTokenData,
     ): ElementDetails {
         return flotaleTransactionalExecutor.runOnTransaction {
-            logger.debug("Initiating [element: {}] under [workflow: {}] by {}", elementKey, workflowKey, addedBy)
+            logger.debug(
+                "Initiating [element: {}, type: {}] under [workflow: {}] by {}",
+                elementKey,
+                elementType,
+                workflowKey,
+                addedBy
+            )
             val workflow = flotaleWorkflowDomainSdk.findWorkflow.runOperation(workflowKey)
             val initialStage = flotaleStageDomainSdk.initialWorkflowStage.runOperation(workflow)
             val initialTask = flotaleTaskDomainSdk.initialStageTask.runOperation(initialStage)
@@ -80,8 +88,9 @@ class FlotaleWorkflowEngineImpl(
                 executedBy = addedBy
             )
             logger.debug(
-                "[Element: {}] under [workflow: {}] has been initiated successfully by {}",
+                "[Element: {}, type: {}] under [workflow: {}] has been initiated successfully by {}",
                 elementKey,
+                elementType,
                 workflowKey,
                 addedBy
             )
@@ -97,9 +106,15 @@ class FlotaleWorkflowEngineImpl(
         actionKey: String,
         elementKey: String,
         elementType: String,
-        requestedBy: String,
+        requestedBy: FlotaleUserTokenData,
     ) {
-        logger.debug("Validating [action: {}] for [element: {}] by {}", actionKey, elementKey, requestedBy)
+        logger.debug(
+            "Validating [action: {}] for [element: {}, type: {}] by {}",
+            actionKey,
+            elementKey,
+            elementType,
+            requestedBy
+        )
 
         val element = flotaleElementDomainSdk.findElementByReference
             .runOperation(
@@ -121,9 +136,10 @@ class FlotaleWorkflowEngineImpl(
                 throw EngineErrors.ACTION_CANT_BE_EXECUTED.unprocessableEntity()
             }
         logger.debug(
-            "Validating [action: {}] for [element: {}] by {} has been successfully verified, Action can be executed without any expected issue",
+            "Validating [action: {}] for [element: {}, type: {}] by {} has been successfully verified, Action can be executed without any expected issue",
             actionKey,
             elementKey,
+            elementType,
             requestedBy
         )
     }
@@ -132,11 +148,17 @@ class FlotaleWorkflowEngineImpl(
         actionKey: String,
         elementKey: String,
         elementType: String,
-        executedBy: String,
-        data: Map<String, Any>,
+        executedBy: FlotaleUserTokenData,
+        formData: Map<String, Any>,
     ) {
         flotaleTransactionalExecutor.runOnTransaction {
-            logger.debug("Executing [action: {}] for [element: {}] by {}", actionKey, elementKey, executedBy)
+            logger.debug(
+                "Executing [action: {}] for [element: {}, type: {}] by {}",
+                actionKey,
+                elementKey,
+                elementType,
+                executedBy
+            )
 
             runCatching {
                 val element = flotaleElementDomainSdk.findElementByReference
@@ -158,22 +180,20 @@ class FlotaleWorkflowEngineImpl(
                 actionCanBeExecuted(action = action, element = element, executedBy = executedBy)
                     .takeUnless { it }?.let {
                         logger.error(
-                            "Executing [action: {}] for [element: {}] by {} is prevented",
+                            "Executing [action: {}] for [element: {}, type: {}] by {} is prevented",
                             actionKey,
-                            elementKey,
+                            element.elementKey,
+                            element.elementType,
                             executedBy
                         )
                         throw EngineErrors.ACTION_CANT_BE_EXECUTED.unprocessableEntity()
                     }
 
-                actionExecutor.executeAction(
-                    ExecuteActionData.standard(
-                        actionKey = actionKey,
-                        elementKey = elementKey,
-                        elementType = element.elementType,
-                        actor = executedBy
-                    )
-                )
+                if (action.actionType == ActionType.FORM_ACTION) {
+                    executeFormAction(actionKey, element, executedBy, formData)
+                } else {
+                    executeStandardAction(actionKey, element, executedBy)
+                }
 
                 flotaleElementDomainSdk.elementExecuteAction
                     .runOperation(
@@ -199,17 +219,19 @@ class FlotaleWorkflowEngineImpl(
                     )
                 }.onFailure {
                     logger.warn(
-                        "An issue acquired while executing `TaskBroadcaster` for [element: {}] and [action: {}], [reason: {}] (Issue will be ignored)",
+                        "An issue acquired while executing `TaskBroadcaster` for [element: {}, type: {}] and [action: {}], [reason: {}] (Issue will be ignored)",
                         elementKey,
+                        elementType,
                         actionKey,
                         it.message
                     )
                 }
             }.onFailure {
                 logger.error(
-                    "[Action: {}] for [element: {}] by {} has been failed while execution, [error: {}]",
+                    "[Action: {}] for [element: {}, type: {}] by {} has been failed while execution, [error: {}]",
                     actionKey,
                     elementKey,
+                    elementType,
                     executedBy,
                     it.message,
                     it
@@ -217,16 +239,85 @@ class FlotaleWorkflowEngineImpl(
                 throw it
             }.onSuccess {
                 logger.debug(
-                    "[Action: {}] for [element: {}] by {} has been executed successfully",
+                    "[Action: {}] for [element: {}, type: {}] by {} has been executed successfully",
                     actionKey,
                     elementKey,
+                    elementType,
                     executedBy
                 )
             }
         }
     }
 
-    override fun elementDetails(elementKey: String, elementType: String, requestedBy: String): ElementDetails {
+    private fun executeStandardAction(
+        actionKey: String,
+        element: ElementDomain,
+        executedBy: FlotaleUserTokenData,
+    ) {
+        actionExecutor.executeAction(
+            ExecuteActionData.standard(
+                actionKey = actionKey,
+                elementKey = element.elementKey,
+                elementType = element.elementType,
+                actor = executedBy
+            )
+        )
+    }
+
+    private fun executeFormAction(
+        actionKey: String,
+        element: ElementDomain,
+        executedBy: FlotaleUserTokenData,
+        formData: Map<String, Any>,
+    ) {
+        val formValidationResult = actionFormProvider.validateForm(
+            actionKey = actionKey,
+            elementKey = element.elementKey,
+            elementType = element.elementType,
+            formData = formData
+        )
+        when (formValidationResult) {
+            is FormValidationResult.Companion.Valid -> {
+                logger.trace(
+                    "Form data for [action: {}] and [element: {}, type: {}] has been validated successfully, proceeding to execute action",
+                    actionKey,
+                    element.elementKey,
+                    element.elementType
+                )
+                actionExecutor.executeAction(
+                    ExecuteActionData.form(
+                        actionKey = actionKey,
+                        elementKey = element.elementKey,
+                        elementType = element.elementType,
+                        actor = executedBy,
+                        data = formData,
+                    )
+                )
+            }
+
+            is FormValidationResult.Companion.Invalid -> {
+                logger.error(
+                    "Form data for [action: {}] and [element: {}, type: {}] is invalid, errors: {}, preventing action execution",
+                    actionKey,
+                    element.elementKey,
+                    element.elementType,
+                    formValidationResult.errors
+                )
+            }
+        }
+    }
+
+    override fun elementExist(
+        elementKey: String,
+        elementType: String,
+    ): Boolean = flotaleElementDomainSdk.elementExist
+        .runOperation(ElementReferenceData(elementKey = elementKey, elementType = elementType))
+
+    override fun elementDetails(
+        elementKey: String,
+        elementType: String,
+        requestedBy: FlotaleUserTokenData,
+    ): ElementDetails {
         val element = flotaleElementDomainSdk.findElementByReference
             .runOperation(
                 ElementReferenceData(
@@ -257,6 +348,12 @@ class FlotaleWorkflowEngineImpl(
                 ActionDetails(
                     key = actionDomain.actionKey,
                     name = actionDomain.actionName,
+                    actionMessage = actionDomain.actionMessage,
+                    actionColor = actionDomain.actionColor,
+                    actionHint = actionDomain.actionHint,
+                    actionOutlined = actionDomain.actionOutlined,
+                    successExecutionMessage = actionDomain.successExecutionMessage,
+                    failedExecutionMessage = actionDomain.failedExecutionMessage,
                     formAction = actionDomain.actionType == ActionType.FORM_ACTION,
                     form = if (actionDomain.actionType == ActionType.FORM_ACTION) {
                         actionFormProvider.provideForm(
@@ -270,7 +367,7 @@ class FlotaleWorkflowEngineImpl(
         )
     }
 
-    private fun actionCanBeExecuted(action: ActionDomain, element: ElementDomain, executedBy: String) =
+    private fun actionCanBeExecuted(action: ActionDomain, element: ElementDomain, executedBy: FlotaleUserTokenData) =
         actionExecutionValidator.validateExecution(
             ExecuteActionData.standard(
                 actionKey = action.actionKey,

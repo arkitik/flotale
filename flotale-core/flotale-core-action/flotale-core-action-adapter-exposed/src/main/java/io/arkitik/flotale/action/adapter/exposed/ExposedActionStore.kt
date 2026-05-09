@@ -35,11 +35,17 @@ class ExposedActionStore(
         this[identityTable.actionKey] = identity.actionKey
         this[identityTable.actionType] = identity.actionType
         this[identityTable.actionName] = identity.actionName
-        this[identityTable.status] = identity.status
+        this[identityTable.actionStatus] = identity.actionStatus
+        this[identityTable.actionMessage] = identity.actionMessage
+        this[identityTable.actionColor] = identity.actionColor
+        this[identityTable.actionHint] = identity.actionHint
+        this[identityTable.actionOutlined] = identity.actionOutlined
+        this[identityTable.successExecutionMessage] = identity.successExecutionMessage
+        this[identityTable.failedExecutionMessage] = identity.failedExecutionMessage
     }
 
     override fun <K : Any> UpdateBuilder<K>.updateEntity(identity: ActionDomain) {
         identity as FlotaleActionExposed
-        this[identityTable.status] = identity.status
+        this[identityTable.actionStatus] = identity.actionStatus
     }
 }

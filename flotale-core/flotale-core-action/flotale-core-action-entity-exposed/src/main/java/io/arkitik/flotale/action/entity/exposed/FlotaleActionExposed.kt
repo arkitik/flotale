@@ -16,7 +16,13 @@ class FlotaleActionExposed(
     override val actionKey: String,
     override val actionName: String,
     override val actionType: ActionType,
-    override var status: ActionStatus,
+    override var actionStatus: ActionStatus,
+    override var actionMessage: String?,
+    override var actionColor: String,
+    override var actionHint: String?,
+    override var actionOutlined: Boolean,
+    override var successExecutionMessage: String?,
+    override var failedExecutionMessage: String?,
     val database: Database?,
 ) : ActionDomain {
     override val sourceTask: TaskDomain by lazy {

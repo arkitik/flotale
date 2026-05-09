@@ -11,6 +11,7 @@ data class FlotaleJwtProperties(
     val claims: ClaimsMapping = ClaimsMapping(),
     @DefaultValue("true")
     val defaultValidator: Boolean = true,
+    val systemUserRoles: List<String> = listOf(),
 ) {
     data class ClaimsMapping(
         val userId: String = "sub",

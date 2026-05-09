@@ -6,7 +6,8 @@ import io.arkitik.flotale.plugin.jwt.configurer.FlotaleWebMvcConfigurer
 import io.arkitik.flotale.plugin.jwt.converter.JwtFlotaleTokenConverter
 import io.arkitik.flotale.plugin.jwt.converter.JwtTokenToFlotaleUserDataConverter
 import io.arkitik.flotale.plugin.jwt.resolver.FlotaleUserTokenDataArgumentResolver
-import io.arkitik.flotale.plugin.jwt.validator.JwtActionExecutionValidatorUnit
+import io.arkitik.flotale.plugin.jwt.validator.JwtSystemActionExecutionValidatorUnit
+import io.arkitik.flotale.plugin.jwt.validator.JwtUserActionExecutionValidatorUnit
 import io.arkitik.flotale.protocol.user.FlotaleUserTokenData
 import io.arkitik.flotale.protocol.user.converter.FlotaleTokenConverter
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBooleanProperty
@@ -54,5 +55,12 @@ class FlotaleJwtPluginContext {
     @Bean
     @ConditionalOnBooleanProperty("flotale.jwt.default-validator", havingValue = true, matchIfMissing = true)
     fun jwtActionExecutionValidatorUnit(): ActionExecutionValidator.ValidatorUnit =
-        JwtActionExecutionValidatorUnit()
+        JwtUserActionExecutionValidatorUnit()
+
+    @Bean
+    @ConditionalOnBooleanProperty("flotale.jwt.default-validator", havingValue = true, matchIfMissing = true)
+    fun jwtSystemActionExecutionValidatorUnit(
+        flotaleJwtProperties: FlotaleJwtProperties,
+    ): ActionExecutionValidator.ValidatorUnit =
+        JwtSystemActionExecutionValidatorUnit(flotaleJwtProperties)
 }

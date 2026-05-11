@@ -26,6 +26,7 @@ import io.arkitik.flotale.stage.sdk.FlotaleStageDomainSdk
 import io.arkitik.flotale.task.sdk.FlotaleTaskDomainSdk
 import io.arkitik.flotale.workflow.sdk.FlotaleWorkflowDomainSdk
 import io.arkitik.radix.develop.operation.ext.runOperation
+import io.arkitik.radix.develop.shared.ext.badRequest
 import io.arkitik.radix.develop.shared.ext.unprocessableEntity
 import org.slf4j.LoggerFactory
 
@@ -303,6 +304,7 @@ class FlotaleWorkflowEngineImpl(
                     element.elementType,
                     formValidationResult.errors
                 )
+                throw formValidationResult.errors.badRequest()
             }
         }
     }

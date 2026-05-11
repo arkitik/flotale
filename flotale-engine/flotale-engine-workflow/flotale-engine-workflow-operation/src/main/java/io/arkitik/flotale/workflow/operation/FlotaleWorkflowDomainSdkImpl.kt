@@ -5,12 +5,14 @@ import io.arkitik.flotale.workflow.operation.main.CreateWorkflowOperation
 import io.arkitik.flotale.workflow.operation.main.CreateWorkflowsOperation
 import io.arkitik.flotale.workflow.operation.main.DeleteWorkflowOperation
 import io.arkitik.flotale.workflow.operation.main.FindWorkflowOperation
+import io.arkitik.flotale.workflow.operation.roles.WorkflowExistByKeyRole
 import io.arkitik.flotale.workflow.operation.roles.WorkflowShouldBeNotDeleted
 import io.arkitik.flotale.workflow.operation.roles.WorkflowsDuplicationRole
 import io.arkitik.flotale.workflow.sdk.FlotaleWorkflowDomainSdk
 import io.arkitik.flotale.workflow.sdk.dto.CreateWorkflowDto
 import io.arkitik.flotale.workflow.store.WorkflowStore
 import io.arkitik.radix.develop.operation.Operation
+import io.arkitik.radix.develop.operation.OperationRole
 import io.arkitik.radix.develop.operation.ext.operateRole
 import io.arkitik.radix.develop.operation.ext.operationBuilder
 
@@ -59,4 +61,8 @@ class FlotaleWorkflowDomainSdkImpl(
             install(WorkflowShouldBeNotDeleted)
             mainOperation(DeleteWorkflowOperation(workflowStore))
         }
+    override val workflowExistByKey: OperationRole<String, Boolean> =
+        WorkflowExistByKeyRole(
+            workflowStoreQuery = workflowStore.storeQuery
+        )
 }

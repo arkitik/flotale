@@ -17,7 +17,13 @@ import io.arkitik.flotale.engine.core.dto.WorkflowValidationResult
  */
 interface FlotaleDomainEngine {
     fun <T> executeInTransaction(command: () -> T): T
-    // Workflow operations
+
+    /**
+     * Checks if a workflow with the given key exists
+     * @param workflowKey Unique identifier of the workflow to check
+     */
+    fun workflowExist(workflowKey: String): Boolean
+
     /**
      * Registers multiple workflow definitions
      * @param workflows List of workflow data to register

@@ -19,6 +19,7 @@ import io.arkitik.flotale.task.sdk.dto.CreateTaskDto
 import io.arkitik.flotale.workflow.domain.WorkflowDomain
 import io.arkitik.flotale.workflow.sdk.FlotaleWorkflowDomainSdk
 import io.arkitik.flotale.workflow.sdk.dto.CreateWorkflowDto
+import io.arkitik.radix.develop.operation.ext.operateRole
 import io.arkitik.radix.develop.operation.ext.runOperation
 
 /**
@@ -35,6 +36,11 @@ class FlotaleDomainEngineImpl(
 ) : FlotaleDomainEngine {
     override fun <T> executeInTransaction(command: () -> T): T {
         return flotaleTransactionalExecutor.runOnTransaction(command)
+    }
+
+    override fun workflowExist(workflowKey: String): Boolean {
+        return flotaleWorkflowDomainSdk.workflowExistByKey
+            .operateRole(workflowKey)
     }
 
     override fun registerWorkflows(workflows: List<WorkflowData>) {

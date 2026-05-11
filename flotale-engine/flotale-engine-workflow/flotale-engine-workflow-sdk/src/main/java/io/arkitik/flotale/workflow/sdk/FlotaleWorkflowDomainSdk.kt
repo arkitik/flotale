@@ -3,6 +3,7 @@ package io.arkitik.flotale.workflow.sdk
 import io.arkitik.flotale.workflow.domain.WorkflowDomain
 import io.arkitik.flotale.workflow.sdk.dto.CreateWorkflowDto
 import io.arkitik.radix.develop.operation.Operation
+import io.arkitik.radix.develop.operation.OperationRole
 
 /**
  * Created By [*Ibrahim Al-Tamimi *](https://www.linkedin.com/in/iloom/)
@@ -14,4 +15,5 @@ interface FlotaleWorkflowDomainSdk {
     val createWorkflow: Operation<CreateWorkflowDto, WorkflowDomain>
     val findWorkflow: Operation<String, WorkflowDomain>
     val deleteWorkflow: Operation<WorkflowDomain, Unit>
+    val workflowExistByKey: OperationRole<String, Boolean>
 }

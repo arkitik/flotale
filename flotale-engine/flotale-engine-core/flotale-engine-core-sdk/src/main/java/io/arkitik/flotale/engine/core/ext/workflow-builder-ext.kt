@@ -145,5 +145,7 @@ infix fun FlotaleDomainEngine.persistWorkflow(
             }
         }
     }
-    commands.forEach(Command::invoke)
+    executeInTransaction {
+        commands.forEach(Command::invoke)
+    }
 }

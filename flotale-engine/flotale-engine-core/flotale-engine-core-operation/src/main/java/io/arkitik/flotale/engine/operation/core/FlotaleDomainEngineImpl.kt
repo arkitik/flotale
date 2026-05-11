@@ -20,7 +20,6 @@ import io.arkitik.flotale.workflow.domain.WorkflowDomain
 import io.arkitik.flotale.workflow.sdk.FlotaleWorkflowDomainSdk
 import io.arkitik.flotale.workflow.sdk.dto.CreateWorkflowDto
 import io.arkitik.radix.develop.operation.ext.runOperation
-import kotlin.collections.forEach
 
 /**
  * Created By [*Ibrahim Al-Tamimi *](https://www.linkedin.com/in/iloom/)
@@ -34,6 +33,10 @@ class FlotaleDomainEngineImpl(
     private val flotaleActionDomainSdk: FlotaleActionDomainSdk,
     private val flotaleTransactionalExecutor: FlotaleTransactionalExecutor,
 ) : FlotaleDomainEngine {
+    override fun <T> executeInTransaction(command: () -> T): T {
+        return flotaleTransactionalExecutor.runOnTransaction(command)
+    }
+
     override fun registerWorkflows(workflows: List<WorkflowData>) {
         workflows.forEach(::registerWorkflow)
     }

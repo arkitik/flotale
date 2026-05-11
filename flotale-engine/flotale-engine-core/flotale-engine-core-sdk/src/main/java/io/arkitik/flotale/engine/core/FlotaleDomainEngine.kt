@@ -16,6 +16,7 @@ import io.arkitik.flotale.engine.core.dto.WorkflowValidationResult
  * Project *flotale* [arkitik.io](https://arkitik.io)
  */
 interface FlotaleDomainEngine {
+    fun <T> executeInTransaction(command: () -> T): T
     // Workflow operations
     /**
      * Registers multiple workflow definitions

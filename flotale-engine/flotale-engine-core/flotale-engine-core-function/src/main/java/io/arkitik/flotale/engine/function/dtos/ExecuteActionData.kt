@@ -25,7 +25,7 @@ sealed class ExecuteActionData(
             elementKey: String,
             elementType: String,
             actor: FlotaleUserTokenData,
-            val data: Map<String, Any>,
+            val formData: Map<String, Any>,
         ) : ExecuteActionData(actionKey, elementKey, elementType, actor)
 
         fun standard(
@@ -40,13 +40,13 @@ sealed class ExecuteActionData(
             elementKey: String,
             elementType: String,
             actor: FlotaleUserTokenData,
-            data: Map<String, Any>,
+            formData: Map<String, Any>,
         ) = Form(
             actionKey = actionKey,
             elementKey = elementKey,
             elementType = elementType,
             actor = actor,
-            data = data,
+            formData = formData,
         )
     }
 }

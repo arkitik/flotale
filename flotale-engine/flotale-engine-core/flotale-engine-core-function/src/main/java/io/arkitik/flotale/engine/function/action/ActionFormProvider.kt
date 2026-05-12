@@ -1,22 +1,18 @@
 package io.arkitik.flotale.engine.function.action
 
+import io.arkitik.flotale.engine.function.dtos.ExecuteActionData
 import io.arkitik.flotale.engine.function.dtos.FormValidationResult
 import io.arkitik.flotale.protocol.form.ActionForm
 
 interface ActionFormProvider {
-    fun provideForm(actionKey: String, elementKey: String, elementType: String): ActionForm?
+    fun provideForm(userAction: ExecuteActionData): ActionForm?
 
-    fun validateForm(actionKey: String, elementKey: String, elementType: String, formData: Map<String, Any?>): FormValidationResult
+    fun validateForm(userAction: ExecuteActionData.Companion.Form): FormValidationResult
 
     interface FormProviderUnit {
-        fun isSupported(actionKey: String, elementKey: String, elementType: String): Boolean
-        fun provideForm(actionKey: String, elementKey: String, elementType: String): ActionForm
+        fun isSupported(userAction: ExecuteActionData): Boolean
+        fun provideForm(userAction: ExecuteActionData): ActionForm
 
-        fun validateForm(
-            actionKey: String,
-            elementKey: String,
-            elementType: String,
-            formData: Map<String, Any?>,
-        ): FormValidationResult
+        fun validateForm(userAction: ExecuteActionData.Companion.Form): FormValidationResult
     }
 }

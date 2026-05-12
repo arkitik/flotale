@@ -272,10 +272,13 @@ class FlotaleWorkflowEngineImpl(
         formData: Map<String, Any>,
     ) {
         val formValidationResult = actionFormProvider.validateForm(
-            actionKey = actionKey,
-            elementKey = element.elementKey,
-            elementType = element.elementType,
-            formData = formData
+            ExecuteActionData.form(
+                actionKey = actionKey,
+                elementKey = element.elementKey,
+                elementType = element.elementType,
+                actor = executedBy,
+                formData = formData,
+            )
         )
         when (formValidationResult) {
             is FormValidationResult.Companion.Valid -> {
@@ -291,7 +294,7 @@ class FlotaleWorkflowEngineImpl(
                         elementKey = element.elementKey,
                         elementType = element.elementType,
                         actor = executedBy,
-                        data = formData,
+                        formData = formData,
                     )
                 )
             }
@@ -359,9 +362,12 @@ class FlotaleWorkflowEngineImpl(
                     formAction = actionDomain.actionType == ActionType.FORM_ACTION,
                     form = if (actionDomain.actionType == ActionType.FORM_ACTION) {
                         actionFormProvider.provideForm(
-                            actionKey = actionDomain.actionKey,
-                            elementKey = elementKey,
-                            elementType = element.elementType
+                            ExecuteActionData.standard(
+                                actionKey = actionDomain.actionKey,
+                                elementKey = elementKey,
+                                elementType = element.elementType,
+                                actor = requestedBy,
+                            )
                         )
                     } else null
                 )

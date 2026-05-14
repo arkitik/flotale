@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.arkitik.flotale</groupId>
         <artifactId>flotale-core-element</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>v1.0.0</version>
     </parent>
     <artifactId>flotale-core-element-adapter-exposed</artifactId>
     <name>flotale-core-element-adapter-exposed</name>

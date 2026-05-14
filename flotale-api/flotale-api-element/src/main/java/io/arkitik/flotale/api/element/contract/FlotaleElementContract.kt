@@ -1,7 +1,6 @@
 package io.arkitik.flotale.api.element.contract
 
 import io.arkitik.flotale.api.element.models.ElementAuditData
-import io.arkitik.flotale.engine.core.dto.ElementAuditEntry
 import io.arkitik.flotale.engine.core.dto.ElementDetails
 import io.arkitik.flotale.protocol.user.FlotaleUserTokenData
 import org.springframework.http.HttpHeaders

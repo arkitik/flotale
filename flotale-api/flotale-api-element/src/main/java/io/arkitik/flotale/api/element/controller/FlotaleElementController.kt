@@ -2,6 +2,7 @@ package io.arkitik.flotale.api.element.controller
 
 import io.arkitik.flotale.api.element.contract.FlotaleElementContract
 import io.arkitik.flotale.engine.core.FlotaleWorkflowEngine
+import io.arkitik.flotale.engine.core.dto.ElementAuditEntry
 import io.arkitik.flotale.engine.core.dto.ElementDetails
 import io.arkitik.flotale.protocol.user.FlotaleUserTokenData
 import org.springframework.http.ResponseEntity
@@ -51,4 +52,18 @@ class FlotaleElementController(
             )
         )
     }
+
+    override fun elementAudit(
+        userData: FlotaleUserTokenData,
+        elementKey: String,
+        elementType: String,
+        ascending: Boolean,
+    ): ResponseEntity<List<ElementAuditEntry>> =
+        ResponseEntity.ok(
+            flotaleWorkflowEngine.elementAudit(
+                elementKey = elementKey,
+                elementType = elementType,
+                requestedBy = userData
+            )
+        )
 }

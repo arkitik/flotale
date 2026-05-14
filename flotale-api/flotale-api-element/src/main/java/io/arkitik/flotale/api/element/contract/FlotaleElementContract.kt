@@ -1,5 +1,6 @@
 package io.arkitik.flotale.api.element.contract
 
+import io.arkitik.flotale.engine.core.dto.ElementAuditEntry
 import io.arkitik.flotale.engine.core.dto.ElementDetails
 import io.arkitik.flotale.protocol.user.FlotaleUserTokenData
 import org.springframework.http.HttpHeaders
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 
 /**
  * @author Ibrahim Al-Tamimi 
@@ -32,4 +34,12 @@ interface FlotaleElementContract {
         @PathVariable actionKey: String,
         @RequestBody(required = false) request: Map<String, Any>?,
     ): ResponseEntity<ElementDetails>
+
+    @GetMapping("/audit")
+    fun elementAudit(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) userData: FlotaleUserTokenData,
+        @PathVariable elementKey: String,
+        @PathVariable elementType: String,
+        @RequestParam(required = false, defaultValue = "false") ascending: Boolean = false,
+    ): ResponseEntity<List<ElementAuditEntry>>
 }

@@ -1,9 +1,11 @@
 package io.arkitik.flotale.element.sdk
 
 import io.arkitik.flotale.element.domain.ElementDomain
+import io.arkitik.flotale.element.flow.domain.ElementFlowDomain
 import io.arkitik.flotale.element.sdk.dto.CreateElementDto
 import io.arkitik.flotale.element.sdk.dto.ElementActionDto
 import io.arkitik.flotale.element.sdk.dto.ElementReferenceData
+import io.arkitik.flotale.element.sdk.dto.QueryElementFlowsDto
 import io.arkitik.radix.develop.operation.Operation
 
 /**
@@ -16,4 +18,5 @@ interface FlotaleElementDomainSdk {
     val findElementByReference: Operation<ElementReferenceData, ElementDomain>
     val elementExist: Operation<ElementReferenceData, Boolean>
     val elementExecuteAction: Operation<ElementActionDto, Unit>
+    val elementFlows: Operation<QueryElementFlowsDto, List<ElementFlowDomain>>
 }

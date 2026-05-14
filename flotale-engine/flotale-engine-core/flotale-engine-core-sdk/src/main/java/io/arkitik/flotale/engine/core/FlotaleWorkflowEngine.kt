@@ -1,5 +1,6 @@
 package io.arkitik.flotale.engine.core
 
+import io.arkitik.flotale.engine.core.dto.ElementAuditEntry
 import io.arkitik.flotale.engine.core.dto.ElementDetails
 import io.arkitik.flotale.protocol.user.FlotaleUserTokenData
 
@@ -81,4 +82,19 @@ interface FlotaleWorkflowEngine {
         elementType: String,
         requestedBy: FlotaleUserTokenData,
     ): ElementDetails
+
+    /**
+     * Retrieves the full audit trail of actions executed on a specific element.
+     * Each entry represents a single action execution in chronological order.
+     *
+     * @param elementKey The unique key identifying the element.
+     * @param elementType The type of the element.
+     * @return A list of [ElementAuditEntry] representing the element's action history.
+     */
+    fun elementAudit(
+        elementKey: String,
+        elementType: String,
+        ascending: Boolean = false,
+        requestedBy: FlotaleUserTokenData,
+    ): List<ElementAuditEntry>
 }

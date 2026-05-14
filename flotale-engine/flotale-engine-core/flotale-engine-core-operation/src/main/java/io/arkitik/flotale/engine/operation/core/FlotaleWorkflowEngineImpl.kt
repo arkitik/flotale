@@ -9,8 +9,10 @@ import io.arkitik.flotale.element.sdk.FlotaleElementDomainSdk
 import io.arkitik.flotale.element.sdk.dto.CreateElementDto
 import io.arkitik.flotale.element.sdk.dto.ElementActionDto
 import io.arkitik.flotale.element.sdk.dto.ElementReferenceData
+import io.arkitik.flotale.element.sdk.dto.QueryElementFlowsDto
 import io.arkitik.flotale.engine.core.FlotaleWorkflowEngine
 import io.arkitik.flotale.engine.core.dto.ActionDetails
+import io.arkitik.flotale.engine.core.dto.ElementAuditEntry
 import io.arkitik.flotale.engine.core.dto.ElementDetails
 import io.arkitik.flotale.engine.core.dto.ReferenceData
 import io.arkitik.flotale.engine.function.action.ActionExecutionValidator
@@ -384,4 +386,37 @@ class FlotaleWorkflowEngineImpl(
                 actor = executedBy,
             )
         )
+
+    override fun elementAudit(
+        elementKey: String,
+        elementType: String,
+        ascending: Boolean,
+        requestedBy: FlotaleUserTokenData,
+    ): List<ElementAuditEntry> =
+        flotaleElementDomainSdk.elementFlows
+            .runOperation(
+                QueryElementFlowsDto(
+                    ElementReferenceData(
+                        elementKey = elementKey,
+                        elementType = elementType
+                    ),
+                    ascending = ascending
+                )
+            )
+            .map { flow ->
+                ElementAuditEntry(
+                    actionKey = flow.action.actionKey,
+                    actionName = flow.action.actionName,
+                    fromTask = ReferenceData(
+                        key = flow.action.sourceTask.taskKey,
+                        name = flow.action.sourceTask.taskName
+                    ),
+                    toTask = ReferenceData(
+                        key = flow.action.destinationTask.taskKey,
+                        name = flow.action.destinationTask.taskName
+                    ),
+                    executedBy = flow.executedBy,
+                    executedAt = flow.creationDate,
+                )
+            }
 }

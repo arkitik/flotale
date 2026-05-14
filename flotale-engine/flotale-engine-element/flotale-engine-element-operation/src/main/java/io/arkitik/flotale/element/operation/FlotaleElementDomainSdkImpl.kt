@@ -1,9 +1,11 @@
 package io.arkitik.flotale.element.operation
 
 import io.arkitik.flotale.element.domain.ElementDomain
+import io.arkitik.flotale.element.flow.domain.ElementFlowDomain
 import io.arkitik.flotale.element.flow.store.ElementFlowStore
 import io.arkitik.flotale.element.operation.main.ElementExistOperation
 import io.arkitik.flotale.element.operation.main.ElementExecuteActionOperation
+import io.arkitik.flotale.element.operation.main.ElementFlowsOperation
 import io.arkitik.flotale.element.operation.main.FindElementByReferenceOperation
 import io.arkitik.flotale.element.operation.main.InitiateElementOperation
 import io.arkitik.flotale.element.operation.roles.ElementKeyShouldBeUnique
@@ -11,6 +13,7 @@ import io.arkitik.flotale.element.sdk.FlotaleElementDomainSdk
 import io.arkitik.flotale.element.sdk.dto.CreateElementDto
 import io.arkitik.flotale.element.sdk.dto.ElementActionDto
 import io.arkitik.flotale.element.sdk.dto.ElementReferenceData
+import io.arkitik.flotale.element.sdk.dto.QueryElementFlowsDto
 import io.arkitik.flotale.element.store.ElementStore
 import io.arkitik.radix.develop.operation.Operation
 import io.arkitik.radix.develop.operation.ext.operateRole
@@ -54,5 +57,10 @@ class FlotaleElementDomainSdkImpl(
                     elementFlowStore = elementFlowStore,
                 )
             )
+        }
+
+    override val elementFlows: Operation<QueryElementFlowsDto, List<ElementFlowDomain>> =
+        operationBuilder {
+            mainOperation(ElementFlowsOperation(elementFlowStore.storeQuery))
         }
 }

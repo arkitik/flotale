@@ -1,5 +1,6 @@
 package io.arkitik.flotale.api.element.contract
 
+import io.arkitik.flotale.api.element.models.ElementAuditData
 import io.arkitik.flotale.engine.core.dto.ElementAuditEntry
 import io.arkitik.flotale.engine.core.dto.ElementDetails
 import io.arkitik.flotale.protocol.user.FlotaleUserTokenData
@@ -40,6 +41,6 @@ interface FlotaleElementContract {
         @RequestHeader(HttpHeaders.AUTHORIZATION) userData: FlotaleUserTokenData,
         @PathVariable elementKey: String,
         @PathVariable elementType: String,
-        @RequestParam(required = false, defaultValue = "false") ascending: Boolean = false,
-    ): ResponseEntity<List<ElementAuditEntry>>
+        @RequestParam(required = false, defaultValue = "true") ascending: Boolean = true,
+    ): ResponseEntity<ElementAuditData>
 }

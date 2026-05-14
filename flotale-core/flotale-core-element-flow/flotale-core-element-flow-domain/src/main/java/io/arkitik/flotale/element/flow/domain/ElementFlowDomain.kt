@@ -12,4 +12,6 @@ interface ElementFlowDomain : Identity<String> {
     val action: ActionDomain
 
     val executedBy: String
+
+    val executionData: ByteArray?
 }

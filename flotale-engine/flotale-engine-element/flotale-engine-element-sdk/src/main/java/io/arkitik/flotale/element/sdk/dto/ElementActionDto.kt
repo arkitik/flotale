@@ -13,4 +13,5 @@ class ElementActionDto(
     val action: ActionDomain,
     val element: ElementDomain,
     val executedBy: FlotaleUserTokenData,
+    val executionData: ByteArray? = null,
 )

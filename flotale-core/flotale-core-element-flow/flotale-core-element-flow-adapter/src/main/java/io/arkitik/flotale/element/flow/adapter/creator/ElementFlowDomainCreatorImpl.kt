@@ -16,6 +16,7 @@ internal class ElementFlowDomainCreatorImpl : ElementFlowDomainCreator {
 
     private lateinit var action: ActionDomain
     private lateinit var executedBy: String
+    private var executionData: ByteArray? = null
 
     override fun String.uuid(): ElementFlowDomainCreator {
         uuid = this
@@ -37,11 +38,17 @@ internal class ElementFlowDomainCreatorImpl : ElementFlowDomainCreator {
         return this@ElementFlowDomainCreatorImpl
     }
 
+    override fun ByteArray?.executionData(): ElementFlowDomainCreator {
+        executionData = this
+        return this@ElementFlowDomainCreatorImpl
+    }
+
     override fun create(): FlotaleElementFlow = FlotaleElementFlow(
         element = element as FlotaleElement,
         action = action as FlotaleAction,
         uuid = uuid,
         creationDate = LocalDateTime.now(),
-        executedBy = executedBy
+        executedBy = executedBy,
+        executionData = executionData,
     )
 }

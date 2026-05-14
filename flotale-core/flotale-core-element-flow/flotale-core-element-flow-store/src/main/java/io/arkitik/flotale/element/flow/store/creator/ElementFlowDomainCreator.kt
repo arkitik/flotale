@@ -9,4 +9,5 @@ interface ElementFlowDomainCreator : StoreIdentityCreator<String, ElementFlowDom
     fun ElementDomain.element(): ElementFlowDomainCreator
     fun ActionDomain.action(): ElementFlowDomainCreator
     fun String.executedBy(): ElementFlowDomainCreator
+    fun ByteArray?.executionData(): ElementFlowDomainCreator
 }

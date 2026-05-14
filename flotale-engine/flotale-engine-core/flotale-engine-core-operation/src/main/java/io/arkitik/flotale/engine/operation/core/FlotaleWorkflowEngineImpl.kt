@@ -15,6 +15,8 @@ import io.arkitik.flotale.engine.core.dto.ActionDetails
 import io.arkitik.flotale.engine.core.dto.ElementAuditEntry
 import io.arkitik.flotale.engine.core.dto.ElementDetails
 import io.arkitik.flotale.engine.core.dto.ReferenceData
+import io.arkitik.flotale.engine.core.dto.TaskAuditEntry
+import io.arkitik.flotale.engine.function.action.ActionDataSerializer
 import io.arkitik.flotale.engine.function.action.ActionExecutionValidator
 import io.arkitik.flotale.engine.function.action.ActionExecutor
 import io.arkitik.flotale.engine.function.action.ActionFormProvider
@@ -49,6 +51,7 @@ class FlotaleWorkflowEngineImpl(
     private val actionExecutor: ActionExecutor,
     private val actionFormProvider: ActionFormProvider,
     private val flotaleTransactionalExecutor: FlotaleTransactionalExecutor,
+    private val actionDataSerializer: ActionDataSerializer,
 ) : FlotaleWorkflowEngine {
     companion object {
         private val logger = LoggerFactory.getLogger(FlotaleWorkflowEngineImpl::class.java)
@@ -203,7 +206,9 @@ class FlotaleWorkflowEngineImpl(
                         ElementActionDto(
                             action = action,
                             element = element,
-                            executedBy = executedBy
+                            executedBy = executedBy,
+                            executionData = formData.takeIf { it.isNotEmpty() }
+                                ?.let(actionDataSerializer::serialize),
                         )
                     )
 
@@ -390,8 +395,8 @@ class FlotaleWorkflowEngineImpl(
     override fun elementAudit(
         elementKey: String,
         elementType: String,
-        ascending: Boolean,
         requestedBy: FlotaleUserTokenData,
+        ascending: Boolean,
     ): List<ElementAuditEntry> =
         flotaleElementDomainSdk.elementFlows
             .runOperation(
@@ -407,16 +412,22 @@ class FlotaleWorkflowEngineImpl(
                 ElementAuditEntry(
                     actionKey = flow.action.actionKey,
                     actionName = flow.action.actionName,
-                    fromTask = ReferenceData(
-                        key = flow.action.sourceTask.taskKey,
-                        name = flow.action.sourceTask.taskName
+                    actionColor = flow.action.actionColor,
+                    actionOutlined = flow.action.actionOutlined,
+                    fromTask = TaskAuditEntry(
+                        taskKey = flow.action.sourceTask.taskKey,
+                        taskName = flow.action.sourceTask.taskName,
+                        terminal = flow.action.sourceTask.terminalTask
                     ),
-                    toTask = ReferenceData(
-                        key = flow.action.destinationTask.taskKey,
-                        name = flow.action.destinationTask.taskName
+                    toTask = TaskAuditEntry(
+                        taskKey = flow.action.destinationTask.taskKey,
+                        taskName = flow.action.destinationTask.taskName,
+                        terminal = flow.action.destinationTask.terminalTask
                     ),
                     executedBy = flow.executedBy,
                     executedAt = flow.creationDate,
+                    executionData = flow.executionData
+                        ?.let(actionDataSerializer::deserialize),
                 )
             }
 }

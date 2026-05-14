@@ -19,6 +19,7 @@ object FlotaleElementFlowTable : RadixTable<String, ElementFlowDomain>("flotale_
         refColumn = FlotaleActionTable.uuid,
     )
     val executedBy = varchar("executed_by", 255)
+    val executionData = blob("execution_data").nullable()
 
     override fun mapToIdentity(resultRow: ResultRow, database: Database?): ElementFlowDomain =
         FlotaleElementFlowExposed(
@@ -27,6 +28,7 @@ object FlotaleElementFlowTable : RadixTable<String, ElementFlowDomain>("flotale_
             elementUuid = resultRow[element],
             actionUuid = resultRow[action],
             executedBy = resultRow[executedBy],
+            executionData = resultRow[executionData]?.bytes,
             database = database,
         )
 }

@@ -28,6 +28,7 @@ internal class ElementExecuteActionOperation(
                     elementDomain.element()
                     action.action()
                     executedBy.username.executedBy()
+                    executionData.executionData()
                 }
             }
         }

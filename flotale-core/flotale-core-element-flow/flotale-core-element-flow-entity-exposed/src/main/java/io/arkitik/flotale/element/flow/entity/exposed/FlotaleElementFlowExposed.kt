@@ -14,6 +14,7 @@ class FlotaleElementFlowExposed(
     val elementUuid: String,
     val actionUuid: String,
     override val executedBy: String,
+    override val executionData: ByteArray?,
     val database: Database?,
 ) : ElementFlowDomain {
     override val element: ElementDomain by lazy {

@@ -5,6 +5,7 @@ import io.arkitik.flotale.element.sdk.FlotaleElementDomainSdk
 import io.arkitik.flotale.engine.core.FlotaleDomainEngine
 import io.arkitik.flotale.engine.core.FlotaleWorkflowEngine
 import io.arkitik.flotale.engine.function.EngineBeanStore
+import io.arkitik.flotale.engine.function.action.ActionDataSerializer
 import io.arkitik.flotale.engine.function.action.ActionExecutionValidator
 import io.arkitik.flotale.engine.function.action.ActionExecutor
 import io.arkitik.flotale.engine.function.action.ActionFormProvider
@@ -60,6 +61,7 @@ class FlotaleEnginePortContext {
         actionExecutor: ActionExecutor,
         actionFormProvider: ActionFormProvider,
         flotaleTransactionalExecutor: FlotaleTransactionalExecutor,
+        actionDataSerializer: ActionDataSerializer,
     ): FlotaleWorkflowEngine = FlotaleWorkflowEngineImpl(
         flotaleWorkflowDomainSdk = flotaleWorkflowDomainSdk,
         flotaleStageDomainSdk = flotaleStageDomainSdk,
@@ -71,6 +73,7 @@ class FlotaleEnginePortContext {
         actionExecutor = actionExecutor,
         actionFormProvider = actionFormProvider,
         flotaleTransactionalExecutor = flotaleTransactionalExecutor,
+        actionDataSerializer = actionDataSerializer,
     )
 
     @Bean

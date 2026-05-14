@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - include:
+      file: flotale-db/changelog/2026/05/14/initialize-project/001-create-flotale-workflow.xml
+  - include:
+      file: flotale-db/changelog/2026/05/14/initialize-project/002-create-flotale-stage.xml
+  - include:
+      file: flotale-db/changelog/2026/05/14/initialize-project/003-create-flotale-stage-initial.xml
+  - include:
+      file: flotale-db/changelog/2026/05/14/initialize-project/004-create-flotale-task.xml
+  - include:
+      file: flotale-db/changelog/2026/05/14/initialize-project/005-create-flotale-task-initial.xml
+  - include:
+      file: flotale-db/changelog/2026/05/14/initialize-project/006-create-flotale-action.xml
+  - include:
+      file: flotale-db/changelog/2026/05/14/initialize-project/007-create-flotale-element.xml
+  - include:
+      file: flotale-db/changelog/2026/05/14/initialize-project/008-create-flotale-element-flow.xml

@@ -30,3 +30,4 @@ target
 /sample-data/**
 /sample-data/
 **/logs/**
+**/artifacts/**

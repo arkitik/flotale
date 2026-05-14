@@ -5,16 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.arkitik.flotale</groupId>
-        <artifactId>flotale</artifactId>
+        <artifactId>flotale-plugin</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>flotale-plugin</artifactId>
-
+    <artifactId>flotale-plugin-serializer</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>flotale-plugin-jwt</module>
-        <module>flotale-plugin-serializer</module>
+        <module>flotale-plugin-serializer-jackson</module>
     </modules>
-
 </project>

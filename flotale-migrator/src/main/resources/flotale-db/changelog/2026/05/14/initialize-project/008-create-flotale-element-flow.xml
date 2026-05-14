@@ -27,6 +27,9 @@
             <column name="creation_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
+            <column name="execution_data" type="BLOB">
+                <constraints nullable="true"/>
+            </column>
         </createTable>
         <rollback>
             <dropTable tableName="flotale_element_flow"/>

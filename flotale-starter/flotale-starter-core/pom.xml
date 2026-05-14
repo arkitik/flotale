@@ -42,5 +42,10 @@
             <artifactId>flotale-engine-element-port</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.parent.groupId}</groupId>
+            <artifactId>flotale-plugin-serializer-jackson</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
     </dependencies>
 </project>

@@ -94,7 +94,7 @@ interface FlotaleWorkflowEngine {
     fun elementAudit(
         elementKey: String,
         elementType: String,
-        ascending: Boolean = false,
         requestedBy: FlotaleUserTokenData,
+        ascending: Boolean = true,
     ): List<ElementAuditEntry>
 }

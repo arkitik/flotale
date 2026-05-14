@@ -9,6 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <artifactId>flotale-core-element-domain</artifactId>
+    <name>flotale-core-element-domain</name>
 
     <dependencies>
         <dependency>

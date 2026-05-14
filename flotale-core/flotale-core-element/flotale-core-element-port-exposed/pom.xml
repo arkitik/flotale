@@ -9,6 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <artifactId>flotale-core-element-port-exposed</artifactId>
+    <name>flotale-core-element-port-exposed</name>
 
     <dependencies>
         <dependency>

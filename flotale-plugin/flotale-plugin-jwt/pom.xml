@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>flotale-plugin-jwt</artifactId>
+    <name>flotale-plugin-jwt</name>
 
     <dependencies>
         <dependency>

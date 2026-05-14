@@ -10,4 +10,5 @@
     </parent>
 
     <artifactId>flotale-protocol-user</artifactId>
+    <name>flotale-protocol-user</name>
 </project>

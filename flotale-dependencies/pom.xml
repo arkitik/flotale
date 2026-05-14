@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>flotale-dependencies</artifactId>
+    <name>flotale-dependencies</name>
     <packaging>pom</packaging>
     <description>Bill of Materials — version management for all flotale modules</description>
 

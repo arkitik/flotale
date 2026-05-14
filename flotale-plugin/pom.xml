@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>flotale-plugin</artifactId>
+    <name>flotale-plugin</name>
 
     <packaging>pom</packaging>
     <modules>

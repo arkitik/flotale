@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>flotale-api</artifactId>
+    <name>flotale-api</name>
     <packaging>pom</packaging>
 
     <modules>

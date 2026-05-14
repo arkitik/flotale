@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>flotale-plugin-serializer-jackson</artifactId>
+    <name>flotale-plugin-serializer-jackson</name>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

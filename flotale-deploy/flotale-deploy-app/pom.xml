@@ -9,6 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <artifactId>flotale-deploy-app</artifactId>
+    <name>flotale-deploy-app</name>
 
     <dependencies>
         <dependency>

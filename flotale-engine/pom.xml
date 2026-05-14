@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>flotale-engine</artifactId>
+    <name>flotale-engine</name>
 
     <packaging>pom</packaging>
     <modules>

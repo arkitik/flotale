@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>flotale-protocol</artifactId>
+    <name>flotale-protocol</name>
     <packaging>pom</packaging>
     <modules>
         <module>flotale-protocol-form</module>

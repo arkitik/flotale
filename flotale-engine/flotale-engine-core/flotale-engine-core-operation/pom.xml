@@ -9,6 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <artifactId>flotale-engine-core-operation</artifactId>
+    <name>flotale-engine-core-operation</name>
 
     <dependencies>
         <dependency>

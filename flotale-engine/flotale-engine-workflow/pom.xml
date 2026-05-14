@@ -9,6 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <artifactId>flotale-engine-workflow</artifactId>
+    <name>flotale-engine-workflow</name>
 
     <packaging>pom</packaging>
     <modules>

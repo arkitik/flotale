@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>flotale-api-element</artifactId>
+    <name>flotale-api-element</name>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

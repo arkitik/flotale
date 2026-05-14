@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>flotale-starter</artifactId>
+    <name>flotale-starter</name>
     <packaging>pom</packaging>
 
     <modules>

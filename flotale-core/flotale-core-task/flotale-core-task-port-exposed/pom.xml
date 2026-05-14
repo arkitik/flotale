@@ -9,6 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <artifactId>flotale-core-task-port-exposed</artifactId>
+    <name>flotale-core-task-port-exposed</name>
 
     <dependencies>
         <dependency>

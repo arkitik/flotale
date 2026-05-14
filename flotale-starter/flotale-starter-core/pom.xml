@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>flotale-starter-core</artifactId>
+    <name>flotale-starter-core</name>
 
     <dependencies>
         <dependency>

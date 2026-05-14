@@ -9,6 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <artifactId>flotale-deploy</artifactId>
+    <name>flotale-deploy</name>
 
     <packaging>pom</packaging>
     <modules>

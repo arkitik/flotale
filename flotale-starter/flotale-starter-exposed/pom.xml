@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>flotale-starter-exposed</artifactId>
+    <name>flotale-starter-exposed</name>
 
     <dependencies>
         <dependency>

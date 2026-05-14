@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>flotale-test</artifactId>
+    <name>flotale-test</name>
 
     <dependencies>
         <dependency>

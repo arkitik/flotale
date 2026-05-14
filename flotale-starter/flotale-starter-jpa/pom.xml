@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>flotale-starter-jpa</artifactId>
+    <name>flotale-starter-jpa</name>
 
     <dependencies>
 

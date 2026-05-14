@@ -9,6 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <artifactId>flotale-engine-stage</artifactId>
+    <name>flotale-engine-stage</name>
 
     <packaging>pom</packaging>
     <modules>

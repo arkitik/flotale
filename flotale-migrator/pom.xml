@@ -11,4 +11,5 @@
     </parent>
 
     <artifactId>flotale-migrator</artifactId>
+    <name>flotale-migrator</name>
 </project>

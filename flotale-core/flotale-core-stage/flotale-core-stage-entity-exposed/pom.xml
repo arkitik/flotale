@@ -9,6 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <artifactId>flotale-core-stage-entity-exposed</artifactId>
+    <name>flotale-core-stage-entity-exposed</name>
 
     <dependencies>
         <dependency>

@@ -39,7 +39,7 @@ mvn -q -DperformRelease=true \
           -Dcentral.username="${CENTRAL_USERNAME}" \
           -Dcentral.password="${CENTRAL_TOKEN}" \
           -Dgpg.passphrase="${GPG_PASSPHRASE}" \
-          dokka:javadocJar gpg:sign deploy
+          dokka:javadocJar deploy
 
 # Create release artifacts directory and collect ZIP files
 echo "Collecting release artifacts..."

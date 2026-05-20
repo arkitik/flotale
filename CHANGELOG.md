@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/arkitik/flotale/compare/v1.0.0...v1.0.1) (2026-05-20)
+
+
+### Bug Fixes
+
+* **JPA:** fix jpa action repository ([40a9cca](https://github.com/arkitik/flotale/commit/40a9cca8b0e0461e57b9d7d6466f325d4a3a4fcb))
+
 # 1.0.0 (2026-05-14)
 
 

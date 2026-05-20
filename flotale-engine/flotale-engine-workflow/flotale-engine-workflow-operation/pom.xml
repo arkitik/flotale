@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.arkitik.flotale</groupId>
         <artifactId>flotale-engine-workflow</artifactId>
-        <version>v1.0.0</version>
+        <version>v1.0.1</version>
     </parent>
     <artifactId>flotale-engine-workflow-operation</artifactId>
     <name>flotale-engine-workflow-operation</name>

@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.arkitik.flotale</groupId>
         <artifactId>flotale-core-workflow</artifactId>
-        <version>v1.0.0</version>
+        <version>v1.0.1</version>
     </parent>
     <artifactId>flotale-core-workflow-entity-exposed</artifactId>
     <name>flotale-core-workflow-entity-exposed</name>

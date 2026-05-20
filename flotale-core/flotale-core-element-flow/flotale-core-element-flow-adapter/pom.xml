@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.arkitik.flotale</groupId>
         <artifactId>flotale-core-element-flow</artifactId>
-        <version>v1.0.0</version>
+        <version>v1.0.1</version>
     </parent>
     <artifactId>flotale-core-element-flow-adapter</artifactId>
     <name>flotale-core-element-flow-adapter</name>

@@ -13,16 +13,16 @@ internal class ActionStoreQueryImpl(
     private val actionRepository: ActionRepository,
 ) : StoreQueryImpl<String, ActionDomain, FlotaleAction>(actionRepository), ActionStoreQuery {
     override fun existByKeyAndStatusIn(key: String, statuses: List<ActionStatus>) =
-        actionRepository.existsByActionKeyAndStatusIn(key, statuses)
+        actionRepository.existsByActionKeyAndActionStatusIn(key, statuses)
 
     override fun findByKeyAndNotDeleted(key: String) =
-        actionRepository.findFirstByActionKeyAndStatusNotIn(key, listOf(ActionStatus.DELETED))
+        actionRepository.findFirstByActionKeyAndActionStatusNotIn(key, listOf(ActionStatus.DELETED))
 
     override fun allTaskActionsAndActive(task: TaskDomain) =
-        actionRepository.findAllBySourceTaskAndStatus(task as FlotaleTask, ActionStatus.ACTIVE)
+        actionRepository.findAllBySourceTaskAndActionStatus(task as FlotaleTask, ActionStatus.ACTIVE)
 
     override fun findBySourceTaskAndActionKey(task: TaskDomain, key: String) =
-        actionRepository.findBySourceTaskAndActionKeyAndStatus(
+        actionRepository.findBySourceTaskAndActionKeyAndActionStatus(
             sourceTask = task as FlotaleTask,
             actionKey = key,
             status = ActionStatus.ACTIVE

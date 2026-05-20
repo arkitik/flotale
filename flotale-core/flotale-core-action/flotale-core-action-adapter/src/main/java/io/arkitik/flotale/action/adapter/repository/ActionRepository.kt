@@ -6,23 +6,23 @@ import io.arkitik.flotale.task.entity.FlotaleTask
 import io.arkitik.radix.adapter.shared.repository.RadixRepository
 
 interface ActionRepository : RadixRepository<String, FlotaleAction> {
-    fun existsByActionKeyAndStatusIn(
+    fun existsByActionKeyAndActionStatusIn(
         actionKey: String,
         statuses: List<ActionStatus>,
     ): Boolean
 
-    fun findFirstByActionKeyAndStatusNotIn(
+    fun findFirstByActionKeyAndActionStatusNotIn(
         actionKey: String,
         statuses: List<ActionStatus>,
     ): FlotaleAction?
 
-    fun findAllBySourceTaskAndStatus(
+    fun findAllBySourceTaskAndActionStatus(
         sourceTask: FlotaleTask,
         status: ActionStatus,
     ): List<FlotaleAction>
 
 
-    fun findBySourceTaskAndActionKeyAndStatus(
+    fun findBySourceTaskAndActionKeyAndActionStatus(
         sourceTask: FlotaleTask,
         actionKey: String,
         status: ActionStatus,

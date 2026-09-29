@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.arkitik.flotale</groupId>
         <artifactId>flotale-plugin</artifactId>
-        <version>v1.0.1</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>flotale-plugin-serializer</artifactId>

@@ -12,6 +12,7 @@ import io.arkitik.flotale.element.flow.store.query.ElementFlowStoreQuery
 import io.arkitik.flotale.element.flow.store.updater.ElementFlowDomainUpdater
 import io.arkitik.radix.adapter.exposed.ExposedStore
 import org.jetbrains.exposed.v1.core.statements.UpdateBuilder
+import org.jetbrains.exposed.v1.core.statements.api.ExposedBlob
 import org.jetbrains.exposed.v1.jdbc.Database
 
 class ExposedElementFlowStore(
@@ -33,5 +34,6 @@ class ExposedElementFlowStore(
         this[identityTable.element] = identity.elementUuid
         this[identityTable.action] = identity.actionUuid
         this[identityTable.executedBy] = identity.executedBy
+        this[identityTable.executionData] = identity.executionData?.let(::ExposedBlob)
     }
 }

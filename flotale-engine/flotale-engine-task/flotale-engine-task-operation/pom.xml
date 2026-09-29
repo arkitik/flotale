@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.arkitik.flotale</groupId>
         <artifactId>flotale-engine-task</artifactId>
-        <version>${revision}</version>
+        <version>v1.0.1</version>
     </parent>
     <artifactId>flotale-engine-task-operation</artifactId>
     <name>flotale-engine-task-operation</name>

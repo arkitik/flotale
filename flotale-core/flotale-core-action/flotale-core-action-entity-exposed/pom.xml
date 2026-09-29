@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.arkitik.flotale</groupId>
         <artifactId>flotale-core-action</artifactId>
-        <version>${revision}</version>
+        <version>v1.0.1</version>
     </parent>
     <artifactId>flotale-core-action-entity-exposed</artifactId>
     <name>flotale-core-action-entity-exposed</name>

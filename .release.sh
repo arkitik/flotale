@@ -15,20 +15,22 @@ fi
 
 NEW_VERSION="v$1"
 
-update_app_version() {
+update_readme_version() {
     local version="$1"
     echo "Updating README.md version to: $version"
     sed -i.bak "s|<version>v[^<]*</version>|<version>$version</version>|g" README.md
-
-    echo "Updating root pom.xml..."
-    sed -i.bak "s|<revision>v[^<]*</revision>|<revision>$version</revision>|g" pom.xml
     rm -f README.md.bak
-    rm -f pom.xml.bak
 }
 
+echo "Updating Maven project version to: $NEW_VERSION"
+
 # Update root pom.xml version
-echo "Updating Project Version to: $NEW_VERSION"
-update_app_version "$NEW_VERSION"
+echo "Updating root pom.xml..."
+mvn versions:set -DnewVersion="$NEW_VERSION" -DgenerateBackupPoms=false
+
+# Update README.md version
+echo "Updating readme.md..."
+update_readme_version "$NEW_VERSION"
 
 echo "Version update completed successfully!"
 echo "New version: $NEW_VERSION"

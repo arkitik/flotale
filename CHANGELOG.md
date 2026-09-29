@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/arkitik/flotale/compare/v1.0.1...v1.0.2) (2026-09-29)
+
+
+### Bug Fixes
+
+* add ActionForm DSL builder and enhance ActionForm structures with specs, field configs, and descriptions; update element flow to support execution data handling [#6](https://github.com/arkitik/flotale/issues/6) ([4ce4d12](https://github.com/arkitik/flotale/commit/4ce4d12f8afe16a03bb3045208cd303aa08f5ee7))
+
 ## [1.0.1](https://github.com/arkitik/flotale/compare/v1.0.0...v1.0.1) (2026-05-20)
 
 

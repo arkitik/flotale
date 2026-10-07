@@ -35,11 +35,17 @@ update_readme_version "$NEW_VERSION"
 echo "Version update completed successfully!"
 echo "New version: $NEW_VERSION"
 
-mvn -q -DperformRelease=true \
+if ! mvn -DperformRelease=true \
           -Dcentral.username="${CENTRAL_USERNAME}" \
           -Dcentral.password="${CENTRAL_TOKEN}" \
           -Dgpg.passphrase="${GPG_PASSPHRASE}" \
-          dokka:javadocJar deploy
+          dokka:javadocJar deploy; then
+    echo "Deploy failed. Contents of the Central bundle:"
+    for bundle in target/central-publishing/*.zip; do
+        [ -f "$bundle" ] && unzip -l "$bundle" | head -100
+    done
+    exit 1
+fi
 
 # Create release artifacts directory and collect ZIP files
 echo "Collecting release artifacts..."

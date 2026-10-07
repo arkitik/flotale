@@ -31,3 +31,6 @@ target
 /sample-data/
 **/logs/**
 **/artifacts/**
+/.claude/settings.json
+**/graphify-out/**
+CLAUDE.md

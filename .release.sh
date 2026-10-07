@@ -22,11 +22,24 @@ update_readme_version() {
     rm -f README.md.bak
 }
 
+# Modules outside the root reactor that inherit the root pom as parent
+update_parent_version() {
+    local pom="$1" version="$2"
+    echo "Updating parent version in $pom to: $version"
+    sed -i.bak "/<parent>/,/<\/parent>/s|<version>[^<]*</version>|<version>$version</version>|" "$pom"
+    rm -f "$pom.bak"
+}
+
 echo "Updating Maven project version to: $NEW_VERSION"
 
 # Update root pom.xml version
 echo "Updating root pom.xml..."
-mvn versions:set -DnewVersion="$NEW_VERSION" -DgenerateBackupPoms=false
+mvn versions:set -DnewVersion="$NEW_VERSION" -DgenerateBackupPoms=false -DprocessAllModules=true
+
+# Update modules that are not part of the root reactor
+for pom in flotale-deploy/pom.xml flotale-deploy/flotale-deploy-app/pom.xml flotale-test/pom.xml; do
+    update_parent_version "$pom" "$NEW_VERSION"
+done
 
 # Update README.md version
 echo "Updating readme.md..."

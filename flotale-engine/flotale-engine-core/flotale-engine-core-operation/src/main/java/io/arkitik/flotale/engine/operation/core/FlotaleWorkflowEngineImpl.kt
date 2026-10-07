@@ -63,49 +63,57 @@ class FlotaleWorkflowEngineImpl(
         elementType: String,
         addedBy: FlotaleUserTokenData,
     ): ElementDetails {
-        return flotaleTransactionalExecutor.runOnTransaction {
-            logger.debug(
-                "Initiating [element: {}, type: {}] under [workflow: {}] by {}",
-                elementKey,
-                elementType,
-                workflowKey,
-                addedBy
-            )
-            val workflow = flotaleWorkflowDomainSdk.findWorkflow.runOperation(workflowKey)
-            val initialStage = flotaleStageDomainSdk.initialWorkflowStage.runOperation(workflow)
-            val initialTask = flotaleTaskDomainSdk.initialStageTask.runOperation(initialStage)
+        logger.debug(
+            "Initiating [element: {}, type: {}] under [workflow: {}] by {}",
+            elementKey,
+            elementType,
+            workflowKey,
+            addedBy
+        )
+        val workflow = flotaleWorkflowDomainSdk.findWorkflow.runOperation(workflowKey)
+        val initialStage = flotaleStageDomainSdk.initialWorkflowStage.runOperation(workflow)
+        val initialTask = flotaleTaskDomainSdk.initialStageTask.runOperation(initialStage)
 
-            flotaleElementDomainSdk.createElement
-                .runOperation(
-                    CreateElementDto(
-                        elementReference = ElementReferenceData(
-                            elementKey = elementKey,
-                            elementType = elementType,
-                        ),
-                        task = initialTask,
-                        addedBy = addedBy
-                    )
+        flotaleElementDomainSdk.createElement
+            .runOperation(
+                CreateElementDto(
+                    elementReference = ElementReferenceData(
+                        elementKey = elementKey,
+                        elementType = elementType,
+                    ),
+                    task = initialTask,
+                    addedBy = addedBy
                 )
+            )
 
-            elementTaskBroadcaster.elementEnter(
+        elementTaskBroadcaster.runCatching {
+            elementEnter(
                 elementKey = elementKey,
                 elementType = elementType,
                 taskKey = initialTask.taskKey,
                 executedBy = addedBy
             )
-            logger.debug(
-                "[Element: {}, type: {}] under [workflow: {}] has been initiated successfully by {}",
+        }.onFailure {
+            logger.warn(
+                "An issue occurred while executing `TaskBroadcaster` for [element: {}, type: {}], [reason: {}] (Issue will be ignored)",
                 elementKey,
                 elementType,
-                workflowKey,
-                addedBy
-            )
-            elementDetails(
-                elementKey = elementKey,
-                elementType = elementType,
-                requestedBy = addedBy
+                it.message
             )
         }
+
+        logger.debug(
+            "[Element: {}, type: {}] under [workflow: {}] has been initiated successfully by {}",
+            elementKey,
+            elementType,
+            workflowKey,
+            addedBy
+        )
+        return elementDetails(
+            elementKey = elementKey,
+            elementType = elementType,
+            requestedBy = addedBy
+        )
     }
 
     override fun validateExecuteAction(
@@ -157,43 +165,43 @@ class FlotaleWorkflowEngineImpl(
         executedBy: FlotaleUserTokenData,
         formData: Map<String, Any>,
     ) {
-        flotaleTransactionalExecutor.runOnTransaction {
-            logger.debug(
-                "Executing [action: {}] for [element: {}, type: {}] by {}",
-                actionKey,
-                elementKey,
-                elementType,
-                executedBy
+
+        val element = flotaleElementDomainSdk.findElementByReference
+            .runOperation(
+                ElementReferenceData(
+                    elementKey = elementKey,
+                    elementType = elementType
+                )
             )
 
+        val action = flotaleActionDomainSdk.taskActionByKey
+            .runOperation(
+                TaskActionByKeyDto(
+                    task = element.task,
+                    actionKey = actionKey
+                )
+            )
+
+        actionCanBeExecuted(action = action, element = element, executedBy = executedBy)
+            .takeUnless { it }?.let {
+                logger.error(
+                    "Executing [action: {}] for [element: {}, type: {}] by {} is prevented",
+                    actionKey,
+                    element.elementKey,
+                    element.elementType,
+                    executedBy
+                )
+                throw EngineErrors.ACTION_CANT_BE_EXECUTED.unprocessableEntity()
+            }
+        flotaleTransactionalExecutor.runOnTransaction {
             runCatching {
-                val element = flotaleElementDomainSdk.findElementByReference
-                    .runOperation(
-                        ElementReferenceData(
-                            elementKey = elementKey,
-                            elementType = elementType
-                        )
-                    )
-
-                val action = flotaleActionDomainSdk.taskActionByKey
-                    .runOperation(
-                        TaskActionByKeyDto(
-                            task = element.task,
-                            actionKey = actionKey
-                        )
-                    )
-
-                actionCanBeExecuted(action = action, element = element, executedBy = executedBy)
-                    .takeUnless { it }?.let {
-                        logger.error(
-                            "Executing [action: {}] for [element: {}, type: {}] by {} is prevented",
-                            actionKey,
-                            element.elementKey,
-                            element.elementType,
-                            executedBy
-                        )
-                        throw EngineErrors.ACTION_CANT_BE_EXECUTED.unprocessableEntity()
-                    }
+                logger.debug(
+                    "Executing [action: {}] for [element: {}, type: {}] by {}",
+                    actionKey,
+                    elementKey,
+                    elementType,
+                    executedBy
+                )
 
                 if (action.actionType == ActionType.FORM_ACTION) {
                     executeFormAction(actionKey, element, executedBy, formData)
@@ -211,29 +219,6 @@ class FlotaleWorkflowEngineImpl(
                                 ?.let(actionDataSerializer::serialize),
                         )
                     )
-
-                elementTaskBroadcaster.runCatching {
-                    elementExit(
-                        elementKey = elementKey,
-                        elementType = element.elementType,
-                        taskKey = action.sourceTask.taskKey,
-                        executedBy = executedBy
-                    )
-                    elementEnter(
-                        elementKey = elementKey,
-                        elementType = element.elementType,
-                        taskKey = action.destinationTask.taskKey,
-                        executedBy = executedBy
-                    )
-                }.onFailure {
-                    logger.warn(
-                        "An issue acquired while executing `TaskBroadcaster` for [element: {}, type: {}] and [action: {}], [reason: {}] (Issue will be ignored)",
-                        elementKey,
-                        elementType,
-                        actionKey,
-                        it.message
-                    )
-                }
             }.onFailure {
                 logger.error(
                     "[Action: {}] for [element: {}, type: {}] by {} has been failed while execution, [error: {}]",
@@ -254,6 +239,28 @@ class FlotaleWorkflowEngineImpl(
                     executedBy
                 )
             }
+        }
+        elementTaskBroadcaster.runCatching {
+            elementExit(
+                elementKey = elementKey,
+                elementType = element.elementType,
+                taskKey = action.sourceTask.taskKey,
+                executedBy = executedBy
+            )
+            elementEnter(
+                elementKey = elementKey,
+                elementType = element.elementType,
+                taskKey = action.destinationTask.taskKey,
+                executedBy = executedBy
+            )
+        }.onFailure {
+            logger.warn(
+                "An issue occurred while executing `TaskBroadcaster` for [element: {}, type: {}] and [action: {}], [reason: {}] (Issue will be ignored)",
+                elementKey,
+                elementType,
+                actionKey,
+                it.message
+            )
         }
     }
 

@@ -234,7 +234,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <publishingServerId>central-sonatype</publishingServerId>
-                    <outputFilename>arkitik-radix-${project.version}.zip</outputFilename>
+                    <outputFilename>flotale-${project.version}.zip</outputFilename>
                 </configuration>
             </plugin>
         </plugins>

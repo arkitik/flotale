@@ -1,3 +1,11 @@
+## [1.0.3](https://github.com/arkitik/flotale/compare/v1.0.2...v1.0.3) (2026-10-08)
+
+
+### Bug Fixes
+
+* handle Maven deploy failures in `.release.sh` and provide debug info for Central bundles ([60cdaf5](https://github.com/arkitik/flotale/commit/60cdaf5976c0439541b60951f04d33dab0c8e8f5))
+* refactor workflow engine to improve transaction handling and enhance reliability of task broadcasting [#9](https://github.com/arkitik/flotale/issues/9) ([664a263](https://github.com/arkitik/flotale/commit/664a263f88b5aa9b86aac4e97ee18415e3993333))
+
 ## [1.0.2](https://github.com/arkitik/flotale/compare/v1.0.1...v1.0.2) (2026-09-29)
 
 

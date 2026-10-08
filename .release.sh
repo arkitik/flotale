@@ -22,6 +22,8 @@ update_readme_version() {
     rm -f README.md.bak
 }
 
+mvn -v
+
 echo "Updating Maven project version to: $NEW_VERSION"
 
 # Update root pom.xml version

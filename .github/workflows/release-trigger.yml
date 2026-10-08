@@ -26,6 +26,11 @@ jobs:
           server-username: CENTRAL_USERNAME
           server-password: CENTRAL_TOKEN
 
+      - name: Set up Maven 3.9.16
+        uses: stCarolas/setup-maven@v5.1
+        with:
+          maven-version: 3.9.16
+
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
